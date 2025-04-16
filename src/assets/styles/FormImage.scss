@@ -1,0 +1,44 @@
+.formImage {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .formImageItem {
+    &.type {
+      flex: 1; 
+    }
+    &.option {
+      flex: 1; 
+      height: 56px;
+      line-height: 56px;
+      .formImageUpload {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        height: 56px;
+        line-height: 56px;
+        overflow: hidden;
+        .preview {
+            height: inherit;
+            margin-left: 8px;
+            overflow: hidden;
+            width: 56px;
+            text-align: center;
+            object-fit: cover;
+            border: 1px solid #ccc;
+            border-radius: 50%;
+            img {
+                object-fit: cover;
+                height: 56px;
+                width: auto;
+                border: none;
+                margin: 0 auto;
+            }  
+        }
+      }
+    }
+  }
+}
+img {
+  border: 1px solid #ccc;
+}
+
