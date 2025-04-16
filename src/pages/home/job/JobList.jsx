@@ -22,16 +22,12 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
-import { FormSelect } from "../../../components/customize/FormSelect";
+import { MultipleSelectBox } from "../../../components/customize/selectMultipleCheckBox";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  getListJobRedux,
-  changePage,
-  changeRowPerPage,
-  changeSort,
-  changeOrder,
-} from "../../../redux/slices/jobSlice";
+import { getListJobRedux, changePage } from "../../../redux/slices/jobSlice";
 import { useParams } from "react-router-dom";
+import { levels } from "../../../utils/constant.js";
+import { formatList } from "../../../utils/utils.js";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import "../../../assets/styles/JobList.scss";
@@ -55,7 +51,6 @@ export const JobList = () => {
   const [error, setError] = useState(errorDefault);
   const [data, setData] = useState(dataDefault);
   const dispatch = useDispatch();
-  const { id } = useParams();
   const list = useSelector((state) => state.job?.listJob);
   const page = useSelector((state) => state.job?.page);
   const limit = useSelector((state) => state.job?.limit);
@@ -79,16 +74,75 @@ export const JobList = () => {
     getList();
   }, [page, limit, order, orderBy]);
 
+  const handleChangeSelect = (e, value) => {};
+
+  const handleChangeSelectBlur = () => {};
+
+  console.log(levels);
+
   return (
     <div className="ContentPage">
+      <Box display={"flex"} alignItems={"center"} sx={{ pl: 3, pr: 3, pt: 2 }}>
+        <FormInput
+          data={data}
+          setData={setData}
+          error={error}
+          setError={setError}
+          label="Search"
+          name="keyword"
+        />
+        <MultipleSelectBox
+          options={levels}
+          label="Select level"
+          value={data.level}
+          width="100%"
+          // error={error.level}
+          // errorText={error.level}
+          // onChange={handleChangeSelect}
+          // handleBlurSelect={handleChangeSelectBlur}
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<SearchIcon />}
+          sx={{ height: "56px" }}
+        >
+          Search
+        </Button>
+      </Box>
       <Box sx={{ px: 2, py: 2 }}>
-        <div className="custom-grid">
-          {list.map((item, index) => (
-            <div className="custom-grid-item" key={index}>
-              <CardTemplate3 data={item}/>
-            </div>
-          ))}
-        </div>
+        {isLoading === false ? (
+          <>
+            {list.length > 0 ? (
+              <>
+                <div className="custom-grid">
+                  {list.map((item, index) => (
+                    <div className="custom-grid-item" key={index}>
+                      <CardTemplate3 data={item} />
+                    </div>
+                  ))}
+                </div>
+                {totalPage > 1 && (
+                  <Stack spacing={2} alignItems="center">
+                    <Pagination
+                      count={totalPage}
+                      page={page + 1}
+                      onChange={(event, value) =>
+                        dispatch(changePage(value - 1))
+                      }
+                      variant="outlined"
+                      shape="rounded"
+                    />
+                  </Stack>
+                )}
+              </>
+            ) : (
+              <>No data</>
+            )}
+          </>
+        ) : (
+          <CircularWithValueLabel />
+        )}
       </Box>
     </div>
   );

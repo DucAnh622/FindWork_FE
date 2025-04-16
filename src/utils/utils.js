@@ -1,21 +1,19 @@
-import { green, blue, purple, yellow, orange, red, grey } from '@mui/material/colors';
-
 export const getRolesStyles = (status) => {
   switch (status) {
     case "Admin":
       return {
         backgroundColor: "#FF3B30",
-        color: "#FFFFFF",           
+        color: "#FFFFFF",
       };
     case "Hr":
       return {
-        backgroundColor: "#FF9500", 
-        color: "#FFFFFF",            
+        backgroundColor: "#FF9500",
+        color: "#FFFFFF",
       };
     case "User":
       return {
-        backgroundColor: "#34C759", 
-        color: "#FFFFFF",           
+        backgroundColor: "#34C759",
+        color: "#FFFFFF",
       };
     default:
       break;
@@ -26,38 +24,38 @@ export const getLevelStyles = (level) => {
   switch (level) {
     case "intern":
       return {
-        backgroundColor: "#34C759", 
-        color: "#FFFFFF",            
+        backgroundColor: "#34C759",
+        color: "#FFFFFF",
       };
     case "fresher":
       return {
-        backgroundColor: "#007AFF",  
-        color: "#FFFFFF",          
+        backgroundColor: "#007AFF",
+        color: "#FFFFFF",
       };
     case "junior":
       return {
-        backgroundColor: "#5856D6",  
-        color: "#FFFFFF",           
+        backgroundColor: "#5856D6",
+        color: "#FFFFFF",
       };
     case "middle":
       return {
-        backgroundColor: "#FFCC00", 
-        color: "#FFFFFF",            
+        backgroundColor: "#FFCC00",
+        color: "#FFFFFF",
       };
     case "senior":
       return {
-        backgroundColor: "#FF9500", 
-        color: "#FFFFFF",            
+        backgroundColor: "#FF9500",
+        color: "#FFFFFF",
       };
     case "leader":
       return {
-        backgroundColor: "#FF3B30", 
-        color: "#FFFFFF",            
+        backgroundColor: "#FF3B30",
+        color: "#FFFFFF",
       };
     case "project manager":
       return {
-        backgroundColor: "#8E8E93",  
-        color: "#FFFFFF",           
+        backgroundColor: "#8E8E93",
+        color: "#FFFFFF",
       };
     default:
       break;
@@ -75,15 +73,6 @@ export const formatSort = (sort) => {
   }
 };
 
-export const formatListSelectCheckBox = (list) => {
-  return list.map((item) => {
-    return {
-      id: item.id,
-      name: item.name,
-    };
-  });
-};
-
 export const formatListData = (list) => {
   return list.map((item) => {
     return {
@@ -96,7 +85,16 @@ export const formatList = (list) => {
   return list.map((item) => {
     return {
       value: item.id,
-      label: item.name,
+      name: item.name,
+    };
+  });
+};
+
+export const formatListLabel = (list) => {
+  return list.map((item) => {
+    return {
+      value: item.value,
+      name: item.label,
     };
   });
 };
@@ -138,51 +136,50 @@ export const getMethodStyles = (method) => {
   switch (method) {
     case "delete":
       return {
-        backgroundColor: "#FF3B30", 
-        color: "#FFFFFF",           
+        backgroundColor: "#FF3B30",
+        color: "#FFFFFF",
       };
     case "post":
       return {
-        backgroundColor: "#FF9500", 
-        color: "#FFFFFF",            
+        backgroundColor: "#FF9500",
+        color: "#FFFFFF",
       };
     case "get":
       return {
-        backgroundColor: "#34C759",  
-        color: "#FFFFFF",            
+        backgroundColor: "#34C759",
+        color: "#FFFFFF",
       };
     case "put":
       return {
-        backgroundColor: "#007AFF",  
-        color: "#FFFFFF",            
+        backgroundColor: "#007AFF",
+        color: "#FFFFFF",
       };
     default:
       break;
   }
 };
 
-
 export const getStatusStyles = (status) => {
   switch (status) {
     case "rejected":
       return {
-        backgroundColor: "#FF3B30",  
-        color: "#FFFFFF",            
+        backgroundColor: "#FF3B30",
+        color: "#FFFFFF",
       };
     case "new":
       return {
-        backgroundColor: "#FF9500", 
-        color: "#FFFFFF",            
+        backgroundColor: "#FF9500",
+        color: "#FFFFFF",
       };
     case "approved":
       return {
-        backgroundColor: "#34C759",  
-        color: "#FFFFFF",           
+        backgroundColor: "#34C759",
+        color: "#FFFFFF",
       };
     case "pending":
       return {
-        backgroundColor: "#007AFF",  
-        color: "#FFFFFF",            
+        backgroundColor: "#007AFF",
+        color: "#FFFFFF",
       };
     default:
       break;
@@ -219,8 +216,8 @@ export const divideWorkDay = (workDay) => {
   const match = workDay.match(regex);
 
   if (match) {
-    const minLabel = match[1].trim();  
-    const maxLabel = match[2].trim(); 
+    const minLabel = match[1].trim();
+    const maxLabel = match[2].trim();
 
     const dayWorkStart = Object.keys(dayLabels).find(
       (key) => dayLabels[key] === minLabel
@@ -314,10 +311,7 @@ export const checkNumber = (data, name, label, maxLength) => {
     errors[name] = "This field is required";
   }
 
-  if (
-    data[name] &&
-    (data[name].length < 1 || data[name].length > maxLength)
-  ) {
+  if (data[name] && (data[name].length < 1 || data[name].length > maxLength)) {
     errors[name] = `Max length of ${label} is 1 to ${maxLength} digits!`;
   }
 
@@ -326,7 +320,7 @@ export const checkNumber = (data, name, label, maxLength) => {
   }
 
   return errors;
-}
+};
 
 export const checkNumberRange = (data, nameFrom, nameTo, label, maxLength) => {
   let errors = {};
@@ -346,7 +340,10 @@ export const checkNumberRange = (data, nameFrom, nameTo, label, maxLength) => {
     errors[nameFrom] = `Max length of ${label} is 1 to ${maxLength} digits!`;
   }
 
-  if (data[nameTo] && (data[nameTo].length < 1 || data[nameTo].length > maxLength)) {
+  if (
+    data[nameTo] &&
+    (data[nameTo].length < 1 || data[nameTo].length > maxLength)
+  ) {
     errors[nameTo] = `Max length of ${label} is 1 to ${maxLength} digits!`;
   }
 
@@ -390,7 +387,6 @@ export const divideSalary = (salaryString) => {
 
   return { minSalary: salaryString, maxSalary: salaryString };
 };
-
 
 export const divideExperience = (experienceString) => {
   if (experienceString.startsWith("Under")) {

@@ -7,7 +7,7 @@ import Select from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
 import Typography from "@mui/material/Typography";
 import FormHelperText from "@mui/material/FormHelperText";
-import { getRolesStyles} from "../../utils/utils";
+import { getRolesStyles } from "../../utils/utils";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -21,14 +21,14 @@ const MenuProps = {
 };
 
 export const MultipleSelectBox = ({
-  options = [], 
-  label = "Select", 
-  value = [], 
-  onChange = () => {}, 
-  handleBlurSelect = () => {}, 
-  width, 
-  error = false, 
-  errorText = ""
+  options = [],
+  label = "Select",
+  value = [],
+  onChange = () => {},
+  handleBlurSelect = () => {},
+  width,
+  error = false,
+  errorText = "",
 }) => {
   const selectedIds = Array.isArray(value) ? value : [];
 
@@ -46,7 +46,7 @@ export const MultipleSelectBox = ({
         labelId="multiple-checkbox-label"
         id="multiple-checkbox"
         multiple
-        value={selectedIds} 
+        value={selectedIds}
         onChange={handleChange}
         onBlur={handleBlurSelect}
         input={<OutlinedInput label={label} />}
@@ -58,8 +58,8 @@ export const MultipleSelectBox = ({
             .join(", ")
         }
       >
-        {options.map((option) => (
-          <MenuItem key={option.id} value={option.id}>
+        {options.map((option, index) => (
+          <MenuItem key={index} value={option.id}>
             <Checkbox checked={selectedIds.includes(option.id)} />
             <Typography
               sx={{
@@ -82,4 +82,3 @@ export const MultipleSelectBox = ({
     </FormControl>
   );
 };
-

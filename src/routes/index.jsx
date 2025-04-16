@@ -4,13 +4,9 @@ import { NotFound } from "../pages/notFound";
 import { useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import { CircularWithValueLabel } from "../components/customize/loading";
-import '../index.scss';
+import "../index.scss";
 const RootRoutes = () => {
   const loading = useSelector((state) => state.user?.login?.isLoading);
-
-  if (loading === true) {
-    return <CircularWithValueLabel />;
-  }
 
   const element = useRoutes([
     ...guestRoutes,
@@ -19,6 +15,10 @@ const RootRoutes = () => {
     ...userRoutes,
     { path: "*", element: <NotFound /> },
   ]);
+
+  if (loading === true) {
+    return <CircularWithValueLabel />;
+  }
 
   return (
     <>

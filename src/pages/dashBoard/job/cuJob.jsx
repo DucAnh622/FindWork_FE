@@ -45,12 +45,8 @@ import { FormRangeInput } from "../../../components/customize/FormRangeInput";
 import { FormRangeTime } from "../../../components/customize/FormRangeTime";
 import { FormInput } from "../../../components/customize/FormInput";
 import { useSelector, useDispatch } from "react-redux";
-import {
-getAllSkillRedux
-} from "../../../redux/slices/skillSlice";
-import {
-getAllCompanyRedux
-} from "../../../redux/slices/companySlice";
+import { getAllSkillRedux } from "../../../redux/slices/skillSlice";
+import { getAllCompanyRedux } from "../../../redux/slices/companySlice";
 
 export const CuJob = () => {
   const { id } = useParams();

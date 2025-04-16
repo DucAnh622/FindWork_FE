@@ -6,7 +6,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { CardTemplate2 } from "../cardTemplate/cardTemplate2";
 import { CardTemplate3 } from "../cardTemplate/cardTemplate3";
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from "react-router-dom";
 
 export const SliderCustomize = ({
   type,
@@ -78,137 +78,139 @@ export const SliderCustomize = ({
           </Button>
         </Box>
       )}
-      <Box
-        sx={
-          type === "banner"
-            ? {
-                height: "calc(100vh - 69px)",
-                position: "relative",
-                overflow: "hidden",
-                border: "none",
-              }
-            : {
-                maxWidth: "calc(100% - 32px)",
-                margin: "auto",
-                position: "relative",
-                border: "none",
-              }
-        }
-      >
-        <Swiper
-          modules={[Navigation, Autoplay]}
-          onSwiper={(swiper) => (swiperRef.current = swiper)}
-          autoplay={{
-            delay: 5000,
-            disableOnInteraction: false,
-          }}
-          breakpoints={
-            type === "card" && {
-              0: {
-                slidesPerView: 1,
-              },
-              600: {
-                slidesPerView: 2,
-              },
-              900: {
-                slidesPerView: 3,
-              },
-              1200: {
-                slidesPerView: 4,
-              },
-              1300: {
-                slidesPerView: 5,
-              },
-            }
-          }
-          spaceBetween={spaceBetween}
-          slidesPerView={slidesPerView}
-          loop={true}
-          style={{ height: "100%" }}
-        >
-          {list.map((item, index) => (
-            <SwiperSlide key={index}>
-              {template === "CardTemplate2" ? (
-                <CardTemplate2 data={item} />
-              ) : template === "CardTemplate3" ? (
-                <CardTemplate3 data={item} height="100%"/>
-              ) : (
-                <img
-                  src={item}
-                  loading="lazy"
-                  alt={`slide-${index}`}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                  }}
-                />
-              )}
-            </SwiperSlide>
-          ))}
-        </Swiper>
+      {list && list.length > 0 && (
         <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "0",
-            right: "0",
-            display: "flex",
-            justifyContent: "space-between",
-            px: 2,
-            transform: "translateY(-50%)",
-            pointerEvents: "none",
-            zIndex: 2,
-          }}
+          sx={
+            type === "banner"
+              ? {
+                  height: "calc(100vh - 69px)",
+                  position: "relative",
+                  overflow: "hidden",
+                  border: "none",
+                }
+              : {
+                  maxWidth: "calc(100% - 32px)",
+                  margin: "auto",
+                  position: "relative",
+                  border: "none",
+                }
+          }
         >
-          <Button
-            ref={prevRef}
+          <Swiper
+            modules={[Navigation, Autoplay]}
+            onSwiper={(swiper) => (swiperRef.current = swiper)}
+            autoplay={{
+              delay: 5000,
+              disableOnInteraction: false,
+            }}
+            breakpoints={
+              type === "card" && {
+                0: {
+                  slidesPerView: 1,
+                },
+                600: {
+                  slidesPerView: 2,
+                },
+                900: {
+                  slidesPerView: 3,
+                },
+                1200: {
+                  slidesPerView: 4,
+                },
+                1300: {
+                  slidesPerView: 5,
+                },
+              }
+            }
+            spaceBetween={spaceBetween}
+            slidesPerView={slidesPerView}
+            loop={true}
+            style={{ height: "100%" }}
+          >
+            {list.map((item, index) => (
+              <SwiperSlide key={index}>
+                {template === "CardTemplate2" ? (
+                  <CardTemplate2 data={item} />
+                ) : template === "CardTemplate3" ? (
+                  <CardTemplate3 data={item} height="100%" />
+                ) : (
+                  <img
+                    src={item}
+                    loading="lazy"
+                    alt={`slide-${index}`}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
+                  />
+                )}
+              </SwiperSlide>
+            ))}
+          </Swiper>
+          <Box
             sx={{
-              pointerEvents: "auto",
-              color: "white",
-              opacity: 0.5,
-              backgroundColor: "rgba(0,0,0,0.4)",
-              "&:hover": {
-                opacity: 1,
-                backgroundColor: "rgba(0,0,0,0.6)",
-              },
-              "&:active": {
-                transform: "scale(0.95)",
-                opacity: 1,
-                backgroundColor: "rgba(0,0,0,0.8)",
-              },
-              borderRadius: 2,
+              position: "absolute",
+              top: "50%",
+              left: "0",
+              right: "0",
+              display: "flex",
+              justifyContent: "space-between",
               px: 2,
-              py: 1,
-              transition: "all 0.2s ease",
+              transform: "translateY(-50%)",
+              pointerEvents: "none",
+              zIndex: 2,
             }}
           >
-            <ArrowBackIosIcon /> Prev
-          </Button>
+            <Button
+              ref={prevRef}
+              sx={{
+                pointerEvents: "auto",
+                color: "white",
+                opacity: 0.5,
+                backgroundColor: "rgba(0,0,0,0.4)",
+                "&:hover": {
+                  opacity: 1,
+                  backgroundColor: "rgba(0,0,0,0.6)",
+                },
+                "&:active": {
+                  transform: "scale(0.95)",
+                  opacity: 1,
+                  backgroundColor: "rgba(0,0,0,0.8)",
+                },
+                borderRadius: 2,
+                px: 2,
+                py: 1,
+                transition: "all 0.2s ease",
+              }}
+            >
+              <ArrowBackIosIcon /> Prev
+            </Button>
 
-          <Button
-            ref={nextRef}
-            sx={{
-              pointerEvents: "auto",
-              color: "white",
-              backgroundColor: "rgba(0,0,0,0.4)",
-              "&:hover": {
-                backgroundColor: "rgba(0,0,0,0.6)",
-              },
-              "&:active": {
-                transform: "scale(0.95)",
-                backgroundColor: "rgba(0,0,0,0.8)",
-              },
-              borderRadius: 2,
-              px: 2,
-              py: 1,
-              transition: "all 0.2s ease",
-            }}
-          >
-            Next <ArrowForwardIosIcon />
-          </Button>
+            <Button
+              ref={nextRef}
+              sx={{
+                pointerEvents: "auto",
+                color: "white",
+                backgroundColor: "rgba(0,0,0,0.4)",
+                "&:hover": {
+                  backgroundColor: "rgba(0,0,0,0.6)",
+                },
+                "&:active": {
+                  transform: "scale(0.95)",
+                  backgroundColor: "rgba(0,0,0,0.8)",
+                },
+                borderRadius: 2,
+                px: 2,
+                py: 1,
+                transition: "all 0.2s ease",
+              }}
+            >
+              Next <ArrowForwardIosIcon />
+            </Button>
+          </Box>
         </Box>
-      </Box>
+      )}
     </>
   );
 };

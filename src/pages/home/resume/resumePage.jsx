@@ -11,9 +11,11 @@ import CheckIcon from "@mui/icons-material/Check";
 import { FormFile } from "../../../components/customize/FormFile";
 import { useSelector } from "react-redux";
 import { CircularWithValueLabel } from "../../../components/customize/loading";
+import { useNavigate } from "react-router-dom";
 
 export const ResumePage = () => {
   const user = useSelector((state) => state.user?.login?.user);
+  const navigate = useNavigate();
   const dataDefault = {
     nameCV: "",
     template: "",

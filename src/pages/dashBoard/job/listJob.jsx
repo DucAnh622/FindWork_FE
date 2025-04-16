@@ -38,6 +38,7 @@ import {
 import { CircularWithValueLabel } from "../../../components/customize/loading";
 import { deleteJob } from "../../../services/jobService";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const visuallyHidden = {
   border: 0,
@@ -119,7 +120,7 @@ const headCells = [
     id: "Salary",
     numeric: false,
     disablePadding: false,
-    label: "Salary",
+    label: "Salary $",
   },
   {
     id: "Option",
@@ -476,7 +477,7 @@ export const ListJob = () => {
                             title={row.salary}
                             sx={{ width: 150 }}
                           >
-                            <TextClamp>{row.salary} $</TextClamp>
+                            <TextClamp>{row.salary}</TextClamp>
                           </TableCell>
                           <TableCell align="left">
                             <Box

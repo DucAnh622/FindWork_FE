@@ -34,7 +34,6 @@ import AddIcon from "@mui/icons-material/Add";
 import { Link, useNavigate } from "react-router-dom";
 import {
   formatSort,
-  formatListSelectCheckBox,
   formatListData,
   getStatusStyles,
 } from "../../../utils/utils";
