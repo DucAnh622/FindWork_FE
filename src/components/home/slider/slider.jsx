@@ -114,10 +114,10 @@ export const SliderCustomize = ({
                 900: {
                   slidesPerView: 3,
                 },
-                1200: {
+                1300: {
                   slidesPerView: 4,
                 },
-                1300: {
+                1500: {
                   slidesPerView: 5,
                 },
               }

@@ -26,20 +26,15 @@ import { MultipleSelectBox } from "../../../components/customize/selectMultipleC
 import { useSelector, useDispatch } from "react-redux";
 import { getListJobRedux, changePage } from "../../../redux/slices/jobSlice";
 import { useParams } from "react-router-dom";
-import { levels } from "../../../utils/constant.js";
-import { formatList } from "../../../utils/utils.js";
+import { levels, method, locations } from "../../../utils/constant.js";
+import { formatListLabel } from "../../../utils/utils.js";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import "../../../assets/styles/JobList.scss";
 import { CardTemplate3 } from "../../../components/home/cardTemplate/cardTemplate3";
+import { SearchBar1 } from "../../../components/home/searchBar/searchBar1.jsx";
 
 export const JobList = () => {
-  const errorDefault = {
-    keyword: "",
-    level: [],
-    address: [],
-    step: [],
-  };
 
   const dataDefault = {
     keyword: "",
@@ -48,7 +43,6 @@ export const JobList = () => {
     step: [],
   };
 
-  const [error, setError] = useState(errorDefault);
   const [data, setData] = useState(dataDefault);
   const dispatch = useDispatch();
   const list = useSelector((state) => state.job?.listJob);
@@ -74,42 +68,9 @@ export const JobList = () => {
     getList();
   }, [page, limit, order, orderBy]);
 
-  const handleChangeSelect = (e, value) => {};
-
-  const handleChangeSelectBlur = () => {};
-
-  console.log(levels);
-
   return (
     <div className="ContentPage">
-      <Box display={"flex"} alignItems={"center"} sx={{ pl: 3, pr: 3, pt: 2 }}>
-        <FormInput
-          data={data}
-          setData={setData}
-          error={error}
-          setError={setError}
-          label="Search"
-          name="keyword"
-        />
-        <MultipleSelectBox
-          options={levels}
-          label="Select level"
-          value={data.level}
-          width="100%"
-          // error={error.level}
-          // errorText={error.level}
-          // onChange={handleChangeSelect}
-          // handleBlurSelect={handleChangeSelectBlur}
-        />
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<SearchIcon />}
-          sx={{ height: "56px" }}
-        >
-          Search
-        </Button>
-      </Box>
+      <SearchBar1 data={data} setData={setData} />
       <Box sx={{ px: 2, py: 2 }}>
         {isLoading === false ? (
           <>

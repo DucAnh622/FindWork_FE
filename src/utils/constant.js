@@ -42,6 +42,13 @@ export const method = [
   {value: "support",label:"support"},
 ]
 
+export const locations = [
+  {value: "Ha Noi",label:"Ha Noi"},
+  {value: "Ho Chi Minh",label:"Ho Chi Minh"},
+  {value: "Da Nang",label:"Da Nang"},
+  {value: "Can Tho",label:"Can Tho"},
+]
+
 export const typeSalaries = [
   {value: true,label:"Negotiable"},
   {value: false,label:"Fixed"},
