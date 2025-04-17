@@ -24,10 +24,8 @@ import Stack from "@mui/material/Stack";
 
 export const ResumePersonal = () => {
   const dispatch = useDispatch();
-  const { id } = useParams();
   const list = useSelector((state) => state.resume?.listResume);
   const page = useSelector((state) => state.resume?.page);
-  const limit = useSelector((state) => state.resume?.limit);
   const totalPage = useSelector((state) => state.resume?.totalPage);
   const order = useSelector((state) => state.resume?.order);
   const orderBy = useSelector((state) => state.resume?.orderBy);
@@ -37,7 +35,7 @@ export const ResumePersonal = () => {
     dispatch(
       await getListResumePersonalRedux({
         page: page + 1,
-        limit: limit,
+        limit: 25,
         order: orderBy,
         sort: order,
       })
@@ -46,7 +44,7 @@ export const ResumePersonal = () => {
 
   useEffect(() => {
     getList();
-  }, [page, limit, order, orderBy]);
+  }, [page, order, orderBy]);
 
   return (
     <div className="ResumePersonal">

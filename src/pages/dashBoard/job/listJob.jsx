@@ -61,6 +61,15 @@ const TextClamp = styled(Typography)`
   text-overflow: ellipsis;
 `;
 
+const TextClamp1 = styled(Typography)`
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* Hiển thị tối đa 2 dòng */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  width: 100%;
+  text-overflow: ellipsis;
+`;
+
 const headCells = [
   {
     id: "id",
@@ -69,55 +78,55 @@ const headCells = [
     label: "Id",
   },
   {
-    id: "Name",
+    id: "name",
     numeric: false,
     disablePadding: false,
     label: "Name",
   },
   {
-    id: "Step",
+    id: "step",
     numeric: false,
     disablePadding: false,
     label: "Step",
   },
   {
-    id: "Level",
+    id: "level",
     numeric: false,
     disablePadding: false,
     label: "Level",
   },
   {
-    id: "Experience",
+    id: "experience",
     numeric: false,
     disablePadding: false,
     label: "Experience",
   },
   {
-    id: "Education",
+    id: "education",
     numeric: false,
     disablePadding: false,
     label: "Education",
   },
   {
-    id: "Company",
+    id: "company",
     numeric: false,
     disablePadding: false,
     label: "Company",
   },
   {
-    id: "WorkDay",
+    id: "workDay",
     numeric: false,
     disablePadding: false,
     label: "Work day",
   },
   {
-    id: "WorkTime",
+    id: "workTime",
     numeric: false,
     disablePadding: false,
     label: "Work time",
   },
   {
-    id: "Salary",
+    id: "salary",
     numeric: false,
     disablePadding: false,
     label: "Salary $",
@@ -306,8 +315,8 @@ export const ListJob = () => {
   };
 
   const getList = async () => {
-    dispatch(
-      await getListJobRedux({
+    await dispatch(
+      getListJobRedux({
         page: page + 1,
         limit: limit,
         order: orderBy,
@@ -431,7 +440,7 @@ export const ListJob = () => {
                             <TextClamp>{row.step}</TextClamp>
                           </TableCell>
                           <TableCell align="left" title={row.level}>
-                            <Typography
+                            <TextClamp1
                               sx={{
                                 display: "inline-block",
                                 padding: "4px 12px",
@@ -443,7 +452,7 @@ export const ListJob = () => {
                               }}
                             >
                               {row.level}
-                            </Typography>
+                            </TextClamp1>
                           </TableCell>
                           <TableCell
                             align="left"

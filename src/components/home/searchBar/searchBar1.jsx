@@ -20,7 +20,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useTheme } from "@mui/material/styles";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 
-export const SearchBar1 = ({ data, setData }) => {
+export const SearchBar1 = ({ data, setData, handleSearch, placeholder }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -51,13 +51,14 @@ export const SearchBar1 = ({ data, setData }) => {
         flexDirection: isMobile ? "column" : "row",
         gap: 2,
         flexWrap: "wrap",
-        alignItems: "center",
+        alignItems: "flex-start",
+        overflow: "hidden",
         boxShadow:
           "0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)",
       }}
     >
       <TextField
-        placeholder="Job, company..."
+        placeholder={placeholder}
         value={data.keyword}
         onChange={(e) =>
           setData((prev) => ({ ...prev, keyword: e.target.value }))
@@ -173,6 +174,7 @@ export const SearchBar1 = ({ data, setData }) => {
       </Button>
 
       <Button
+        onClick={() => handleSearch()}
         variant="contained"
         startIcon={<SearchIcon />}
         sx={{

@@ -13,6 +13,7 @@ import styled from "@emotion/styled";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import { getLevelStyles } from "../../../utils/utils";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import { Link } from "react-router-dom";
 
 const TextClamp = styled(Typography)`
   display: -webkit-box;
@@ -36,7 +37,7 @@ export const CardTemplate3 = ({ data, height }) => {
       <CardHeader
         action={
           <IconButton aria-label="settings" disabled>
-            <Typography
+            <TextClamp
               sx={{
                 display: "inline-block",
                 padding: "4px 12px",
@@ -48,17 +49,22 @@ export const CardTemplate3 = ({ data, height }) => {
               }}
             >
               {data.level}
-            </Typography>
+            </TextClamp>
           </IconButton>
         }
         title={
-          <TextClamp textAlign={"left"} title={data.name}>
-            {data.name}
-          </TextClamp>
+          <Link
+            to={`/job/${data.id}`}
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <TextClamp textAlign={"left"} title={data.name}>
+              {data.name}
+            </TextClamp>
+          </Link>
         }
         subheader={
-          <TextClamp textAlign={"left"} title={data.experience}>
-            {data.experience}
+          <TextClamp textAlign={"left"} title={data.company}>
+            {data.company}
           </TextClamp>
         }
       />

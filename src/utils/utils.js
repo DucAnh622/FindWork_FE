@@ -85,7 +85,7 @@ export const formatList = (list) => {
   return list.map((item) => {
     return {
       value: item.id,
-      name: item.name,
+      label: item.name,
     };
   });
 };

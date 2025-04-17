@@ -19,6 +19,8 @@ import { ResumeForm } from "../pages/home/resume/resumeForm";
 import { ListResume } from "../pages/dashBoard/resume/listResume";
 import { ResumePersonal } from "../pages/home/resume/resumePersonal";
 import { JobList } from "../pages/home/job/JobList";
+import { JobDetail } from "../pages/home/job/JobDetail";
+
 export const guestRoutes = [
   {
     path: "/",
@@ -27,6 +29,8 @@ export const guestRoutes = [
       { path: "/", element: <HomePage />, index: true, title: "Home" },
       { path: "/resume", element: <ResumePage />, title: "Resume" },
       { path: "/job", element: <JobList />, title: "Job" },
+      { path: "/job/:id", element: <JobDetail />, title: "Job" },
+      { path: "/company/:id", element: <JobList />, title: "Job" },
       { path: "/company", element: "", title: "Company" },
     ],
   },
@@ -48,7 +52,11 @@ export const userRoutes = [
     element: <ProtectedRoute element={<UserLayout />} roles={["User"]} />,
     children: [
       { path: "/", element: <HomePage />, index: true, title: "Home" },
-      { path: "/my-resume/:id", element: <ResumePersonal />, title: "My Resume" },
+      {
+        path: "/my-resume/:id",
+        element: <ResumePersonal />,
+        title: "My Resume",
+      },
       {
         path: "/resume/create/template/:id",
         element: <ResumeForm />,

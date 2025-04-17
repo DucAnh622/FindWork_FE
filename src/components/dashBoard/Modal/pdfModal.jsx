@@ -11,7 +11,7 @@ import { Close } from "@mui/icons-material";
 
 export const PDFModal = ({ open, resume, handleClose }) => {
   return (
-    <Modal open={open} onClose={handleClose}>
+    <Modal open={open} onClose={() => handleClose()}>
       <Box
         sx={{
           width: "80%",
@@ -32,8 +32,10 @@ export const PDFModal = ({ open, resume, handleClose }) => {
           alignItems="center"
           mb={2}
         >
-          <Typography variant="h6">Resume detail of {resume.fullname} ({resume.email})</Typography>
-          <IconButton onClick={handleClose}>
+          <Typography variant="h6">
+            Resume detail of {resume.fullname} ({resume.email})
+          </Typography>
+          <IconButton onClick={() => handleClose()}>
             <Close />
           </IconButton>
         </Box>
@@ -44,7 +46,7 @@ export const PDFModal = ({ open, resume, handleClose }) => {
           flexGrow={1}
         >
           <iframe
-            src={resume.url}
+            src={resume?.url}
             frameBorder="0"
             width="100%"
             height="100%"

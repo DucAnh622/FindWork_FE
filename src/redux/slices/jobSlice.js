@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getListJob } from "../../services/jobService";
+import { getListJob, searchListJob } from "../../services/jobService";
 import { toast } from "react-toastify";
+import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
 
 export const getListJobRedux = createAsyncThunk(
   "job/list",
@@ -11,13 +12,28 @@ export const getListJobRedux = createAsyncThunk(
         limit = 10,
         order = "createdAt",
         sort = "DESC",
+        data = {},
       } = params;
-      const res = await getListJob(
-        page || 1,
-        limit || 10,
-        order || "createdAt",
-        sort || "DESC"
-      );
+      let res = {};
+      const hasFilter =
+        data.keyword ||
+        (data.address && data.address.length) ||
+        (data.level && data.level.length) ||
+        (data.step && data.step.length);
+      if (hasFilter) {
+        res = await searchListJob(
+          page,
+          limit,
+          order,
+          sort,
+          data.keyword || "",
+          data.address || [],
+          data.level || [],
+          data.step || []
+        );
+      } else {
+        res = await getListJob(page, limit, order, sort);
+      }
       if (res && res.statusCode === 200) {
         return res.data;
       } else {

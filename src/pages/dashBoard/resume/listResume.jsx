@@ -243,10 +243,12 @@ export const ListResume = () => {
   const isLoading = useSelector((state) => state.resume?.isLoading);
   const [selected, setSelected] = useState([]);
   const [resume, setResume] = useState({});
+  const [open, setOpen] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
 
   const handleClose = () => {
     setOpenDelete(false);
+    setOpen(false);
     setResume({});
     getList();
   };

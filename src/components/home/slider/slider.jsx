@@ -18,22 +18,17 @@ export const SliderCustomize = ({
   slidesPerView,
   spaceBetween,
 }) => {
-  const prevRef = useRef(null);
-  const nextRef = useRef(null);
   const swiperRef = useRef(null);
 
-  useEffect(() => {
-    if (
-      swiperRef.current &&
-      swiperRef.current.params &&
-      swiperRef.current.navigation
-    ) {
-      swiperRef.current.params.navigation.prevEl = prevRef.current;
-      swiperRef.current.params.navigation.nextEl = nextRef.current;
-      swiperRef.current.navigation.init();
-      swiperRef.current.navigation.update();
+  const handleSlide = (type) => {
+    if (swiperRef.current) {
+      if (type === "next") {
+        swiperRef.current.slideNext();
+      } else {
+        swiperRef.current.slidePrev();
+      }
     }
-  }, []);
+  };
 
   return (
     <>
@@ -163,7 +158,7 @@ export const SliderCustomize = ({
             }}
           >
             <Button
-              ref={prevRef}
+              onClick={() => handleSlide("prev")}
               sx={{
                 pointerEvents: "auto",
                 color: "white",
@@ -188,7 +183,7 @@ export const SliderCustomize = ({
             </Button>
 
             <Button
-              ref={nextRef}
+              onClick={() => handleSlide("next")}
               sx={{
                 pointerEvents: "auto",
                 color: "white",
