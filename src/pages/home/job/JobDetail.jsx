@@ -20,6 +20,7 @@ import GroupsIcon from "@mui/icons-material/Groups";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import { getJobByID } from "../../../services/jobService";
+import { getCompanyById } from "../../../services/companyService";
 import { toast } from "react-toastify";
 import rehypeRaw from "rehype-raw";
 import Markdown from "react-markdown";
@@ -31,7 +32,12 @@ export const JobDetail = () => {
   const getDetail = async (id) => {
     let res = await getJobByID(id);
     if (res && res.statusCode === 200) {
-      setData(res.data);
+      let response = await getCompanyById(res.data.companyId);
+      if (response && response.statusCode === 200) {
+        setData({ ...res.data, company: response.data });
+      } else {
+        setData(res.data);
+      }
     } else {
       toast.error(res.message);
     }
@@ -59,7 +65,7 @@ export const JobDetail = () => {
                     spacing={2}
                     mb={2}
                   >
-                    <Chip label={`Salary: ${data.salary}`} color="success" />
+                    <Chip label={`Salary: ${data.salary}`} color="warning" />
                     <Chip label={`Location: ${data.address}`} color="primary" />
                     <Chip
                       label={`Experience: ${data.experience}`}
@@ -189,39 +195,54 @@ export const JobDetail = () => {
             </Grid>
 
             <Grid item xs={12} md={4}>
-              <Card sx={{ mb: 3 }}>
-                <CardContent>
-                  <Stack direction="row" spacing={2} alignItems="center" mb={1}>
-                    <Avatar
-                      src="https://cdn.itviec.com/employers/amela/logo/social/saRVvJdN3LNUVk8G2mVo1b9H/amela-logo.png"
-                      alt="Logo"
-                      sx={{ width: 56, height: 56 }}
-                    />
-                    <Typography fontWeight="bold">
-                      AMELA TECHNOLOGY CORPORATION
-                    </Typography>
-                  </Stack>
-                  <Box display="flex" alignItems="center" gap={1} mt={1}>
-                    <GroupsIcon fontSize="small" />{" "}
-                    <Typography fontSize={14}>100-499 employees</Typography>
-                  </Box>
-                  <Box display="flex" alignItems="center" gap={1} mt={1}>
-                    <WorkIcon fontSize="small" />{" "}
-                    <Typography fontSize={14}>IT - Software</Typography>
-                  </Box>
-                  <Box display="flex" alignItems="center" gap={1} mt={1}>
-                    <PlaceIcon fontSize="small" />{" "}
-                    <Typography fontSize={14}>
-                      5th Floor, Tower A, Keangnam Building, Me Tri, Nam Tu Liem
-                    </Typography>
-                  </Box>
-                  <Box mt={2}>
-                    <Button variant="text" color="success" size="small">
-                      View Company Page
-                    </Button>
-                  </Box>
-                </CardContent>
-              </Card>
+              {data.company !== null && (
+                <Card sx={{ mb: 3 }}>
+                  <CardContent>
+                    <Stack
+                      direction="row"
+                      spacing={2}
+                      alignItems="center"
+                      mb={1}
+                    >
+                      <Avatar
+                        src={data.company?.image}
+                        alt="Logo"
+                        sx={{ width: 56, height: 56 }}
+                      />
+                      <Typography fontWeight="bold">
+                        {data.company?.name}
+                      </Typography>
+                    </Stack>
+                    <Box display="flex" alignItems="center" gap={1} mt={1}>
+                      <GroupsIcon fontSize="small" />{" "}
+                      <Typography fontSize={14}>100-499 employees</Typography>
+                    </Box>
+                    <Box display="flex" alignItems="center" gap={1} mt={1}>
+                      <WorkIcon fontSize="small" />{" "}
+                      <Typography fontSize={14}>
+                        {data.company?.speciality}
+                      </Typography>
+                    </Box>
+                    <Box display="flex" alignItems="center" gap={1} mt={1}>
+                      <PlaceIcon fontSize="small" />{" "}
+                      <Typography fontSize={14}>
+                        {data.company?.address}
+                      </Typography>
+                    </Box>
+                    <Box mt={2}>
+                      <Button
+                        variant="text"
+                        sx={{
+                          color: "#6f42c1",
+                        }}
+                        size="small"
+                      >
+                        View Company Page
+                      </Button>
+                    </Box>
+                  </CardContent>
+                </Card>
+              )}
 
               <Card>
                 <CardContent>
@@ -229,23 +250,42 @@ export const JobDetail = () => {
                     General Information
                   </Typography>
                   <Box display="flex" alignItems="center" gap={1} mt={1}>
-                    <WorkIcon color="success" />{" "}
-                    <Typography fontSize={14}>Level: Staff</Typography>
+                    <WorkIcon
+                      sx={{
+                        color: "#6f42c1",
+                      }}
+                    />{" "}
+                    <Typography fontSize={14}>Level: {data.level}</Typography>
                   </Box>
                   <Box display="flex" alignItems="center" gap={1} mt={1}>
-                    <SchoolIcon color="success" />{" "}
+                    <SchoolIcon
+                      sx={{
+                        color: "#6f42c1",
+                      }}
+                    />{" "}
                     <Typography fontSize={14}>
-                      Education: University+
+                      Education: {data.education}
                     </Typography>
                   </Box>
                   <Box display="flex" alignItems="center" gap={1} mt={1}>
-                    <GroupsIcon color="success" />{" "}
-                    <Typography fontSize={14}>Hiring: 1 person</Typography>
+                    <GroupsIcon
+                      sx={{
+                        color: "#6f42c1",
+                      }}
+                    />{" "}
+                    <Typography fontSize={14}>
+                      Hiring: {data.quantity} person
+                    </Typography>
                   </Box>
                   <Box display="flex" alignItems="center" gap={1} mt={1}>
-                    <AccessTimeIcon color="success" />{" "}
-                    <Typography fontSize={14}>Full-time</Typography>
+                    <AccessTimeIcon
+                      sx={{
+                        color: "#6f42c1",
+                      }}
+                    />{" "}
+                    <Typography fontSize={14}>{data.step}</Typography>
                   </Box>
+                  <Box sx={{ display: "flex", alignItems: "center" }}></Box>
                 </CardContent>
               </Card>
             </Grid>

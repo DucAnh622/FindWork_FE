@@ -75,7 +75,7 @@ export const CardTemplate3 = ({ data, height }) => {
               return (
                 <Box
                   component={Button}
-                  key={item}
+                  key={index}
                   variant="outlined"
                   size="small"
                   sx={{ mr: 1 }}
