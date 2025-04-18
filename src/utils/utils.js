@@ -99,6 +99,11 @@ export const formatListLabel = (list) => {
   });
 };
 
+export const formatDateData = (date) => {
+  const data = new Date(date);
+  return data.toLocaleDateString("vi-VN");
+};
+
 export const formatDate = (dateString) => {
   return dateString.split("T")[0];
 };

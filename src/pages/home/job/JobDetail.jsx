@@ -12,7 +12,6 @@ import {
   Typography,
   Avatar,
 } from "@mui/material";
-import BusinessIcon from "@mui/icons-material/Business";
 import WorkIcon from "@mui/icons-material/Work";
 import PlaceIcon from "@mui/icons-material/Place";
 import SchoolIcon from "@mui/icons-material/School";
@@ -24,6 +23,27 @@ import { getCompanyById } from "../../../services/companyService";
 import { toast } from "react-toastify";
 import rehypeRaw from "rehype-raw";
 import Markdown from "react-markdown";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
+import LocationCityIcon from "@mui/icons-material/LocationCity";
+import ContactPageIcon from "@mui/icons-material/ContactPage";
+import styled from "@emotion/styled";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import SendIcon from "@mui/icons-material/Send";
+import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
+import { formatDateData, getLevelStyles } from "../../../utils/utils";
+import { Link } from "react-router-dom";
+
+const TextClamp = styled(Typography)`
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
 
 export const JobDetail = () => {
   const { id } = useParams();
@@ -47,9 +67,13 @@ export const JobDetail = () => {
     getDetail(id);
   }, [id]);
 
+  if (!data) {
+    return <>No data</>;
+  }
+
   return (
     <div className="ContentPage">
-      {data !== null ? (
+      {data && (
         <Container maxWidth="lg" sx={{ py: 2 }}>
           <Grid container spacing={3}>
             {/* Left column - job details */}
@@ -59,72 +83,124 @@ export const JobDetail = () => {
                   <Typography variant="h5" fontWeight="bold" gutterBottom>
                     {data.name}
                   </Typography>
-
-                  <Stack
-                    direction={{ xs: "column", sm: "row" }}
-                    spacing={2}
-                    mb={2}
+                  <List
+                    sx={{
+                      "@media (max-width: 500px)": {
+                        display: "block",
+                      },
+                      width: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "flex-start",
+                      bgcolor: "background.paper",
+                    }}
                   >
-                    <Chip label={`Salary: ${data.salary}`} color="warning" />
-                    <Chip label={`Location: ${data.address}`} color="primary" />
-                    <Chip
-                      label={`Experience: ${data.experience}`}
-                      color="info"
-                    />
-                  </Stack>
+                    <ListItem>
+                      <ListItemAvatar>
+                        <Avatar sx={{ color: "#fff", bgcolor: "#6f42c1" }}>
+                          <LocationCityIcon />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary="Location"
+                        secondary={
+                          <TextClamp title={data.address}>
+                            {data.address}
+                          </TextClamp>
+                        }
+                        sx={{ color: "#6f42c1" }}
+                      />
+                    </ListItem>
 
-                  <Stack direction="row" spacing={2} flexWrap="wrap" mb={3}>
+                    <ListItem>
+                      <ListItemAvatar>
+                        <Avatar sx={{ color: "#fff", bgcolor: "#6f42c1" }}>
+                          <ContactPageIcon />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary="Experience"
+                        secondary={data.experience}
+                        sx={{ color: "#6f42c1" }}
+                      />
+                    </ListItem>
+
+                    <ListItem>
+                      <ListItemAvatar>
+                        <Avatar sx={{ color: "#fff", bgcolor: "#6f42c1" }}>
+                          <MonetizationOnIcon />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary="Salary"
+                        secondary={data.salary}
+                        sx={{ color: "#6f42c1" }}
+                      />
+                    </ListItem>
+                  </List>
+                  <Stack direction="row" spacing={1} flexWrap="wrap" mb={2}>
+                    <Chip label={`Deadline: ${formatDateData(data.endDate)}`} />
+                  </Stack>
+                  <Stack direction="row" spacing={2} flexWrap="wrap">
                     <Button
                       variant="contained"
                       sx={{
+                        flex: 5,
                         backgroundColor: "#6f42c1",
                         color: "#fff",
                         "&:hover": {
                           backgroundColor: "#5a379e",
                         },
+                        "@media (max-width: 500px)": {
+                          flex: 4,
+                        },
                       }}
+                      endIcon={<SendIcon />}
                     >
                       Apply
                     </Button>
                     <Button
                       variant="outlined"
                       sx={{
+                        flex: 1,
                         borderColor: "#6f42c1",
                         color: "#6f42c1",
                       }}
+                      startIcon={<FavoriteBorderIcon />}
                     >
                       Save
                     </Button>
-                    <Button variant="outlined" color="warning">
-                      Show views
-                    </Button>
                   </Stack>
-
-                  {/* New section: Job Highlights */}
-                  <Box mb={3}>
-                    <Typography variant="h6" fontWeight="bold" gutterBottom>
-                      Job Highlights
+                </CardContent>
+              </Card>
+              <Card sx={{ mt: 3 }}>
+                <CardContent>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      mb: 1,
+                    }}
+                  >
+                    <Typography
+                      variant="h6"
+                      sx={{ borderLeft: "6px solid #6f42c1", pl: 1 }}
+                      fontWeight="bold"
+                      gutterBottom
+                    >
+                      Job description
                     </Typography>
-                    <Stack direction="row" spacing={1} flexWrap="wrap" mb={2}>
-                      <Chip
-                        label={`Specialty: ${
-                          data.position || "Frontend Developer"
-                        }`}
-                      />
-                      <Chip label="IT - Software" />
-                      <Chip label="Off on Saturdays" />
-                    </Stack>
                     <Button
                       variant="outlined"
                       size="small"
-                      startIcon={<NotificationsNoneOutlinedIcon />}
                       sx={{
                         borderRadius: 5,
                         borderColor: "#6f42c1",
                         color: "#6f42c1",
                       }}
                     >
-                      Notify me of similar jobs
+                      <NotificationsNoneOutlinedIcon />
                     </Button>
                   </Box>
 
@@ -136,20 +212,20 @@ export const JobDetail = () => {
                   </Markdown>
 
                   <Box mt={2}>
-                    <Typography variant="h6" fontWeight="bold" gutterBottom>
-                      Work Location
+                    <Typography variant="p" fontWeight="bold" gutterBottom>
+                      Work location
                     </Typography>
                     <Typography mb={2}>{data.address}</Typography>
 
-                    <Typography variant="h6" fontWeight="bold" gutterBottom>
-                      Working Time
+                    <Typography variant="p" fontWeight="bold" gutterBottom>
+                      Working time
                     </Typography>
                     <Typography mb={2}>
                       {data.workDay} ({data.workTime})
                     </Typography>
 
-                    <Typography variant="h6" fontWeight="bold" gutterBottom>
-                      How to Apply
+                    <Typography variant="p" fontWeight="bold" gutterBottom>
+                      How to apply
                     </Typography>
                     <Typography mb={2}>
                       Submit your application online by clicking{" "}
@@ -163,8 +239,16 @@ export const JobDetail = () => {
                       </strong>
                     </Typography>
 
-                    <Stack direction="row" spacing={2}>
+                    <Stack
+                      direction={{ xs: "column", sm: "row" }}
+                      spacing={2}
+                      sx={{
+                        alignItems: { xs: "stretch", sm: "center" },
+                        justifyContent: "flex-start",
+                      }}
+                    >
                       <Button
+                        fullWidth
                         variant="contained"
                         sx={{
                           backgroundColor: "#6f42c1",
@@ -177,6 +261,7 @@ export const JobDetail = () => {
                         Apply Now
                       </Button>
                       <Button
+                        fullWidth
                         variant="outlined"
                         sx={{
                           borderColor: "#6f42c1",
@@ -185,7 +270,7 @@ export const JobDetail = () => {
                       >
                         Save Job
                       </Button>
-                      <Button variant="outlined" color="warning">
+                      <Button fullWidth variant="outlined" color="warning">
                         View Applicants
                       </Button>
                     </Stack>
@@ -198,53 +283,72 @@ export const JobDetail = () => {
               {data.company !== null && (
                 <Card sx={{ mb: 3 }}>
                   <CardContent>
-                    <Stack
-                      direction="row"
-                      spacing={2}
-                      alignItems="center"
-                      mb={1}
-                    >
+                    <Stack direction="row" spacing={2} alignItems="center">
                       <Avatar
                         src={data.company?.image}
                         alt="Logo"
                         sx={{ width: 56, height: 56 }}
                       />
-                      <Typography fontWeight="bold">
-                        {data.company?.name}
-                      </Typography>
+                      <Link
+                        to={`/company/${data.companyId}`}
+                        style={{ textDecoration: "none", color: "inherit" }}
+                      >
+                        <Typography fontWeight="bold">
+                          {data.company?.name}
+                        </Typography>
+                      </Link>
                     </Stack>
                     <Box display="flex" alignItems="center" gap={1} mt={1}>
-                      <GroupsIcon fontSize="small" />{" "}
+                      <GroupsIcon
+                        sx={{
+                          borderColor: "#6f42c1",
+                          color: "#6f42c1",
+                        }}
+                        fontSize="small"
+                      />{" "}
                       <Typography fontSize={14}>100-499 employees</Typography>
                     </Box>
                     <Box display="flex" alignItems="center" gap={1} mt={1}>
-                      <WorkIcon fontSize="small" />{" "}
+                      <WorkIcon
+                        sx={{
+                          borderColor: "#6f42c1",
+                          color: "#6f42c1",
+                        }}
+                        fontSize="small"
+                      />{" "}
                       <Typography fontSize={14}>
                         {data.company?.speciality}
                       </Typography>
                     </Box>
                     <Box display="flex" alignItems="center" gap={1} mt={1}>
-                      <PlaceIcon fontSize="small" />{" "}
+                      <PlaceIcon
+                        sx={{
+                          borderColor: "#6f42c1",
+                          color: "#6f42c1",
+                        }}
+                        fontSize="small"
+                      />{" "}
                       <Typography fontSize={14}>
                         {data.company?.address}
                       </Typography>
                     </Box>
-                    <Box mt={2}>
-                      <Button
-                        variant="text"
+                    <Box display="flex" alignItems="center" gap={1} mt={1}>
+                      <PhoneIphoneIcon
                         sx={{
+                          borderColor: "#6f42c1",
                           color: "#6f42c1",
                         }}
-                        size="small"
-                      >
-                        View Company Page
-                      </Button>
+                        fontSize="small"
+                      />{" "}
+                      <Typography fontSize={14}>
+                        {data.company?.phone}
+                      </Typography>
                     </Box>
                   </CardContent>
                 </Card>
               )}
 
-              <Card>
+              <Card sx={{ marginBottom: 3 }}>
                 <CardContent>
                   <Typography fontWeight="bold" gutterBottom>
                     General Information
@@ -255,7 +359,21 @@ export const JobDetail = () => {
                         color: "#6f42c1",
                       }}
                     />{" "}
-                    <Typography fontSize={14}>Level: {data.level}</Typography>
+                    <Typography>Level: </Typography>
+                    <Typography
+                      fontSize={14}
+                      sx={{
+                        m: 0,
+                        display: "inline-block",
+                        padding: "4px 12px",
+                        minWidth: "80px",
+                        textAlign: "center",
+                        borderRadius: 2,
+                        ...getLevelStyles(data.level),
+                      }}
+                    >
+                      {data.level}
+                    </Typography>
                   </Box>
                   <Box display="flex" alignItems="center" gap={1} mt={1}>
                     <SchoolIcon
@@ -274,7 +392,7 @@ export const JobDetail = () => {
                       }}
                     />{" "}
                     <Typography fontSize={14}>
-                      Hiring: {data.quantity} person
+                      Number: {data.quantity} person
                     </Typography>
                   </Box>
                   <Box display="flex" alignItems="center" gap={1} mt={1}>
@@ -283,16 +401,40 @@ export const JobDetail = () => {
                         color: "#6f42c1",
                       }}
                     />{" "}
-                    <Typography fontSize={14}>{data.step}</Typography>
+                    <Typography fontSize={14}>Step: {data.step}</Typography>
                   </Box>
                   <Box sx={{ display: "flex", alignItems: "center" }}></Box>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardContent>
+                  <Typography fontWeight="bold" gutterBottom>
+                    Category
+                  </Typography>
+                  <Box display="flex" flexWrap="wrap" gap={1} mb={2}>
+                    {["Software", "Software engineer", "IT jobs"].map(
+                      (item, index) => (
+                        <Chip key={index} label={item} variant="outlined" />
+                      )
+                    )}
+                  </Box>
+
+                  <Typography fontWeight="bold" gutterBottom>
+                    Skills
+                  </Typography>
+                  <Box display="flex" flexWrap="wrap" gap={1}>
+                    {data.listSkill &&
+                      data.listSkill.length > 0 &&
+                      data.listSkill.map((skill, index) => (
+                        <Chip key={index} label={skill} variant="outlined" />
+                      ))}
+                  </Box>
                 </CardContent>
               </Card>
             </Grid>
           </Grid>
         </Container>
-      ) : (
-        <>No data</>
       )}
     </div>
   );

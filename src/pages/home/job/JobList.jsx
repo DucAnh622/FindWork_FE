@@ -9,7 +9,7 @@ import Stack from "@mui/material/Stack";
 import "../../../assets/styles/JobList.scss";
 import { CardTemplate3 } from "../../../components/home/cardTemplate/cardTemplate3";
 import { SearchBar1 } from "../../../components/home/searchBar/searchBar1.jsx";
-import { formatSort, getLevelStyles } from "../../../utils/utils.js";
+import { formatSort } from "../../../utils/utils.js";
 
 export const JobList = () => {
   const dataDefault = {

@@ -20,6 +20,8 @@ import { ListResume } from "../pages/dashBoard/resume/listResume";
 import { ResumePersonal } from "../pages/home/resume/resumePersonal";
 import { JobList } from "../pages/home/job/JobList";
 import { JobDetail } from "../pages/home/job/JobDetail";
+import { CompanyList } from "../pages/home/company/CompanyList";
+import { CompanyDetail } from "../pages/home/company/CompanyDetail";
 
 export const guestRoutes = [
   {
@@ -29,9 +31,9 @@ export const guestRoutes = [
       { path: "/", element: <HomePage />, index: true, title: "Home" },
       { path: "/resume", element: <ResumePage />, title: "Resume" },
       { path: "/job", element: <JobList />, title: "Job" },
-      { path: "/job/:id", element: <JobDetail />, title: "Job" },
-      { path: "/company/:id", element: <JobList />, title: "Job" },
-      { path: "/company", element: "", title: "Company" },
+      { path: "/job/:id", element: <JobDetail />, title: "Job detail" },
+      { path: "/company/:id", element: <CompanyDetail />, title: "Company detail" },
+      { path: "/company", element: <CompanyList />, title: "Company" },
     ],
   },
   {

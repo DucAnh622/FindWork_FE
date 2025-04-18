@@ -16,6 +16,7 @@ import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import rehypeRaw from "rehype-raw";
 import Markdown from "react-markdown";
 import WorkIcon from "@mui/icons-material/Work";
+import { Link } from "react-router-dom";
 
 const TextClamp = styled(Typography)`
   display: -webkit-box;
@@ -53,9 +54,14 @@ export const CardTemplate2 = ({ data }) => {
           </IconButton>
         }
         title={
-          <TextClamp textAlign={"left"} title={data.name}>
-            {data.name}
-          </TextClamp>
+          <Link
+            to={`/company/${data.id}`}
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <TextClamp textAlign={"left"} title={data.name}>
+              {data.name}
+            </TextClamp>
+          </Link>
         }
         subheader={
           <TextClamp textAlign={"left"} title={data.speciality}>
@@ -95,7 +101,9 @@ export const CardTemplate2 = ({ data }) => {
             <FavoriteBorderRounded />
           </IconButton>
         </Box>
-        <Button size="small">View</Button>
+        <Button component={Link} to={`/company/${data.id}`} size="small">
+          View
+        </Button>
       </CardActions>
     </Card>
   );
