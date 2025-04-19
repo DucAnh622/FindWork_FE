@@ -51,6 +51,12 @@ export const searchListJob = (
   return axiosInstance.get("/jobs/search", { params });
 };
 
+export const getListJobByCompany = (page, limit, order, sort, companyId) => {
+  return axiosInstance.get(
+    `/jobs/company?page=${page}&limit=${limit}&companyId=${companyId}&order=${order}&sort=${sort}`
+  );
+};
+
 export const deleteJob = (ids) => {
   return axiosInstance.delete("/jobs", {
     data: { ids: ids },

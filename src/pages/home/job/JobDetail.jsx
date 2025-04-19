@@ -32,12 +32,12 @@ import LocationCityIcon from "@mui/icons-material/LocationCity";
 import ContactPageIcon from "@mui/icons-material/ContactPage";
 import styled from "@emotion/styled";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import SendIcon from "@mui/icons-material/Send";
+import TelegramIcon from "@mui/icons-material/Telegram";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import { formatDateData, getLevelStyles } from "../../../utils/utils";
 import { Link } from "react-router-dom";
 
-const TextClamp = styled(Typography)`
+const TextClamp = styled((props) => <Typography component="span" {...props} />)`
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
@@ -77,7 +77,7 @@ export const JobDetail = () => {
         <Container maxWidth="lg" sx={{ py: 2 }}>
           <Grid container spacing={3}>
             {/* Left column - job details */}
-            <Grid item xs={12} md={8}>
+            <Grid item xs={12} md={8} sx={{ order: { xs: 2, md: 1 } }}>
               <Card>
                 <CardContent>
                   <Typography variant="h5" fontWeight="bold" gutterBottom>
@@ -103,6 +103,7 @@ export const JobDetail = () => {
                       </ListItemAvatar>
                       <ListItemText
                         primary="Location"
+                        component={Box}
                         secondary={
                           <TextClamp title={data.address}>
                             {data.address}
@@ -155,7 +156,7 @@ export const JobDetail = () => {
                           flex: 4,
                         },
                       }}
-                      endIcon={<SendIcon />}
+                      startIcon={<TelegramIcon />}
                     >
                       Apply
                     </Button>
@@ -279,7 +280,7 @@ export const JobDetail = () => {
               </Card>
             </Grid>
 
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={4} sx={{ order: { xs: 1, md: 2 } }}>
               {data.company !== null && (
                 <Card sx={{ mb: 3 }}>
                   <CardContent>

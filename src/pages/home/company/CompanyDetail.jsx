@@ -12,30 +12,26 @@ import {
   Typography,
   Avatar,
 } from "@mui/material";
-import WorkIcon from "@mui/icons-material/Work";
-import PlaceIcon from "@mui/icons-material/Place";
-import SchoolIcon from "@mui/icons-material/School";
 import GroupsIcon from "@mui/icons-material/Groups";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
-import { getJobByID } from "../../../services/jobService";
+import {
+  getListJobByCompanyRedux,
+  changePage,
+} from "../../../redux/slices/jobSlice";
+import Pagination from "@mui/material/Pagination";
 import { getCompanyById } from "../../../services/companyService";
 import { toast } from "react-toastify";
 import rehypeRaw from "rehype-raw";
 import Markdown from "react-markdown";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import LocationCityIcon from "@mui/icons-material/LocationCity";
-import ContactPageIcon from "@mui/icons-material/ContactPage";
 import styled from "@emotion/styled";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import SendIcon from "@mui/icons-material/Send";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
-import { formatDateData, getLevelStyles } from "../../../utils/utils";
-import { Link } from "react-router-dom";
+import { CardTemplate4 } from "../../../components/home/cardTemplate/cardTemplate4";
+import BoltIcon from "@mui/icons-material/Bolt";
+import { useDispatch, useSelector } from "react-redux";
+import { CircularWithValueLabel } from "../../../components/customize/loading";
+import { formatSort } from "../../../utils/utils";
 
 const TextClamp = styled(Typography)`
   display: -webkit-box;
@@ -47,8 +43,14 @@ const TextClamp = styled(Typography)`
 
 export const CompanyDetail = () => {
   const { id } = useParams();
+  const dispatch = useDispatch();
+  const listJob = useSelector((state) => state.job?.listJobByCompany);
+  const page = useSelector((state) => state.job?.page);
+  const totalPage = useSelector((state) => state.job?.totalPage);
+  const order = useSelector((state) => state.job?.order);
+  const orderBy = useSelector((state) => state.job?.orderBy);
+  const isLoading = useSelector((state) => state.job?.isLoading);
   const [data, setData] = useState({});
-
   const getDetail = async (id) => {
     let res = await getCompanyById(id);
     if (res && res.statusCode === 200) {
@@ -57,6 +59,18 @@ export const CompanyDetail = () => {
       toast.error(res.message);
     }
   };
+
+  useEffect(() => {
+    dispatch(
+      getListJobByCompanyRedux({
+        page: page + 1,
+        limit: 10,
+        order: orderBy,
+        sort: formatSort(order),
+        companyId: id,
+      })
+    );
+  }, [id, page, order, orderBy]);
 
   useEffect(() => {
     getDetail(id);
@@ -71,104 +85,73 @@ export const CompanyDetail = () => {
       {data && (
         <Container maxWidth="lg" sx={{ py: 2 }}>
           <Grid container spacing={3}>
-            {/* Left column - job details */}
-            <Grid item xs={12} md={8}>
+            <Grid item xs={12}>
               <Card>
-                <CardContent>
-                  <Typography variant="h5" fontWeight="bold" gutterBottom>
-                    {data.name}
-                  </Typography>
-                  <List
-                    sx={{
-                      "@media (max-width: 500px)": {
-                        display: "block",
-                      },
-                      width: "100%",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "flex-start",
-                      bgcolor: "background.paper",
-                    }}
+                <CardContent sx={{ pb: "16px !important" }}>
+                  <Stack
+                    direction={{ xs: "column", sm: "row" }}
+                    spacing={2}
+                    alignItems={{ xs: "flex-start", sm: "center" }}
+                    justifyContent="space-between"
                   >
-                    <ListItem>
-                      <ListItemAvatar>
-                        <Avatar sx={{ color: "#fff", bgcolor: "#6f42c1" }}>
-                          <LocationCityIcon />
-                        </Avatar>
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary="Location"
-                        secondary={
-                          <TextClamp title={data.address}>
-                            {data.address}
-                          </TextClamp>
-                        }
-                        sx={{ color: "#6f42c1" }}
-                      />
-                    </ListItem>
-
-                    <ListItem>
-                      <ListItemAvatar>
-                        <Avatar sx={{ color: "#fff", bgcolor: "#6f42c1" }}>
-                          <ContactPageIcon />
-                        </Avatar>
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary="Experience"
-                        secondary={data.experience}
-                        sx={{ color: "#6f42c1" }}
-                      />
-                    </ListItem>
-
-                    <ListItem>
-                      <ListItemAvatar>
-                        <Avatar sx={{ color: "#fff", bgcolor: "#6f42c1" }}>
-                          <MonetizationOnIcon />
-                        </Avatar>
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary="Phone"
-                        secondary={data.phone}
-                        sx={{ color: "#6f42c1" }}
-                      />
-                    </ListItem>
-                  </List>
-                  <Stack direction="row" spacing={1} flexWrap="wrap" mb={2}>
-                    <Chip label={`Deadline: ${formatDateData(data.endDate)}`} />
-                  </Stack>
-                  <Stack direction="row" spacing={2} flexWrap="wrap">
-                    <Button
-                      variant="contained"
-                      sx={{
-                        flex: 5,
-                        backgroundColor: "#6f42c1",
-                        color: "#fff",
-                        "&:hover": {
-                          backgroundColor: "#5a379e",
-                        },
-                        "@media (max-width: 500px)": {
-                          flex: 4,
-                        },
-                      }}
-                      endIcon={<SendIcon />}
+                    {/* Avatar + Company Info */}
+                    <Stack
+                      direction="row"
+                      spacing={2}
+                      alignItems="center"
+                      sx={{ flex: 1 }}
                     >
-                      Apply
-                    </Button>
-                    <Button
-                      variant="outlined"
+                      <Avatar
+                        src={data.image}
+                        alt="Logo"
+                        sx={{
+                          width: { xs: 80, sm: 100 },
+                          height: { xs: 80, sm: 100 },
+                        }}
+                      />
+                      <Box>
+                        <TextClamp
+                          variant="h5"
+                          fontWeight="bold"
+                          sx={{
+                            color: "#6f42c1",
+                          }}
+                        >
+                          {data.name}
+                        </TextClamp>
+                        <TextClamp variant="body2">{data.speciality}</TextClamp>
+                      </Box>
+                    </Stack>
+
+                    {/* Follow Button */}
+                    <Box
                       sx={{
-                        flex: 1,
-                        borderColor: "#6f42c1",
-                        color: "#6f42c1",
+                        width: { xs: "100%", sm: "auto" },
+                        mt: { xs: 2, sm: 0 },
                       }}
-                      startIcon={<FavoriteBorderIcon />}
                     >
-                      Save
-                    </Button>
+                      <Button
+                        variant="outlined"
+                        fullWidth={true}
+                        startIcon={<FavoriteBorderIcon />}
+                        sx={{
+                          borderColor: "#6f42c1",
+                          color: "#6f42c1",
+                          "&:hover": {
+                            backgroundColor: "#f3e8ff",
+                            borderColor: "#6f42c1",
+                          },
+                        }}
+                      >
+                        Follow
+                      </Button>
+                    </Box>
                   </Stack>
                 </CardContent>
               </Card>
-              <Card sx={{ mt: 3 }}>
+            </Grid>
+            <Grid item xs={12} md={8} sx={{ order: { xs: 2, md: 1 } }}>
+              <Card mb={2}>
                 <CardContent>
                   <Box
                     sx={{
@@ -198,187 +181,71 @@ export const CompanyDetail = () => {
                       <NotificationsNoneOutlinedIcon />
                     </Button>
                   </Box>
-
-                  {/* Job Description */}
                   <Markdown rehypePlugins={[rehypeRaw]}>
                     {typeof data.description === "string"
                       ? data.description
                       : "No description available"}
                   </Markdown>
-
-                  <Box mt={2}>
-                    <Typography variant="p" fontWeight="bold" gutterBottom>
-                      Work location
-                    </Typography>
-                    <Typography mb={2}>{data.address}</Typography>
-
-                    <Typography variant="p" fontWeight="bold" gutterBottom>
-                      Working time
-                    </Typography>
-                    <Typography mb={2}>
-                      {data.workDay} ({data.workTime})
-                    </Typography>
-
-                    <Typography variant="p" fontWeight="bold" gutterBottom>
-                      How to apply
-                    </Typography>
-                    <Typography mb={2}>
-                      Submit your application online by clicking{" "}
-                      <strong>Apply</strong> below.
-                    </Typography>
-
-                    <Typography variant="body1" color="text.secondary" mb={2}>
-                      Application Deadline:{" "}
-                      <strong>
-                        {new Date(data.endDate).toLocaleDateString("vi-VN")}
-                      </strong>
-                    </Typography>
-
-                    <Stack
-                      direction={{ xs: "column", sm: "row" }}
-                      spacing={2}
-                      sx={{
-                        alignItems: { xs: "stretch", sm: "center" },
-                        justifyContent: "flex-start",
-                      }}
-                    >
-                      <Button
-                        fullWidth
-                        variant="contained"
-                        sx={{
-                          backgroundColor: "#6f42c1",
-                          color: "#fff",
-                          "&:hover": {
-                            backgroundColor: "#5a379e",
-                          },
-                        }}
-                      >
-                        Apply Now
-                      </Button>
-                      <Button
-                        fullWidth
-                        variant="outlined"
-                        sx={{
-                          borderColor: "#6f42c1",
-                          color: "#6f42c1",
-                        }}
-                      >
-                        Save Job
-                      </Button>
-                      <Button fullWidth variant="outlined" color="warning">
-                        View Applicants
-                      </Button>
-                    </Stack>
-                  </Box>
                 </CardContent>
               </Card>
-            </Grid>
-
-            <Grid item xs={12} md={4}>
-              {data.company !== null && (
-                <Card sx={{ mb: 3 }}>
-                  <CardContent>
-                    <Stack direction="row" spacing={2} alignItems="center">
-                      <Avatar
-                        src={data.company?.image}
-                        alt="Logo"
-                        sx={{ width: 56, height: 56 }}
+              {isLoading === true ? (
+                <CircularWithValueLabel />
+              ) : (
+                <>
+                  {listJob &&
+                    listJob.length > 0 &&
+                    listJob.map((item, index) => {
+                      return (
+                        <CardTemplate4 key={index} data={item} company={data} />
+                      );
+                    })}
+                  {totalPage > 1 && (
+                    <Stack spacing={2} sx={{ mt: 2 }} alignItems="center">
+                      <Pagination
+                        count={totalPage}
+                        page={page + 1}
+                        onChange={(event, value) =>
+                          dispatch(changePage(value - 1))
+                        }
+                        variant="outlined"
+                        shape="rounded"
                       />
-                      <Link
-                        to={`/company/${data.companyId}`}
-                        style={{ textDecoration: "none", color: "inherit" }}
-                      >
-                        <Typography fontWeight="bold">
-                          {data.company?.name}
-                        </Typography>
-                      </Link>
                     </Stack>
-                    <Box display="flex" alignItems="center" gap={1} mt={1}>
-                      <GroupsIcon
-                        sx={{
-                          borderColor: "#6f42c1",
-                          color: "#6f42c1",
-                        }}
-                        fontSize="small"
-                      />{" "}
-                      <Typography fontSize={14}>100-499 employees</Typography>
-                    </Box>
-                    <Box display="flex" alignItems="center" gap={1} mt={1}>
-                      <WorkIcon
-                        sx={{
-                          borderColor: "#6f42c1",
-                          color: "#6f42c1",
-                        }}
-                        fontSize="small"
-                      />{" "}
-                      <Typography fontSize={14}>
-                        {data.company?.speciality}
-                      </Typography>
-                    </Box>
-                    <Box display="flex" alignItems="center" gap={1} mt={1}>
-                      <PlaceIcon
-                        sx={{
-                          borderColor: "#6f42c1",
-                          color: "#6f42c1",
-                        }}
-                        fontSize="small"
-                      />{" "}
-                      <Typography fontSize={14}>
-                        {data.company?.address}
-                      </Typography>
-                    </Box>
-                    <Box display="flex" alignItems="center" gap={1} mt={1}>
-                      <PhoneIphoneIcon
-                        sx={{
-                          borderColor: "#6f42c1",
-                          color: "#6f42c1",
-                        }}
-                        fontSize="small"
-                      />{" "}
-                      <Typography fontSize={14}>
-                        {data.company?.phone}
-                      </Typography>
-                    </Box>
-                  </CardContent>
-                </Card>
+                  )}
+                </>
               )}
-
+            </Grid>
+            <Grid item xs={12} md={4} sx={{ order: { xs: 1, md: 2 } }}>
               <Card sx={{ marginBottom: 3 }}>
-                <CardContent>
+                <CardContent sx={{ pb: "16px !important" }}>
                   <Typography fontWeight="bold" gutterBottom>
                     General Information
                   </Typography>
                   <Box display="flex" alignItems="center" gap={1} mt={1}>
-                    <WorkIcon
+                    <BoltIcon
                       sx={{
                         color: "#6f42c1",
                       }}
                     />{" "}
-                    <Typography>Level: </Typography>
-                    <Typography
-                      fontSize={14}
-                      sx={{
-                        m: 0,
-                        display: "inline-block",
-                        padding: "4px 12px",
-                        minWidth: "80px",
-                        textAlign: "center",
-                        borderRadius: 2,
-                        ...getLevelStyles(data.level),
-                      }}
-                    >
-                      {data.level}
-                    </Typography>
+                    <Typography fontSize={14}>{data.speciality}</Typography>
                   </Box>
                   <Box display="flex" alignItems="center" gap={1} mt={1}>
-                    <SchoolIcon
+                    <LocationCityIcon
                       sx={{
                         color: "#6f42c1",
                       }}
                     />{" "}
-                    <Typography fontSize={14}>
-                      Education: {data.education}
-                    </Typography>
+                    <TextClamp title={data.address} fontSize={14}>
+                      {data.address}
+                    </TextClamp>
+                  </Box>
+                  <Box display="flex" alignItems="center" gap={1} mt={1}>
+                    <PhoneIphoneIcon
+                      sx={{
+                        color: "#6f42c1",
+                      }}
+                    />{" "}
+                    <Typography fontSize={14}>{data.phone}</Typography>
                   </Box>
                   <Box display="flex" alignItems="center" gap={1} mt={1}>
                     <GroupsIcon
@@ -386,44 +253,19 @@ export const CompanyDetail = () => {
                         color: "#6f42c1",
                       }}
                     />{" "}
-                    <Typography fontSize={14}>
-                      Number: {data.quantity} person
-                    </Typography>
-                  </Box>
-                  <Box display="flex" alignItems="center" gap={1} mt={1}>
-                    <AccessTimeIcon
-                      sx={{
-                        color: "#6f42c1",
-                      }}
-                    />{" "}
-                    <Typography fontSize={14}>Step: {data.step}</Typography>
+                    <Typography fontSize={14}>100-499 employees</Typography>
                   </Box>
                   <Box sx={{ display: "flex", alignItems: "center" }}></Box>
-                </CardContent>
-              </Card>
 
-              <Card>
-                <CardContent>
                   <Typography fontWeight="bold" gutterBottom>
                     Category
                   </Typography>
-                  <Box display="flex" flexWrap="wrap" gap={1} mb={2}>
+                  <Box display="flex" flexWrap="wrap" gap={1}>
                     {["Software", "Software engineer", "IT jobs"].map(
                       (item, index) => (
                         <Chip key={index} label={item} variant="outlined" />
                       )
                     )}
-                  </Box>
-
-                  <Typography fontWeight="bold" gutterBottom>
-                    Skills
-                  </Typography>
-                  <Box display="flex" flexWrap="wrap" gap={1}>
-                    {data.listSkill &&
-                      data.listSkill.length > 0 &&
-                      data.listSkill.map((skill, index) => (
-                        <Chip key={index} label={skill} variant="outlined" />
-                      ))}
                   </Box>
                 </CardContent>
               </Card>

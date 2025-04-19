@@ -1,7 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getListJob, searchListJob } from "../../services/jobService";
+import {
+  getListJob,
+  searchListJob,
+  getListJobByCompany,
+} from "../../services/jobService";
 import { toast } from "react-toastify";
-import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
 
 export const getListJobRedux = createAsyncThunk(
   "job/list",
@@ -47,9 +50,35 @@ export const getListJobRedux = createAsyncThunk(
   }
 );
 
+export const getListJobByCompanyRedux = createAsyncThunk(
+  "jobs/company",
+  async (params = {}, { rejectWithValue }) => {
+    const {
+      page = 1,
+      limit = 10,
+      order = "createdAt",
+      sort = "DESC",
+      companyId,
+    } = params;
+    try {
+      let res = await getListJobByCompany(page, limit, order, sort, companyId);
+      if (res && res.statusCode === 200) {
+        return res.data;
+      } else {
+        toast.error(res.message);
+        return rejectWithValue(res.message);
+      }
+    } catch (err) {
+      toast.error(error);
+      return rejectWithValue(err);
+    }
+  }
+);
+
 const initialState = {
   isLoading: false,
   listJob: [],
+  listJobByCompany: [],
   key: "",
   page: 0,
   total: 0,
@@ -92,6 +121,23 @@ const jobSlice = createSlice({
         state.totalPage = action.payload.totalPages;
       })
       .addCase(getListJobRedux.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      });
+    builder
+      .addCase(getListJobByCompanyRedux.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(getListJobByCompanyRedux.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.listJobByCompany = action.payload.list;
+        state.page = action.payload.page - 1;
+        state.limit = action.payload.limit;
+        state.total = action.payload.total;
+        state.totalPage = action.payload.totalPages;
+      })
+      .addCase(getListJobByCompanyRedux.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });
