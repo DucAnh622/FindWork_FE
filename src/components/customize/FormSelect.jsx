@@ -5,7 +5,7 @@ import {
   Select,
   MenuItem,
   FormHelperText,
-  Typography
+  Typography,
 } from "@mui/material";
 import { getLevelStyles } from "../../utils/utils";
 
@@ -16,7 +16,8 @@ export const FormSelect = ({
   name,
   setData,
   error,
-  setError
+  required,
+  setError,
 }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,37 +25,40 @@ export const FormSelect = ({
       ...prev,
       [name]: value,
     }));
-    setError((prev) => ({
-      ...prev,
-      [name]: "",
-    }));
+    if (required === true) {
+      setError((prev) => ({
+        ...prev,
+        [name]: "",
+      }));
+    }
   };
 
   const handleBlur = () => {
-    const errors = { ...error };
-    if (!data[name]) {
-      errors[name] = "This field is required";
-    } else {
-      delete errors[name];
+    if (required === true) {
+      const errors = { ...error };
+      if (!data[name]) {
+        errors[name] = "This field is required";
+      } else {
+        delete errors[name];
+      }
+      setError(errors);
     }
-    setError(errors);
   };
 
   return (
-    <FormControl fullWidth error={error[name]}>
+    <FormControl fullWidth error={required === true && error[name]}>
       <InputLabel id="demo-simple-select-helper-label">{label}</InputLabel>
       <Select
         labelId="demo-simple-select-helper-label"
         id="demo-simple-select-helper"
         label={label}
-        value={data[name]}
+        value={data[name] ?? ""}
         name={name}
-        required
-        sx={{height: 56}}
+        required={required}
+        sx={{ height: 56 }}
         onChange={handleChange}
         onBlur={handleBlur}
       >
-        <MenuItem value="">Choose</MenuItem>
         {options.map((item, index) => {
           return (
             <MenuItem value={item.value} key={index}>
@@ -75,7 +79,9 @@ export const FormSelect = ({
           );
         })}
       </Select>
-      {error[name] && <FormHelperText>{error[name]}</FormHelperText>}
+      {required === true && error[name] && (
+        <FormHelperText>{error[name]}</FormHelperText>
+      )}
     </FormControl>
   );
 };

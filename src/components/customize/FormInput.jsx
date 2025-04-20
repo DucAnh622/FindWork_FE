@@ -18,7 +18,7 @@ export const FormInput = ({
   showPassword,
   setShowPassword,
   min,
-  disabled
+  disabled,
 }) => {
   const handleChange = (event) => {
     if (event.target.value.length <= maxLength) {
@@ -35,7 +35,7 @@ export const FormInput = ({
 
   const handleBlur = () => {
     const errors = {};
-    if(required === true) {
+    if (required === true) {
       if (!data[name] || data[name].trim() === "") {
         setError({
           ...error,
@@ -77,8 +77,8 @@ export const FormInput = ({
           : type
       }
       value={data[name]}
-      error={Boolean(error[name])}
-      helperText={error[name]}
+      error={required === true && Boolean(error[name])}
+      helperText={required === true && error[name]}
       name={name}
       minRows={minRows}
       multiline={minRows ? true : false}

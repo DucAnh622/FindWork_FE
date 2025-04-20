@@ -29,7 +29,6 @@ import {
   divideExperience,
   formatDate,
 } from "../../../utils/utils";
-import { MultipleSelectBox } from "../../../components/customize/selectMultipleCheckBox";
 import { CustomRangeSelect } from "../../../components/customize/FormRangeSelect";
 import {
   days,
@@ -44,6 +43,7 @@ import { FormSelect } from "../../../components/customize/FormSelect";
 import { FormRangeInput } from "../../../components/customize/FormRangeInput";
 import { FormRangeTime } from "../../../components/customize/FormRangeTime";
 import { FormInput } from "../../../components/customize/FormInput";
+import { FormMultipleSelect } from "../../../components/customize/FormMultipleSelect";
 import { useSelector, useDispatch } from "react-redux";
 import { getAllSkillRedux } from "../../../redux/slices/skillSlice";
 import { getAllCompanyRedux } from "../../../redux/slices/companySlice";
@@ -153,21 +153,6 @@ export const CuJob = () => {
     }
   };
 
-  const handleChangeSelect = (e, value) => {
-    setData({ ...data, skills: value });
-    if (error.skills && value.length > 0) {
-      setError({ ...error, skills: "" });
-    }
-  };
-
-  const handleChangeSelectBlur = () => {
-    if (!data.skills || data.skills.length === 0) {
-      setError({ ...error, skills: "Skills is required" });
-    } else {
-      setError({ ...error, skills: "" });
-    }
-  };
-
   const validate = () => {
     let _error = { ...errorDefault };
     let isValid = true;
@@ -230,7 +215,7 @@ export const CuJob = () => {
         type === true
           ? await updateJob({
               ...newData,
-              skills: data.skills,
+              skills: data.skills.map(Number),
               quantity: +data.quantity,
               salary: formatSalary(
                 typeSalary === false ? data.minSalary : "0",
@@ -245,7 +230,7 @@ export const CuJob = () => {
             })
           : await createJob({
               ...newData,
-              skills: data.skills,
+              skills: data.skills.map(Number),
               quantity: +data.quantity,
               salary: formatSalary(
                 typeSalary === false ? data.minSalary : "0",
@@ -280,6 +265,8 @@ export const CuJob = () => {
       type === true && getDetailJob(id);
     }
   };
+
+  console.log(formatList(listSkill));
 
   return (
     <div className="dashBoard">
@@ -316,6 +303,7 @@ export const CuJob = () => {
               <Grid item xs={12} md={3} lg={3}>
                 <FormSelect
                   data={data}
+                  required={true}
                   setData={setData}
                   name="level"
                   label="Level"
@@ -327,6 +315,7 @@ export const CuJob = () => {
               <Grid item xs={12} md={3} lg={3}>
                 <FormSelect
                   data={data}
+                  required={true}
                   setData={setData}
                   name="education"
                   label="Education"
@@ -338,6 +327,7 @@ export const CuJob = () => {
               <Grid item xs={12} md={3} lg={3}>
                 <FormSelect
                   data={data}
+                  required={true}
                   setData={setData}
                   name="companyId"
                   label="Company"
@@ -378,15 +368,15 @@ export const CuJob = () => {
                 lg={3}
                 sx={{ display: "flex", alignItems: "flex-start" }}
               >
-                <MultipleSelectBox
-                  options={listSkill}
+                <FormMultipleSelect
+                  data={data}
+                  setData={setData}
+                  name="skills"
                   label="Select skills"
-                  value={data.skills}
-                  width="100%"
-                  error={error.skills}
-                  errorText={error.skills}
-                  onChange={handleChangeSelect}
-                  handleBlurSelect={handleChangeSelectBlur}
+                  required={true}
+                  options={formatList(listSkill)}
+                  error={error}
+                  setError={setError}
                 />
               </Grid>
               <Grid item xs={12} md={6} lg={6}>

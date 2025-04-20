@@ -2,8 +2,10 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   getListCompany,
   getListAllCompany,
+  searchListCompany,
 } from "../../services/companyService";
 import { toast } from "react-toastify";
+import { kebabCase } from "lodash";
 
 export const getListCompanyRedux = createAsyncThunk(
   "company/list",
@@ -14,13 +16,31 @@ export const getListCompanyRedux = createAsyncThunk(
         limit = 10,
         order = "createdAt",
         sort = "DESC",
+        data = {},
       } = params;
-      const res = await getListCompany(
-        page || 1,
-        limit || 10,
-        order || "createdAt",
-        sort || "DESC"
-      );
+      let res = {};
+      const hasFilter =
+        data.keyword ||
+        (data.address && data.address.length) ||
+        typeof data.specialityId === "number";
+      if (hasFilter) {
+        res = await searchListCompany(
+          page || 1,
+          limit || 10,
+          order || "createdAt",
+          sort || "DESC",
+          data.keyword || "",
+          data.specialityId || "",
+          data.address || []
+        );
+      } else {
+        res = await getListCompany(
+          page || 1,
+          limit || 10,
+          order || "createdAt",
+          sort || "DESC"
+        );
+      }
       if (res && res.statusCode === 200) {
         return res.data;
       } else {

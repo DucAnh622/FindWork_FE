@@ -9,7 +9,7 @@ export const getListSpecialityRedux = createAsyncThunk(
   "speciality/list",
   async ({ page, limit, order, sort }, { rejectWithValue }) => {
     try {
-      const res = await getListSpeciality(page , limit, order, sort);
+      const res = await getListSpeciality(page, limit, order, sort);
       if (res && res.statusCode === 200) {
         return res.data;
       } else {
@@ -97,7 +97,7 @@ const specialitySlice = createSlice({
       })
       .addCase(getAllSpecialityRedux.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.arrSpeciality = action.payload.data;
+        state.arrSpeciality = action.payload;
       })
       .addCase(getAllSpecialityRedux.rejected, (state, action) => {
         state.isLoading = false;

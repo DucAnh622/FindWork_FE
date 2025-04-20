@@ -43,7 +43,7 @@ export const JobList = () => {
     dispatch(
       await getListJobRedux({
         page: page + 1,
-        limit: limit,
+        limit: 25,
         order: orderBy,
         sort: formatSort(order),
         data: data,

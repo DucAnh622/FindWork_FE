@@ -1,10 +1,6 @@
 import "../../../assets/styles/dashBoard.scss";
 import { useState, useEffect } from "react";
-import {
-  Grid,
-  Button,
-  Typography,
-} from "@mui/material";
+import { Grid, Button, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
 import {
@@ -12,7 +8,7 @@ import {
   getCompanyById,
   updateCompany,
 } from "../../../services/companyService";
-import { getListAllSpeciality } from "../../../services/specialityService";
+import { getAllSpecialityRedux } from "../../../redux/slices/specialitySlice";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 import { FormInput } from "../../../components/customize/FormInput";
@@ -20,8 +16,14 @@ import { FormSelect } from "../../../components/customize/FormSelect";
 import { formatList, hasValue } from "../../../utils/utils";
 import { FormEditor } from "../../../components/customize/FormEditor";
 import { FormImage } from "../../../components/customize/FormImage";
+import { useDispatch, useSelector } from "react-redux";
 
 export const CuCompany = () => {
+  const dispatch = useDispatch();
+  const listSpeciality = useSelector(
+    (state) => state.speciality?.arrSpeciality
+  );
+
   const dataDefault = {
     name: "",
     image: "",
@@ -45,13 +47,9 @@ export const CuCompany = () => {
   const [data, setData] = useState(dataDefault);
   const [error, setError] = useState(errorDefault);
   const [type, setType] = useState(false);
-  const [listSpeciality, setListSpeciality] = useState([]);
 
   const getAllSpeciality = async () => {
-    let res = await getListAllSpeciality();
-    if (res && res.statusCode === 200) {
-      setListSpeciality(res.data);
-    }
+    await dispatch(getAllSpecialityRedux());
   };
 
   const getDetailCompany = async (id) => {
@@ -187,10 +185,11 @@ export const CuCompany = () => {
           xs={12}
           md={4}
           lg={4}
-          sx={{ display: "flex", alignItems: "flex-end" }}
+          sx={{ display: "flex", alignItems: "flex-start" }}
         >
           <FormSelect
             data={data}
+            required={true}
             setData={setData}
             name="specialityId"
             label="Speciality"

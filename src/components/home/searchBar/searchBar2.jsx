@@ -1,22 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import { Grid, Button, Box, useMediaQuery } from "@mui/material";
-import { levels, method, locations } from "../../../utils/constant.js";
+import { locations } from "../../../utils/constant.js";
 import SearchIcon from "@mui/icons-material/Search";
 import { useTheme } from "@mui/material/styles";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import { getAllSpecialityRedux } from "../../../redux/slices/specialitySlice.js";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 import { FormMultipleSelect } from "../../customize/FormMultipleSelect.jsx";
+import { FormSelect } from "../../customize/FormSelect.jsx";
 import { FormInput } from "../../customize/FormInput.jsx";
+import { formatList } from "../../../utils/utils.js";
 
-export const SearchBar1 = ({ data, setData, handleSearch, placeholder }) => {
+export const SearchBar2 = ({ data, setData, handleSearch, placeholder }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const dispatch = useDispatch();
+  const listSpeciality = useSelector(
+    (state) => state.speciality?.arrSpeciality
+  );
+
+  useEffect(() => {
+    dispatch(getAllSpecialityRedux());
+  }, []);
 
   const handleReset = () => {
     setData({
       keyword: "",
-      level: [],
       address: [],
-      step: [],
+      specialityId: "",
     });
   };
 
@@ -27,11 +39,6 @@ export const SearchBar1 = ({ data, setData, handleSearch, placeholder }) => {
         p: 2,
         borderRadius: 1,
         m: "16px auto 0",
-        display: "flex",
-        flexDirection: isMobile ? "column" : "row",
-        gap: 2,
-        flexWrap: "wrap",
-        alignItems: "flex-start",
         overflow: "hidden",
         boxShadow:
           "0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)",
@@ -40,8 +47,8 @@ export const SearchBar1 = ({ data, setData, handleSearch, placeholder }) => {
       <Grid container spacing={2}>
         <Grid item xs={12} md={4}>
           <FormInput
-            label="Job"
-            placeholder="job..."
+            label="Company"
+            placeholder="Company..."
             maxLength={100}
             type="text"
             name="keyword"
@@ -49,7 +56,7 @@ export const SearchBar1 = ({ data, setData, handleSearch, placeholder }) => {
             setData={setData}
           />
         </Grid>
-        <Grid item xs={12} md={2}>
+        <Grid item xs={12} md={3}>
           <FormMultipleSelect
             customize={true}
             data={data}
@@ -60,26 +67,14 @@ export const SearchBar1 = ({ data, setData, handleSearch, placeholder }) => {
             options={locations}
           />
         </Grid>
-        <Grid item xs={12} md={2}>
-          <FormMultipleSelect
-            customize={true}
+        <Grid item xs={12} md={3}>
+          <FormSelect
             data={data}
-            setData={setData}
-            name="level"
-            label="Level"
             required={false}
-            options={levels}
-          />
-        </Grid>
-        <Grid item xs={12} md={2}>
-          <FormMultipleSelect
-            customize={true}
-            data={data}
             setData={setData}
-            name="step"
-            label="Step"
-            required={false}
-            options={method}
+            name="specialityId"
+            label="Speciality"
+            options={formatList(listSpeciality)}
           />
         </Grid>
         <Grid

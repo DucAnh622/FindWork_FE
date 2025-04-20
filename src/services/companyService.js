@@ -10,6 +10,35 @@ export const getListCompany = (page, limit, order, sort) => {
   );
 };
 
+export const searchListCompany = (
+  page,
+  limit,
+  order,
+  sort,
+  keyword,
+  specialityId,
+  address = []
+) => {
+  const params = {
+    page,
+    limit,
+    keyword: keyword || "",
+    order,
+    sort,
+  };
+
+  if (typeof specialityId === "number" && !isNaN(specialityId)) {
+    params.specialityId = specialityId;
+  }
+
+  if (Array.isArray(address) && address.length > 0) {
+    params.address = address.join(",");
+  }
+
+  console.log("Search params:", params);
+  return axiosInstance.get("/companies/search", { params });
+};
+
 export const getListAllCompany = () => {
   return axiosInstance.get("/companies/all");
 };

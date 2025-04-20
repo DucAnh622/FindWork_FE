@@ -11,15 +11,14 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import "../../../assets/styles/JobList.scss";
 import { CardTemplate2 } from "../../../components/home/cardTemplate/cardTemplate2";
-import { SearchBar1 } from "../../../components/home/searchBar/searchBar1.jsx";
+import { SearchBar2 } from "../../../components/home/searchBar/searchBar2.jsx";
 import { formatSort } from "../../../utils/utils.js";
 
 export const CompanyList = () => {
   const dataDefault = {
     keyword: "",
-    level: [],
+    specialityId: "",
     address: [],
-    step: [],
   };
 
   const [data, setData] = useState(dataDefault);
@@ -44,9 +43,9 @@ export const CompanyList = () => {
 
   const handleSearch = async () => {
     dispatch(
-      await getListJobRedux({
+      await getListCompanyRedux({
         page: page + 1,
-        limit: limit,
+        limit: 25,
         order: orderBy,
         sort: formatSort(order),
         data: data,
@@ -60,9 +59,9 @@ export const CompanyList = () => {
 
   return (
     <div className="ContentPage">
-      <SearchBar1
+      <SearchBar2
         data={data}
-        placeholder="Job"
+        placeholder="Company"
         setData={setData}
         handleSearch={handleSearch}
       />
