@@ -7,6 +7,7 @@ import {
   CardHeader,
   CardContent,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import { FavoriteBorderRounded } from "@mui/icons-material";
 import styled from "@emotion/styled";
@@ -14,6 +15,7 @@ import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import { getLevelStyles } from "../../../utils/utils";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { Link } from "react-router-dom";
+import { useTheme } from "@mui/material/styles";
 
 const TextClamp = styled(Typography)`
   display: -webkit-box;
@@ -24,6 +26,9 @@ const TextClamp = styled(Typography)`
 `;
 
 export const CardTemplate3 = ({ data, height }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
   return (
     <Card
       sx={{
@@ -71,15 +76,14 @@ export const CardTemplate3 = ({ data, height }) => {
       <CardContent sx={{ pb: 0, pt: 0 }}>
         <Box sx={{ display: "flex", alignItems: "center" }}>
           {data.skills.length > 0 &&
-            data.skills.slice(0, 3).map((item, index) => {
+            data.skills.slice(0, isMobile ? 2 : 3).map((item, index) => {
               return (
                 <Box
                   component={Button}
                   key={index}
                   variant="outlined"
                   size="small"
-                  sx={{ mr: 1 }}
-                  color="primary"
+                  sx={{ mr: 1, color: "#6f42c1", borderColor: "#6f42c1" }}
                 >
                   <TextClamp
                     textAlign={"left"}

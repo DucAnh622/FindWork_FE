@@ -3,6 +3,8 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 16px;
+    width: 100%;
+    overflow-x: hidden;
   }
 
   @media (min-width: 1200px) {
@@ -13,14 +15,13 @@
 
   @media (min-width: 1300px) {
     .custom-grid {
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(4, 1fr);
     }
   }
 
-  .custom-grid-item {
-    height: 100%;
-    display: flex;
-    margin-top: -16px;
-    align-items: flex-start !important;
+  @media (min-width: 1500px) {
+    .custom-grid {
+      grid-template-columns: repeat(5, 1fr);
+    }
   }
 }
