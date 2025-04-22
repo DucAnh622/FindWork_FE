@@ -13,6 +13,7 @@ import "../../../assets/styles/JobList.scss";
 import { CardTemplate2 } from "../../../components/home/cardTemplate/cardTemplate2";
 import { SearchBar2 } from "../../../components/home/searchBar/searchBar2.jsx";
 import { formatSort } from "../../../utils/utils.js";
+import { EmptyData } from "../../../components/shared/emptyData.jsx";
 
 export const CompanyList = () => {
   const dataDefault = {
@@ -65,7 +66,7 @@ export const CompanyList = () => {
         setData={setData}
         handleSearch={handleSearch}
       />
-      <Box sx={{ px: 2, py: 2 }}>
+      <Box sx={{ px: 2, py: 2, height: "auto" }}>
         {isLoading === false ? (
           <>
             {list.length > 0 ? (
@@ -92,7 +93,7 @@ export const CompanyList = () => {
                 )}
               </>
             ) : (
-              <>No data</>
+              <EmptyData />
             )}
           </>
         ) : (

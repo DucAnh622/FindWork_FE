@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { Modal, Box, Typography, Button, IconButton } from "@mui/material";
 import { Close } from "@mui/icons-material";
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
-export const ConfirmModal = ({ open, handleClose, handleConfirm}) => {
-    return (
+export const ConfirmModal = ({ open, handleClose, handleConfirm }) => {
+  return (
     <Modal open={open === true ? true : false} onClose={handleClose}>
       <Box
         sx={{

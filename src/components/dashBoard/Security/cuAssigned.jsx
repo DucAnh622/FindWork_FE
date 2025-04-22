@@ -38,6 +38,7 @@ import {
   changeOrder,
 } from "../../../redux/slices/adminSlice";
 import { CircularWithValueLabel } from "../../../components/customize/loading";
+import { EmptyData } from "../../../components/shared/emptyData";
 
 const visuallyHidden = {
   border: 0,
@@ -366,70 +367,75 @@ export const CuAsssigned = ({ id }) => {
                   rowCount={list.length}
                 />
                 <TableBody>
-                  {list.length > 0 ? list.map((row, index) => {
-                    const isItemSelected = selected.includes(row.id);
-                    const labelId = `enhanced-table-checkbox-${index}`;
+                  {list.length > 0 ? (
+                    list.map((row, index) => {
+                      const isItemSelected = selected.includes(row.id);
+                      const labelId = `enhanced-table-checkbox-${index}`;
 
-                    return (
-                      <TableRow
-                        hover
-                        admin="checkbox"
-                        aria-checked={isItemSelected}
-                        tabIndex={-1}
-                        key={row.id}
-                        selected={isItemSelected}
-                        sx={{ cursor: "pointer" }}
-                      >
-                        <TableCell
-                          padding="checkbox"
-                          onClick={(event) => handleClick(event, row.id)}
+                      return (
+                        <TableRow
+                          hover
+                          admin="checkbox"
+                          aria-checked={isItemSelected}
+                          tabIndex={-1}
+                          key={row.id}
+                          selected={isItemSelected}
+                          sx={{ cursor: "pointer" }}
                         >
-                          <Checkbox
-                            color="primary"
-                            checked={isItemSelected}
-                            inputProps={{
-                              "aria-labelledby": labelId,
-                            }}
-                          />
-                        </TableCell>
-                        <TableCell align="right">
-                          {page * limit + index + 1}
-                        </TableCell>
-                        <TableCell align="left" title={row.name}>
-                          <TextClamp>{row.name}</TextClamp>
-                        </TableCell>
-                        <TableCell align="left">
-                          <Typography
-                            sx={{
-                              display: "inline-block",
-                              padding: "4px 12px",
-                              fontSize: "16px",
-                              borderRadius: 2,
-                              ...getMethodStyles(row.method),
-                            }}
+                          <TableCell
+                            padding="checkbox"
+                            onClick={(event) => handleClick(event, row.id)}
                           >
-                            {row.method}
-                          </Typography>
-                        </TableCell>
-                        <TableCell align="left">
-                          <TextClamp>{row.path}</TextClamp>
-                        </TableCell>
-                        <TableCell align="left" title={row.description}>
-                          <TextClamp>{row.description}</TextClamp>
-                        </TableCell>
-                        <TableCell align="left">
-                          <FormControlLabel
-                            control={
-                              <IOSSwitch sx={{ m: 1 }} checked={row.check} />
-                            }
-                          />
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })
-                :
-                <TableRow><TableCell colSpan={5} sx={{textAlign:"center"}}>No data</TableCell></TableRow>
-                }
+                            <Checkbox
+                              color="primary"
+                              checked={isItemSelected}
+                              inputProps={{
+                                "aria-labelledby": labelId,
+                              }}
+                            />
+                          </TableCell>
+                          <TableCell align="right">
+                            {page * limit + index + 1}
+                          </TableCell>
+                          <TableCell align="left" title={row.name}>
+                            <TextClamp>{row.name}</TextClamp>
+                          </TableCell>
+                          <TableCell align="left">
+                            <Typography
+                              sx={{
+                                display: "inline-block",
+                                padding: "4px 12px",
+                                fontSize: "16px",
+                                borderRadius: 2,
+                                ...getMethodStyles(row.method),
+                              }}
+                            >
+                              {row.method}
+                            </Typography>
+                          </TableCell>
+                          <TableCell align="left">
+                            <TextClamp>{row.path}</TextClamp>
+                          </TableCell>
+                          <TableCell align="left" title={row.description}>
+                            <TextClamp>{row.description}</TextClamp>
+                          </TableCell>
+                          <TableCell align="left">
+                            <FormControlLabel
+                              control={
+                                <IOSSwitch sx={{ m: 1 }} checked={row.check} />
+                              }
+                            />
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={6} sx={{ textAlign: "center" }}>
+                        <EmptyData />
+                      </TableCell>
+                    </TableRow>
+                  )}
                 </TableBody>
               </Table>
             </TableContainer>

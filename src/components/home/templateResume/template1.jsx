@@ -2,10 +2,17 @@ import React from "react";
 import { Box, Typography, Grid } from "@mui/material";
 import Markdown from "react-markdown";
 import { useSelector } from "react-redux";
-import { formatDay } from "../../../utils/utils";
+import { formatDay, checkDataExist } from "../../../utils/utils";
 import rehypeRaw from "rehype-raw";
+import { EmptyData } from "../../../components/shared/emptyData";
+
 const Template1 = (props) => {
   const data = useSelector((state) => state.root.data);
+
+  if (checkDataExist(data)) {
+    return <EmptyData />;
+  }
+
   return (
     <>
       {data && (

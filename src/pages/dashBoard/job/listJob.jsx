@@ -39,6 +39,7 @@ import { CircularWithValueLabel } from "../../../components/customize/loading";
 import { deleteJob } from "../../../services/jobService";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { EmptyData } from "../../../components/shared/emptyData";
 
 const visuallyHidden = {
   border: 0,
@@ -521,8 +522,8 @@ export const ListJob = () => {
                     })
                   ) : (
                     <TableRow>
-                      <TableCell colSpan={5} sx={{ textAlign: "center" }}>
-                        No data
+                      <TableCell colSpan={11} sx={{ textAlign: "center" }}>
+                        <EmptyData />
                       </TableCell>
                     </TableRow>
                   )}

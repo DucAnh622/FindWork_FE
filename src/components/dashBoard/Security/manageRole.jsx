@@ -38,6 +38,7 @@ import {
   changeOrder,
 } from "../../../redux/slices/roleSlice";
 import { CircularWithValueLabel } from "../../../components/customize/loading";
+import { EmptyData } from "../../../components/shared/emptyData";
 
 const visuallyHidden = {
   border: 0,
@@ -442,7 +443,7 @@ export const ListRole = () => {
                   ) : (
                     <TableRow>
                       <TableCell colSpan={5} sx={{ textAlign: "center" }}>
-                        No data
+                        <EmptyData />
                       </TableCell>
                     </TableRow>
                   )}

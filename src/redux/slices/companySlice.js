@@ -5,7 +5,6 @@ import {
   searchListCompany,
 } from "../../services/companyService";
 import { toast } from "react-toastify";
-import { kebabCase } from "lodash";
 
 export const getListCompanyRedux = createAsyncThunk(
   "company/list",

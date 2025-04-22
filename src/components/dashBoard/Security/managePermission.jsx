@@ -38,6 +38,7 @@ import {
   changeOrder,
 } from "../../../redux/slices/permissionSlice";
 import { CircularWithValueLabel } from "../../../components/customize/loading";
+import { EmptyData } from "../../../components/shared/emptyData";
 
 const visuallyHidden = {
   border: 0,
@@ -459,8 +460,8 @@ export const ListPermission = () => {
                     })
                   ) : (
                     <TableRow>
-                      <TableCell colSpan={5} sx={{ textAlign: "center" }}>
-                        No data
+                      <TableCell colSpan={6} sx={{ textAlign: "center" }}>
+                        <EmptyData />
                       </TableCell>
                     </TableRow>
                   )}

@@ -34,8 +34,13 @@ import styled from "@emotion/styled";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
-import { formatDateData, getLevelStyles } from "../../../utils/utils";
+import {
+  formatDateData,
+  getLevelStyles,
+  checkDataExist,
+} from "../../../utils/utils";
 import { Link } from "react-router-dom";
+import { EmptyData } from "../../../components/shared/emptyData";
 
 const TextClamp = styled((props) => <Typography component="span" {...props} />)`
   display: -webkit-box;
@@ -67,8 +72,8 @@ export const JobDetail = () => {
     getDetail(id);
   }, [id]);
 
-  if (!data) {
-    return <>No data</>;
+  if (checkDataExist(data)) {
+    return <EmptyData />;
   }
 
   return (

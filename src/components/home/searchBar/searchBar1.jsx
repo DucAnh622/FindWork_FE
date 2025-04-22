@@ -40,8 +40,8 @@ export const SearchBar1 = ({ data, setData, handleSearch, placeholder }) => {
       <Grid container spacing={2}>
         <Grid item xs={12} md={4}>
           <FormInput
-            label="Job"
-            placeholder="job..."
+            label={placeholder}
+            placeholder={`${placeholder}...`}
             maxLength={100}
             type="text"
             name="keyword"
@@ -100,6 +100,7 @@ export const SearchBar1 = ({ data, setData, handleSearch, placeholder }) => {
             sx={{
               textTransform: "none",
               px: 3,
+              flex: isMobile ? "unset" : 1,
               height: "100%",
               borderColor: "#6f42c1",
               color: "#6f42c1",
@@ -121,6 +122,8 @@ export const SearchBar1 = ({ data, setData, handleSearch, placeholder }) => {
             sx={{
               textTransform: "none",
               px: 3,
+              fontSize: 18,
+              flex: isMobile ? "unset" : 6,
               height: "100%",
               backgroundColor: "#6f42c1",
               color: "#fff",

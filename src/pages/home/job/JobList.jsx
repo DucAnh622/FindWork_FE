@@ -10,6 +10,7 @@ import "../../../assets/styles/JobList.scss";
 import { CardTemplate3 } from "../../../components/home/cardTemplate/cardTemplate3";
 import { SearchBar1 } from "../../../components/home/searchBar/searchBar1.jsx";
 import { formatSort } from "../../../utils/utils.js";
+import { EmptyData } from "../../../components/shared/emptyData.jsx";
 
 export const JobList = () => {
   const dataDefault = {
@@ -90,7 +91,7 @@ export const JobList = () => {
                 )}
               </>
             ) : (
-              <>No data</>
+              <EmptyData />
             )}
           </>
         ) : (

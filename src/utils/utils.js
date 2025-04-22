@@ -424,6 +424,10 @@ export const hasValue = (value) => {
   );
 };
 
+export const checkDataExist = (data) => {
+  return data == null || Object.keys(data).length === 0;
+};
+
 export const formatDay = (date) => {
   if (!date || !date.includes("-")) return "";
   const [year, month] = date.split("-");

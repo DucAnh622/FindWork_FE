@@ -47,7 +47,10 @@ export const locations = [
   { value: "Ha Noi", label: "Ha Noi" },
   { value: "Ho Chi Minh", label: "Ho Chi Minh" },
   { value: "Da Nang", label: "Da Nang" },
-  { value: "Can Tho", label: "Can Tho" },
+  { value: "Tokyo", label: "Tokyo" },
+  { value: "Osaka", label: "Osaka" },
+  { value: "Berlin", label: "Berlin" },
+  { value: "New York", label: "New York" },
 ];
 
 export const typeSalaries = [

@@ -33,6 +33,7 @@ import {
 } from "../../../redux/slices/resumeSlice";
 import { CircularWithValueLabel } from "../../../components/customize/loading";
 import { PDFModal } from "../../../components/dashBoard/Modal/pdfModal";
+import { EmptyData } from "../../../components/shared/emptyData";
 
 const visuallyHidden = {
   border: 0,
@@ -244,10 +245,10 @@ export const ListResume = () => {
   const [selected, setSelected] = useState([]);
   const [resume, setResume] = useState({});
   const [open, setOpen] = useState(false);
-  const [openDelete, setOpenDelete] = useState(false);
+  // const [openDelete, setOpenDelete] = useState(false);
 
   const handleClose = () => {
-    setOpenDelete(false);
+    // setOpenDelete(false);
     setOpen(false);
     setResume({});
     getList();
@@ -421,8 +422,8 @@ export const ListResume = () => {
                     })
                   ) : (
                     <TableRow>
-                      <TableCell colSpan={5} sx={{ textAlign: "center" }}>
-                        No data
+                      <TableCell colSpan={8} sx={{ textAlign: "center" }}>
+                        <EmptyData />
                       </TableCell>
                     </TableRow>
                   )}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Grid, Button, Box, useMediaQuery } from "@mui/material";
 import { locations } from "../../../utils/constant.js";
 import SearchIcon from "@mui/icons-material/Search";
@@ -47,8 +47,8 @@ export const SearchBar2 = ({ data, setData, handleSearch, placeholder }) => {
       <Grid container spacing={2}>
         <Grid item xs={12} md={4}>
           <FormInput
-            label="Company"
-            placeholder="Company..."
+            label={placeholder}
+            placeholder={`${placeholder}...`}
             maxLength={100}
             type="text"
             name="keyword"
@@ -95,6 +95,7 @@ export const SearchBar2 = ({ data, setData, handleSearch, placeholder }) => {
             sx={{
               textTransform: "none",
               px: 3,
+              flex: isMobile ? "unset" : 1,
               height: "100%",
               borderColor: "#6f42c1",
               color: "#6f42c1",
@@ -116,7 +117,9 @@ export const SearchBar2 = ({ data, setData, handleSearch, placeholder }) => {
             sx={{
               textTransform: "none",
               px: 3,
+              flex: isMobile ? "unset" : 6,
               height: "100%",
+              fontSize: 18,
               backgroundColor: "#6f42c1",
               color: "#fff",
               whiteSpace: "nowrap",

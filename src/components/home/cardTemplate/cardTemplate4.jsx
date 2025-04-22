@@ -7,7 +7,6 @@ import {
   Chip,
   Stack,
   useMediaQuery,
-  IconButton,
 } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
@@ -17,6 +16,7 @@ import styled from "@emotion/styled";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import { formatDateData } from "../../../utils/utils";
 import { useTheme } from "@mui/material/styles";
+import { Link } from "react-router-dom";
 
 const TextClamp = styled((props) => <Typography component="span" {...props} />)`
   display: -webkit-box;
@@ -66,11 +66,20 @@ export const CardTemplate4 = ({ data, company }) => {
           }}
         >
           <Box textAlign={isMobile ? "center" : "left"}>
-            <Typography variant="subtitle1" fontWeight="bold">
-              <TextClamp title={data.name} sx={{ color: "#6f42c1" }}>
+            <Link
+              to={`/job/${data.id}`}
+              style={{
+                textDecoration: "none",
+                color: "inherit",
+              }}
+            >
+              <TextClamp
+                title={data.name}
+                sx={{ color: "#6f42c1", fontWeight: "bold" }}
+              >
                 {data.name}
               </TextClamp>
-            </Typography>
+            </Link>
             <Typography variant="body2" mt={0.5}>
               <TextClamp title={company.name}>{company.name}</TextClamp>
             </Typography>

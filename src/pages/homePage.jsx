@@ -4,17 +4,9 @@ import { getListJobRedux } from "../redux/slices/jobSlice";
 import React, { useEffect } from "react";
 import "swiper/css";
 import "swiper/css/navigation";
-import {
-  Card,
-  CardActions,
-  Button,
-  Box,
-  IconButton,
-  CardHeader,
-  CardContent,
-  Typography,
-} from "@mui/material";
+import { Box } from "@mui/material";
 import { SliderCustomize } from "../components/home/slider/slider";
+import { EmptyData } from "../components/shared/emptyData";
 
 export const HomePage = () => {
   const listCompany = useSelector((state) => state.company?.listCompany);
@@ -29,16 +21,13 @@ export const HomePage = () => {
     getList();
   }, []);
 
+  if (listCompany.length === 0 || listJob.length === 0) {
+    return <EmptyData />;
+  }
+
   return (
     <>
       <Box></Box>
-      {/* <SliderCustomize
-        type="banner"
-        template="banner"
-        list={images}
-        slidesPerView={1}
-        spaceBetween={0}
-      /> */}
       <SliderCustomize
         type="card"
         info="Top"

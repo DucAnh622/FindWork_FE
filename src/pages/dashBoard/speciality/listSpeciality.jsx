@@ -37,6 +37,7 @@ import {
   changeOrder,
 } from "../../../redux/slices/specialitySlice";
 import { CircularWithValueLabel } from "../../../components/customize/loading";
+import { EmptyData } from "../../../components/shared/emptyData";
 
 const visuallyHidden = {
   border: 0,
@@ -267,7 +268,7 @@ export const ListSpeciality = () => {
   const handleDelete = async () => {
     let res = await deleteSpeciality(
       deleteType === "Single" ? [speciality.id] : selected
-    );;
+    );
     if (res && res.statusCode === 200) {
       toast.success(res.message);
     } else {
@@ -433,7 +434,11 @@ export const ListSpeciality = () => {
                       );
                     })
                   ) : (
-                    <TableRow><TableCell colSpan={5} sx={{textAlign:"center"}}>No data</TableCell></TableRow>
+                    <TableRow>
+                      <TableCell colSpan={5} sx={{ textAlign: "center" }}>
+                        <EmptyData />
+                      </TableCell>
+                    </TableRow>
                   )}
                 </TableBody>
               </Table>

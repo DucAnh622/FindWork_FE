@@ -1,26 +1,16 @@
-import { Grid, Box, Button, Modal, Typography } from "@mui/material";
-import { toast } from "react-toastify";
-import { useState, useEffect } from "react";
-import { FormInput } from "../../../components/customize/FormInput";
-import { createResume } from "../../../services/resumeService";
-import { hasValue } from "../../../utils/utils";
-import { ImageCard } from "../../../components/home/cardTemplate/imageCard";
+import { Grid, Typography } from "@mui/material";
+import { useEffect } from "react";
 import "../../../assets/styles/dashBoard.scss";
-import CloseIcon from "@mui/icons-material/Close";
-import CheckIcon from "@mui/icons-material/Check";
 import { useSelector, useDispatch } from "react-redux";
 import {
   getListResumePersonalRedux,
   changePage,
-  changeRowPerPage,
-  changeSort,
-  changeOrder,
 } from "../../../redux/slices/resumeSlice";
 import { CircularWithValueLabel } from "../../../components/customize/loading";
-import { useParams } from "react-router-dom";
 import { CardTemplate1 } from "../../../components/home/cardTemplate/cardTemplate1";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import { EmptyData } from "../../../components/shared/emptyData";
 
 export const ResumePersonal = () => {
   const dispatch = useDispatch();
@@ -95,7 +85,7 @@ export const ResumePersonal = () => {
                 </>
               ) : (
                 <Grid item xs={12} textAlign={"center"}>
-                  <Typography>No data</Typography>
+                  <EmptyData />
                 </Grid>
               )}
             </>

@@ -26,7 +26,6 @@ import {
   assignedUserRoles,
   deleteMultiple,
 } from "../../../services/userService";
-import { getListRoleAll } from "../../../services/roleService";
 import { MultipleSelect } from "../../../components/customize/selectCheckBoxTable";
 import { useEffect } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -51,6 +50,7 @@ import {
 import { getAllRoleRedux } from "../../../redux/slices/roleSlice";
 import { CircularWithValueLabel } from "../../../components/customize/loading";
 import { DeleteModal } from "../../../components/dashBoard/Modal/deleteModal";
+import { EmptyData } from "../../../components/shared/emptyData";
 
 const visuallyHidden = {
   border: 0,
@@ -547,8 +547,8 @@ export const ListUser = () => {
                     })
                   ) : (
                     <TableRow>
-                      <TableCell colSpan={5} sx={{ textAlign: "center" }}>
-                        No data
+                      <TableCell colSpan={8} sx={{ textAlign: "center" }}>
+                        <EmptyData />
                       </TableCell>
                     </TableRow>
                   )}

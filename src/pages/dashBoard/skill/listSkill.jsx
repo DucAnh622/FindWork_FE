@@ -37,6 +37,7 @@ import {
   changeOrder,
 } from "../../../redux/slices/skillSlice";
 import { CircularWithValueLabel } from "../../../components/customize/loading";
+import { EmptyData } from "../../../components/shared/emptyData";
 
 const visuallyHidden = {
   border: 0,
@@ -435,7 +436,7 @@ export const ListSkill = () => {
                   ) : (
                     <TableRow>
                       <TableCell colSpan={5} sx={{ textAlign: "center" }}>
-                        No data
+                        <EmptyData />
                       </TableCell>
                     </TableRow>
                   )}
