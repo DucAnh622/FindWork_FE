@@ -8,6 +8,7 @@ import {
   getCompanyById,
   updateCompany,
 } from "../../../services/companyService";
+import { getListSkillRedux } from "../../../redux/slices/skillSlice";
 import { getAllSpecialityRedux } from "../../../redux/slices/specialitySlice";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
@@ -15,6 +16,7 @@ import { FormInput } from "../../../components/customize/FormInput";
 import { FormSelect } from "../../../components/customize/FormSelect";
 import { formatList, hasValue } from "../../../utils/utils";
 import { FormEditor } from "../../../components/customize/FormEditor";
+import { FormSelectInfinity } from "../../../components/customize/FormSelectInfinity";
 import { FormImage } from "../../../components/customize/FormImage";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -23,6 +25,20 @@ export const CuCompany = () => {
   const listSpeciality = useSelector(
     (state) => state.speciality?.arrSpeciality
   );
+  const listSkill = useSelector((state) => state.skill?.listSkill);
+
+  const total = useSelector((state) => state.skill?.total);
+
+  const getListSkill = async (page, limit) => {
+    await dispatch(
+      getListSkillRedux({
+        page: page,
+        limit: limit,
+        order: "createdAt",
+        sort: "desc",
+      })
+    );
+  };
 
   const dataDefault = {
     name: "",
@@ -31,6 +47,7 @@ export const CuCompany = () => {
     phone: "",
     specialityId: "",
     description: "",
+    skillId: "",
   };
 
   const errorDefault = {
@@ -40,6 +57,7 @@ export const CuCompany = () => {
     phone: "",
     specialityId: "",
     description: "",
+    skillId: "",
   };
 
   const { id } = useParams();
@@ -193,7 +211,7 @@ export const CuCompany = () => {
             setData={setData}
             name="specialityId"
             label="Speciality"
-            options={formatList(listSpeciality)}
+            options={listSpeciality}
             error={error}
             setError={setError}
           />
@@ -220,6 +238,21 @@ export const CuCompany = () => {
             setData={setData}
             error={error}
             label="Description"
+            setError={setError}
+          />
+        </Grid>
+
+        <Grid item xs={12} md={12} lg={4}>
+          <FormSelectInfinity
+            name="skillId"
+            data={data}
+            setData={setData}
+            options={formatList(listSkill)}
+            total={total}
+            getList={getListSkill}
+            error={error}
+            required={true}
+            label="skillId"
             setError={setError}
           />
         </Grid>

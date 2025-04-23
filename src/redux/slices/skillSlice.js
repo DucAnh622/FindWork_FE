@@ -6,6 +6,7 @@ export const getListSkillRedux = createAsyncThunk(
   "skill/list",
   async ({ page, limit, order, sort }, { rejectWithValue }) => {
     try {
+      console.log({ page, limit, order, sort });
       const res = await getListSkill(page, limit, order, sort);
       if (res && res.statusCode === 200) {
         return res.data;
