@@ -99,6 +99,27 @@ export const formatListLabel = (list) => {
   });
 };
 
+export const filterOutSelected = (list = [], selected) => {
+  if (!selected?.value) return list;
+  return list.filter((item) => item.value !== selected.value);
+};
+
+export const filterOutMultipleSelected = (list = [], selected = []) => {
+  const selectedValues = new Set(selected.map((s) => s.value));
+  return list.filter((item) => !selectedValues.has(item.value));
+};
+
+export const mergeSelectedAndFetched = (selected, fetchedData) => {
+  if (selected.length === 0) {
+    return fetchedData;
+  }
+  const selectedValues = new Set(selected.map((s) => s.value));
+  const filteredFetchedData = fetchedData.filter(
+    (item) => !selectedValues.has(item.value)
+  );
+  return [...selected, ...filteredFetchedData];
+};
+
 export const formatDateData = (date) => {
   const data = new Date(date);
   return data.toLocaleDateString("vi-VN");

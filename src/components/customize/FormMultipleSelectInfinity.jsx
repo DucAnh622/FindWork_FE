@@ -4,13 +4,14 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  FormHelperText,
+  Checkbox,
   Typography,
   CircularProgress,
+  FormHelperText,
 } from "@mui/material";
-import { formatList, filterOutSelected } from "../../utils/utils";
+import { mergeSelectedAndFetched } from "../../utils/utils";
 
-export const FormSelectInfinity = ({
+export const FormMultipleSelectInfinity = ({
   label,
   data,
   name,
@@ -18,23 +19,19 @@ export const FormSelectInfinity = ({
   error,
   required,
   setError,
-  selected,
+  selected = [],
   getList,
 }) => {
   const limit = 10;
   const [internalOptions, setInternalOptions] = useState(
-    selected && selected.value ? [selected] : []
+    selected.length > 0 ? [...selected] : []
   );
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const currentPage = useRef(1);
   const listRef = useRef(null);
 
-  const mergeUnique = (prev, next) => {
-    const existingIds = new Set(prev.map((item) => item.value));
-    const filtered = next.filter((item) => !existingIds.has(item.value));
-    return [...prev, ...filtered];
-  };
+  const selectedValues = data[name] || [];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,38 +39,28 @@ export const FormSelectInfinity = ({
       try {
         const result = await getList(currentPage.current, limit);
         const list = result?.payload?.list || [];
-        const formattedList = formatList(list);
+        const formattedList = list.map((item) => ({
+          value: item.id,
+          label: item.name,
+        }));
 
-        const selectedId = data[name];
-        const exists = formattedList.some((item) => item.value === selectedId);
+        const mergedList = mergeSelectedAndFetched(
+          selected.length > 0 ? selected : [],
+          formattedList
+        );
 
-        const filteredList = filterOutSelected(formattedList, selected);
+        setInternalOptions(mergedList);
 
-        setInternalOptions([
-          ...(selected?.value ? [selected] : []),
-          ...filteredList,
-        ]);
-
-        if (filteredList.length < limit) setHasMore(false);
-
-        if (selectedId && !exists && selected?.value !== selectedId) {
-          const extraResult = await getList(null, null, selectedId);
-          const extraList = extraResult?.payload?.list || [];
-          const formattedExtra = formatList(extraList);
-
-          if (formattedExtra.length > 0) {
-            setInternalOptions((prev) => mergeUnique(prev, formattedExtra));
-          }
-        }
+        if (formattedList.length < limit) setHasMore(false);
       } catch (err) {
-        console.error("Error fetching initial data:", err);
+        console.error("Error fetching data:", err);
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, [getList, data[name]]);
+  }, [getList]);
 
   const handleScroll = async (e) => {
     const { scrollTop, scrollHeight, clientHeight } = e.target;
@@ -84,13 +71,23 @@ export const FormSelectInfinity = ({
       try {
         const result = await getList(currentPage.current + 1, limit);
         const moreList = result?.payload?.list || [];
-        const formatted = formatList(moreList);
+        const formatted = moreList.map((item) => ({
+          value: item.id,
+          label: item.name,
+        }));
 
-        const filtered = filterOutSelected(formatted, selected);
-
-        setInternalOptions((prev) => mergeUnique(prev, filtered));
+        // Dùng hàm mergeSelectedAndFetched để gộp selected và dữ liệu mới
+        const mergedList = mergeSelectedAndFetched(
+          selected.length > 0 ? selected : [],
+          formatted
+        );
+        // Cập nhật lại danh sách internalOptions
+        setInternalOptions((prev) => [
+          ...prev,
+          ...mergedList.slice(prev.length),
+        ]); // Thêm phần tử mới vào cuối mảng
         currentPage.current += 1;
-        if (filtered.length < limit) setHasMore(false);
+        if (formatted.length < limit) setHasMore(false);
       } catch (err) {
         console.error("Error loading more data:", err);
       } finally {
@@ -99,14 +96,14 @@ export const FormSelectInfinity = ({
     }
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setData((prev) => ({ ...prev, [name]: value }));
+  const handleChange = (event) => {
+    const values = event.target.value;
+    setData((prev) => ({ ...prev, [name]: values }));
     if (required) setError((prev) => ({ ...prev, [name]: "" }));
   };
 
   const handleBlur = () => {
-    if (required && !data[name]) {
+    if (required && (!data[name] || data[name].length === 0)) {
       setError((prev) => ({ ...prev, [name]: "This field is required" }));
     }
   };
@@ -117,13 +114,11 @@ export const FormSelectInfinity = ({
       <Select
         labelId={`${name}-label`}
         id={`${name}-select`}
-        value={data[name] ?? ""}
+        multiple
+        value={selectedValues}
         onChange={handleChange}
         onBlur={handleBlur}
-        name={name}
         label={label}
-        required={required}
-        sx={{ height: 56 }}
         MenuProps={{
           PaperProps: {
             ref: listRef,
@@ -131,10 +126,17 @@ export const FormSelectInfinity = ({
             style: { maxHeight: 300 },
           },
         }}
+        renderValue={(selected) => {
+          const selectedLabels = internalOptions
+            .filter((opt) => selected.includes(opt.value))
+            .map((opt) => opt.label);
+          return selectedLabels.join(", ");
+        }}
       >
-        {internalOptions.map((item) => (
-          <MenuItem value={item.value} key={item.value}>
-            <Typography>{item.label}</Typography>
+        {internalOptions.map((option) => (
+          <MenuItem key={option.value} value={option.value}>
+            <Checkbox checked={selectedValues.includes(option.value)} />
+            <Typography>{option.label}</Typography>
           </MenuItem>
         ))}
 
@@ -142,12 +144,6 @@ export const FormSelectInfinity = ({
           <MenuItem disabled>
             <CircularProgress size={20} sx={{ marginRight: 1 }} />
             Loading...
-          </MenuItem>
-        )}
-
-        {!loading && !hasMore && internalOptions.length === 0 && (
-          <MenuItem disabled>
-            <Typography>No data available.</Typography>
           </MenuItem>
         )}
       </Select>

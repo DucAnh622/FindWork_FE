@@ -1,5 +1,5 @@
 import "../../../assets/styles/dashBoard.scss";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   Grid,
   Button,
@@ -44,8 +44,12 @@ import { FormRangeInput } from "../../../components/customize/FormRangeInput";
 import { FormRangeTime } from "../../../components/customize/FormRangeTime";
 import { FormInput } from "../../../components/customize/FormInput";
 import { FormMultipleSelect } from "../../../components/customize/FormMultipleSelect";
+import { FormMultipleSelectInfinity } from "../../../components/customize/FormMultipleSelectInfinity";
 import { useSelector, useDispatch } from "react-redux";
-import { getAllSkillRedux } from "../../../redux/slices/skillSlice";
+import {
+  getAllSkillRedux,
+  getListSkillRedux,
+} from "../../../redux/slices/skillSlice";
 import { getAllCompanyRedux } from "../../../redux/slices/companySlice";
 
 export const CuJob = () => {
@@ -100,6 +104,20 @@ export const CuJob = () => {
   const [data, setData] = useState(dataDefault);
   const [error, setError] = useState(errorDefault);
   const [type, setType] = useState(false);
+
+  const getListSkill = useCallback(
+    async (page, limit) => {
+      return await dispatch(
+        getListSkillRedux({
+          page: page || 1,
+          limit: limit || 10,
+          order: "createdAt",
+          sort: "desc",
+        })
+      );
+    },
+    [dispatch]
+  );
 
   const getListAll = async () => {
     dispatch(await getAllSkillRedux());
@@ -266,8 +284,6 @@ export const CuJob = () => {
     }
   };
 
-  console.log(formatList(listSkill));
-
   return (
     <div className="dashBoard">
       <Grid container spacing={2}>
@@ -378,6 +394,17 @@ export const CuJob = () => {
                   error={error}
                   setError={setError}
                 />
+                {/* <FormMultipleSelectInfinity
+                  data={data}
+                  setData={setData}
+                  name="skills"
+                  selected={data.listSkill && formatList(data.listSkill)}
+                  label="Select skills"
+                  required={true}
+                  getList={getListSkill}
+                  error={error}
+                  setError={setError}
+                /> */}
               </Grid>
               <Grid item xs={12} md={6} lg={6}>
                 <FormInput

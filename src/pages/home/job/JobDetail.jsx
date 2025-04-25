@@ -433,7 +433,11 @@ export const JobDetail = () => {
                     {data.listSkill &&
                       data.listSkill.length > 0 &&
                       data.listSkill.map((skill, index) => (
-                        <Chip key={index} label={skill} variant="outlined" />
+                        <Chip
+                          key={index}
+                          label={skill.name}
+                          variant="outlined"
+                        />
                       ))}
                   </Box>
                 </CardContent>

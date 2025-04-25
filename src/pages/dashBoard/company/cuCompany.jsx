@@ -1,5 +1,5 @@
 import "../../../assets/styles/dashBoard.scss";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Grid, Button, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
@@ -8,37 +8,34 @@ import {
   getCompanyById,
   updateCompany,
 } from "../../../services/companyService";
-import { getListSkillRedux } from "../../../redux/slices/skillSlice";
-import { getAllSpecialityRedux } from "../../../redux/slices/specialitySlice";
+import {
+  getAllSpecialityRedux,
+  getListSpecialityRedux,
+} from "../../../redux/slices/specialitySlice";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 import { FormInput } from "../../../components/customize/FormInput";
-import { FormSelect } from "../../../components/customize/FormSelect";
-import { formatList, hasValue } from "../../../utils/utils";
+import { hasValue } from "../../../utils/utils";
 import { FormEditor } from "../../../components/customize/FormEditor";
 import { FormSelectInfinity } from "../../../components/customize/FormSelectInfinity";
 import { FormImage } from "../../../components/customize/FormImage";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 export const CuCompany = () => {
   const dispatch = useDispatch();
-  const listSpeciality = useSelector(
-    (state) => state.speciality?.arrSpeciality
+  const getListSpeciality = useCallback(
+    async (page, limit) => {
+      return await dispatch(
+        getListSpecialityRedux({
+          page: page || 1,
+          limit: limit || 10,
+          order: "name",
+          sort: "asc",
+        })
+      );
+    },
+    [dispatch]
   );
-  const listSkill = useSelector((state) => state.skill?.listSkill);
-
-  const total = useSelector((state) => state.skill?.total);
-
-  const getListSkill = async (page, limit) => {
-    await dispatch(
-      getListSkillRedux({
-        page: page,
-        limit: limit,
-        order: "createdAt",
-        sort: "desc",
-      })
-    );
-  };
 
   const dataDefault = {
     name: "",
@@ -205,14 +202,20 @@ export const CuCompany = () => {
           lg={4}
           sx={{ display: "flex", alignItems: "flex-start" }}
         >
-          <FormSelect
+          <FormSelectInfinity
             data={data}
             required={true}
             setData={setData}
             name="specialityId"
             label="Speciality"
-            options={listSpeciality}
+            getList={getListSpeciality}
             error={error}
+            selected={
+              data.speciality && {
+                value: data.specialityId,
+                label: data.speciality,
+              }
+            }
             setError={setError}
           />
         </Grid>
@@ -241,22 +244,6 @@ export const CuCompany = () => {
             setError={setError}
           />
         </Grid>
-
-        <Grid item xs={12} md={12} lg={4}>
-          <FormSelectInfinity
-            name="skillId"
-            data={data}
-            setData={setData}
-            options={formatList(listSkill)}
-            total={total}
-            getList={getListSkill}
-            error={error}
-            required={true}
-            label="skillId"
-            setError={setError}
-          />
-        </Grid>
-
         <Grid
           item
           xs={12}
