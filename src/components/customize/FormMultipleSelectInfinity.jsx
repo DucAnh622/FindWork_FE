@@ -33,66 +33,50 @@ export const FormMultipleSelectInfinity = ({
 
   const selectedValues = data[name] || [];
 
+  const fetchData = async (page) => {
+    setLoading(true);
+    try {
+      const result = await getList(page, limit);
+      const list = result?.payload?.list || [];
+      const formattedList = list.map((item) => ({
+        value: item.id,
+        label: item.name,
+      }));
+
+      const mergedList = mergeSelectedAndFetched(
+        selected.length > 0 ? selected : [],
+        formattedList
+      );
+
+      const uniqueList = Array.from(
+        new Map(mergedList.map((item) => [item.value, item])).values()
+      );
+
+      setInternalOptions((prev) => {
+        const map = new Map(prev.map((item) => [item.value, item]));
+        uniqueList.forEach((item) => map.set(item.value, item));
+        return Array.from(map.values());
+      });
+
+      if (list.length < limit) setHasMore(false);
+    } catch (err) {
+      console.error("Error fetching data:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const result = await getList(currentPage.current, limit);
-        const list = result?.payload?.list || [];
-        const formattedList = list.map((item) => ({
-          value: item.id,
-          label: item.name,
-        }));
-
-        const mergedList = mergeSelectedAndFetched(
-          selected.length > 0 ? selected : [],
-          formattedList
-        );
-
-        setInternalOptions(mergedList);
-
-        if (formattedList.length < limit) setHasMore(false);
-      } catch (err) {
-        console.error("Error fetching data:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [getList]);
+    fetchData(currentPage.current);
+  }, [getList, selected && selected.length > 0 && selected]);
 
   const handleScroll = async (e) => {
     const { scrollTop, scrollHeight, clientHeight } = e.target;
     const isBottom = scrollTop + clientHeight >= scrollHeight - 10;
 
     if (isBottom && !loading && hasMore) {
-      setLoading(true);
-      try {
-        const result = await getList(currentPage.current + 1, limit);
-        const moreList = result?.payload?.list || [];
-        const formatted = moreList.map((item) => ({
-          value: item.id,
-          label: item.name,
-        }));
-
-        // Dùng hàm mergeSelectedAndFetched để gộp selected và dữ liệu mới
-        const mergedList = mergeSelectedAndFetched(
-          selected.length > 0 ? selected : [],
-          formatted
-        );
-        // Cập nhật lại danh sách internalOptions
-        setInternalOptions((prev) => [
-          ...prev,
-          ...mergedList.slice(prev.length),
-        ]); // Thêm phần tử mới vào cuối mảng
-        currentPage.current += 1;
-        if (formatted.length < limit) setHasMore(false);
-      } catch (err) {
-        console.error("Error loading more data:", err);
-      } finally {
-        setLoading(false);
-      }
+      currentPage.current += 1;
+      await fetchData(currentPage.current);
     }
   };
 
@@ -134,12 +118,14 @@ export const FormMultipleSelectInfinity = ({
         }}
       >
         {internalOptions.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
+          <MenuItem
+            key={`${option.value}-${option.label}`}
+            value={option.value}
+          >
             <Checkbox checked={selectedValues.includes(option.value)} />
             <Typography>{option.label}</Typography>
           </MenuItem>
         ))}
-
         {loading && (
           <MenuItem disabled>
             <CircularProgress size={20} sx={{ marginRight: 1 }} />

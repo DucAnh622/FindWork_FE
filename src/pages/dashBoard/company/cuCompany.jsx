@@ -8,10 +8,7 @@ import {
   getCompanyById,
   updateCompany,
 } from "../../../services/companyService";
-import {
-  getAllSpecialityRedux,
-  getListSpecialityRedux,
-} from "../../../redux/slices/specialitySlice";
+import { getListSpecialityRedux } from "../../../redux/slices/specialitySlice";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 import { FormInput } from "../../../components/customize/FormInput";
@@ -63,10 +60,6 @@ export const CuCompany = () => {
   const [error, setError] = useState(errorDefault);
   const [type, setType] = useState(false);
 
-  const getAllSpeciality = async () => {
-    await dispatch(getAllSpecialityRedux());
-  };
-
   const getDetailCompany = async (id) => {
     let res = await getCompanyById(id);
     if (res && res.statusCode === 200) {
@@ -82,10 +75,6 @@ export const CuCompany = () => {
       getDetailCompany(id);
     }
   }, [id]);
-
-  useEffect(() => {
-    getAllSpeciality();
-  }, []);
 
   const validate = () => {
     let _error = { ...errorDefault };
@@ -151,7 +140,7 @@ export const CuCompany = () => {
             {type === true ? "Update company" : "Create company"}
           </Typography>
         </Grid>
-        <Grid item xs={12} md={6} lg={6}>
+        <Grid item xs={12} md={12} lg={6}>
           <FormInput
             label="Name"
             placeholder="Name..."
@@ -165,7 +154,7 @@ export const CuCompany = () => {
             required={true}
           />
         </Grid>
-        <Grid item xs={12} md={6} lg={6}>
+        <Grid item xs={12} md={12} lg={6}>
           <FormInput
             label="Address"
             placeholder="Address..."
@@ -180,7 +169,7 @@ export const CuCompany = () => {
           />
         </Grid>
 
-        <Grid item xs={12} md={4} lg={4}>
+        <Grid item xs={12} md={12} lg={4}>
           <FormImage
             label="Image url"
             data={data}
@@ -198,7 +187,7 @@ export const CuCompany = () => {
         <Grid
           item
           xs={12}
-          md={4}
+          md={12}
           lg={4}
           sx={{ display: "flex", alignItems: "flex-start" }}
         >
@@ -219,7 +208,7 @@ export const CuCompany = () => {
             setError={setError}
           />
         </Grid>
-        <Grid item xs={12} md={4} lg={4}>
+        <Grid item xs={12} md={12} lg={4}>
           <FormInput
             label="Phone"
             placeholder="Phone..."

@@ -8,32 +8,14 @@ import {
   Avatar,
   CardContent,
   CardMedia,
-  Typography,
 } from "@mui/material";
 import { FavoriteBorderRounded } from "@mui/icons-material";
-import styled from "@emotion/styled";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import rehypeRaw from "rehype-raw";
 import Markdown from "react-markdown";
 import WorkIcon from "@mui/icons-material/Work";
 import { Link } from "react-router-dom";
-
-const TextClamp = styled(Typography)`
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
-const TextClamp2 = styled(Box)`
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  font-family: Arial, Helvetica, sans-serif;
-  text-overflow: ellipsis;
-`;
+import { TextClamp, TextClamp2 } from "../../customize/TextClamp";
 
 export const CardTemplate2 = ({ data }) => {
   return (
@@ -42,7 +24,7 @@ export const CardTemplate2 = ({ data }) => {
         maxWidth: 345,
         maxHeight: 345,
         width: "100%",
-        height: "100%",
+        height: "auto",
         m: "16px auto",
       }}
     >

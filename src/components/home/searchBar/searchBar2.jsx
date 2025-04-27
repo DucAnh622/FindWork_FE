@@ -1,28 +1,33 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Grid, Button, Box, useMediaQuery } from "@mui/material";
 import { locations } from "../../../utils/constant.js";
 import SearchIcon from "@mui/icons-material/Search";
 import { useTheme } from "@mui/material/styles";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
-import { getAllSpecialityRedux } from "../../../redux/slices/specialitySlice.js";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { getListSpecialityRedux } from "../../../redux/slices/specialitySlice.js";
+import { useDispatch } from "react-redux";
 import { FormMultipleSelect } from "../../customize/FormMultipleSelect.jsx";
-import { FormSelect } from "../../customize/FormSelect.jsx";
+import { FormSelectInfinity } from "../../customize/FormSelectInfinity.jsx";
 import { FormInput } from "../../customize/FormInput.jsx";
-import { formatList } from "../../../utils/utils.js";
 
 export const SearchBar2 = ({ data, setData, handleSearch, placeholder }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const dispatch = useDispatch();
-  const listSpeciality = useSelector(
-    (state) => state.speciality?.arrSpeciality
-  );
 
-  useEffect(() => {
-    dispatch(getAllSpecialityRedux());
-  }, []);
+  const getListSpeciality = useCallback(
+    async (page, limit) => {
+      return await dispatch(
+        getListSpecialityRedux({
+          page: page || 1,
+          limit: limit || 10,
+          order: "name",
+          sort: "asc",
+        })
+      );
+    },
+    [dispatch]
+  );
 
   const handleReset = () => {
     setData({
@@ -68,13 +73,13 @@ export const SearchBar2 = ({ data, setData, handleSearch, placeholder }) => {
           />
         </Grid>
         <Grid item xs={12} md={3}>
-          <FormSelect
+          <FormSelectInfinity
             data={data}
             required={false}
             setData={setData}
             name="specialityId"
             label="Speciality"
-            options={formatList(listSpeciality)}
+            getList={getListSpeciality}
           />
         </Grid>
         <Grid

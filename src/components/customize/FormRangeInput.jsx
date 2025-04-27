@@ -149,7 +149,7 @@ export const FormRangeInput = ({
           onBlur={handleBlur}
           variant="outlined"
           inputProps={{ min: type === "number" ? data[nameFrom] : currentDate }}
-          InputLabelProps={type === "number" ? undefined : { shrink: true } }
+          InputLabelProps={type === "number" ? undefined : { shrink: true }}
         />
       </FormControl>
     </div>

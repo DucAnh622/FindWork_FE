@@ -1,25 +1,25 @@
 import "../../../assets/styles/dashBoard.scss";
 import * as React from "react";
 import { useState } from "react";
-import { deleteSkill } from "../../../services/skillService";
-import { toast } from "react-toastify";
-import { CuSkill } from "./cuSkill";
+import { deleteRole } from "../../../services/roleService";
+import { CuRole } from "./cuRole";
 import { DeleteModal } from "../../../components/dashBoard/Modal/deleteModal";
+import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  getListSkillRedux,
+  getListRoleRedux,
   changePage,
   changeRowPerPage,
   changeSort,
   changeOrder,
-} from "../../../redux/slices/skillSlice";
+} from "../../../redux/slices/roleSlice";
 import { FormTable } from "../../../components/customize/FormTable";
 
-export const ListSkill = () => {
+export const ListRole = () => {
   const headCells = [
     {
       id: "name",
-      type: "text",
+      type: "role",
       numeric: false,
       disablePadding: false,
       label: "Name",
@@ -30,34 +30,44 @@ export const ListSkill = () => {
       numeric: false,
       disablePadding: false,
       label: "Description",
-    }
+    },
   ];
 
   const dispatch = useDispatch();
-  const list = useSelector((state) => state.skill?.listSkill);
-  const page = useSelector((state) => state.skill?.page);
-  const limit = useSelector((state) => state.skill?.limit);
-  const total = useSelector((state) => state.skill?.total);
-  const order = useSelector((state) => state.skill?.order);
-  const orderBy = useSelector((state) => state.skill?.orderBy);
-  const isLoading = useSelector((state) => state.skill?.isLoading);
+  const list = useSelector((state) => state.role?.listRole);
+  const page = useSelector((state) => state.role?.page);
+  const limit = useSelector((state) => state.role?.limit);
+  const total = useSelector((state) => state.role?.total);
+  const order = useSelector((state) => state.role?.order);
+  const orderBy = useSelector((state) => state.role?.orderBy);
+  const isLoading = useSelector((state) => state.role?.isLoading);
   const [selected, setSelected] = useState([]);
-  const [skill, setSkill] = useState({});
-  const [openDelete, setOpenDelete] = useState(false);
   const [open, setOpen] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
+  const [role, setRole] = useState({});
   const [type, setType] = useState("Create");
   const [deleteType, setDeleteType] = useState("Single");
+
+  const handleClose = () => {
+    setOpen(false);
+    setOpenDelete(false);
+    getList();
+    setType("Create");
+    setSelected([]);
+    setDeleteType("Single");
+    setRole({});
+  };
 
   const handleModal = (type, item) => {
     switch (type) {
       case "edit":
         setOpen(true);
         setType("Update");
-        setSkill(item);
+        setRole(item);
         break;
       case "delete":
         setOpenDelete(true);
-        setSkill(item && item);
+        setRole(item && item);
         setDeleteType(item ? "Single" : "Multiple");
         break;
       default:
@@ -66,20 +76,8 @@ export const ListSkill = () => {
     }
   };
 
-  const handleClose = () => {
-    setOpen(false);
-    setOpenDelete(false);
-    setType("Create");
-    setDeleteType("Single");
-    setSkill({});
-    setSelected([]);
-    getList();
-  };
-
   const handleDelete = async () => {
-    let res = await deleteSkill(
-      deleteType === "Single" ? [skill.id] : selected
-    );
+    let res = await deleteRole(deleteType === "Single" ? [role.id] : selected);
     if (res && res.statusCode === 200) {
       toast.success(res.message);
     } else {
@@ -88,9 +86,9 @@ export const ListSkill = () => {
     handleClose();
   };
 
-  const getListSkill = async () => {
+  const getListRole = async () => {
     dispatch(
-      await getListSkillRedux({
+      await getListRoleRedux({
         page: page + 1,
         limit: limit,
         order: orderBy,
@@ -102,11 +100,11 @@ export const ListSkill = () => {
   return (
     <>
       <FormTable
-        title="skills"
+        title="roles"
         handleModal={handleModal}
         list={list}
         headCells={headCells}
-        getList={getListSkill}
+        getList={getListRole}
         isLoading={isLoading}
         limit={limit}
         page={page}
@@ -120,16 +118,16 @@ export const ListSkill = () => {
         setSelected={setSelected}
         selected={selected}
       />
-      <CuSkill
+      <CuRole
         open={open}
         type={type}
-        skill={skill}
+        role={role}
         handleClose={() => handleClose()}
       />
       <DeleteModal
         open={openDelete}
         handleClose={handleClose}
-        handleDelete={() => handleDelete()}
+        handleDetele={handleDelete}
       />
     </>
   );

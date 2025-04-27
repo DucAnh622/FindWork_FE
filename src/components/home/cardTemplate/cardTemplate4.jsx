@@ -12,19 +12,11 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import styled from "@emotion/styled";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import { formatDateData } from "../../../utils/utils";
 import { useTheme } from "@mui/material/styles";
 import { Link } from "react-router-dom";
-
-const TextClamp = styled((props) => <Typography component="span" {...props} />)`
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
+import { TextClamp } from "../../customize/TextClamp";
 
 export const CardTemplate4 = ({ data, company }) => {
   const theme = useTheme();

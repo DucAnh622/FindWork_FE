@@ -1,21 +1,21 @@
 import "../../../assets/styles/dashBoard.scss";
 import * as React from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { formatSort } from "../../../utils/utils";
+import { deletePermission } from "../../../services/permissionService";
+import { CuPermission } from "./cuPermission";
+import { toast } from "react-toastify";
+import { DeleteModal } from "../../../components/dashBoard/Modal/deleteModal";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  getListCompanyRedux,
+  getListPermissionRedux,
   changePage,
   changeRowPerPage,
   changeSort,
   changeOrder,
-} from "../../../redux/slices/companySlice";
-import { DeleteModal } from "../../../components/dashBoard/Modal/deleteModal";
-import { deleteCompany } from "../../../services/companyService";
+} from "../../../redux/slices/permissionSlice";
 import { FormTable } from "../../../components/customize/FormTable";
 
-export const ListCompany = () => {
+export const ListPermission = () => {
   const headCells = [
     {
       id: "name",
@@ -25,75 +25,74 @@ export const ListCompany = () => {
       label: "Name",
     },
     {
-      id: "image",
-      type: "image",
+      id: "method",
+      type: "method",
       numeric: false,
       disablePadding: false,
-      label: "Image",
+      label: "Method",
     },
     {
-      id: "speciality",
+      id: "path",
       type: "text",
       numeric: false,
       disablePadding: false,
-      label: "Speciality",
+      label: "Path",
     },
     {
-      id: "address",
+      id: "description",
       type: "text",
       numeric: false,
       disablePadding: false,
-      label: "Address",
-    },
-    {
-      id: "phone",
-      type: "text",
-      numeric: false,
-      disablePadding: false,
-      label: "Phone",
-    },
-    {
-      id: "status",
-      type: "status",
-      numeric: false,
-      disablePadding: false,
-      label: "Status",
+      label: "Description",
     },
   ];
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const list = useSelector((state) => state.company?.listCompany);
-  const page = useSelector((state) => state.company?.page);
-  const limit = useSelector((state) => state.company?.limit);
-  const total = useSelector((state) => state.company?.total);
-  const order = useSelector((state) => state.company?.order);
-  const orderBy = useSelector((state) => state.company?.orderBy);
-  const isLoading = useSelector((state) => state.company?.isLoading);
+  const list = useSelector((state) => state.permission?.listPermission);
+  const page = useSelector((state) => state.permission?.page);
+  const limit = useSelector((state) => state.permission?.limit);
+  const total = useSelector((state) => state.permission?.total);
+  const order = useSelector((state) => state.permission?.order);
+  const orderBy = useSelector((state) => state.permission?.orderBy);
+  const isLoading = useSelector((state) => state.permission?.isLoading);
   const [selected, setSelected] = useState([]);
-  const [deleteType, setDeleteType] = useState("Single");
+  const [permission, setPermission] = useState({});
+  const [open, setOpen] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
-  const [company, setCompany] = useState({});
+  const [type, setType] = useState("Create");
+  const [deleteType, setDeleteType] = useState("Single");
+
+  const handleClose = () => {
+    setOpen(false);
+    setOpenDelete(false);
+    getList();
+    setType("Create");
+    setDeleteType("Single");
+    setPermission({});
+    setSelected([]);
+  };
 
   const handleModal = (type, item) => {
     switch (type) {
       case "edit":
-        navigate(`/dashboard/company/update/${item.id}`);
+        setOpen(true);
+        setType("Update");
+        setPermission(item);
         break;
       case "delete":
         setOpenDelete(true);
-        setCompany(item && item);
+        setPermission(item && item);
         setDeleteType(item ? "Single" : "Multiple");
         break;
       default:
-        navigate("/dashboard/company/create");
+        setOpen(true);
         break;
     }
   };
 
   const handleDelete = async () => {
-    let res = await deleteCompany(
-      deleteType === "Single" ? [company.id] : selected
+    let res = await deletePermission(
+      deleteType === "Single" ? [permission.id] : selected
     );
     if (res && res.statusCode === 200) {
       toast.success(res.message);
@@ -103,21 +102,13 @@ export const ListCompany = () => {
     handleClose();
   };
 
-  const handleClose = () => {
-    setOpenDelete(false);
-    setDeleteType("Single");
-    setCompany({});
-    setSelected([]);
-    getList();
-  };
-
-  const getListCompany = async () => {
+  const getListPermission = async () => {
     dispatch(
-      await getListCompanyRedux({
-        page: page,
+      await getListPermissionRedux({
+        page: page + 1,
         limit: limit,
         order: orderBy,
-        sort: formatSort(order),
+        sort: order,
       })
     );
   };
@@ -125,11 +116,11 @@ export const ListCompany = () => {
   return (
     <>
       <FormTable
-        title="companies"
+        title="permissions"
         handleModal={handleModal}
         list={list}
         headCells={headCells}
-        getList={getListCompany}
+        getList={getListPermission}
         isLoading={isLoading}
         limit={limit}
         page={page}
@@ -142,6 +133,12 @@ export const ListCompany = () => {
         changeRowPerPage={changeRowPerPage}
         setSelected={setSelected}
         selected={selected}
+      />
+      <CuPermission
+        open={open}
+        type={type}
+        permission={permission}
+        handleClose={() => handleClose()}
       />
       <DeleteModal
         open={openDelete}

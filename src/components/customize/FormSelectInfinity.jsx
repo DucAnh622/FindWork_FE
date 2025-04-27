@@ -9,6 +9,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { formatList, filterOutSelected } from "../../utils/utils";
+import { TextClamp } from "../customize/TextClamp";
 
 export const FormSelectInfinity = ({
   label,
@@ -102,17 +103,17 @@ export const FormSelectInfinity = ({
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData((prev) => ({ ...prev, [name]: value }));
-    if (required) setError((prev) => ({ ...prev, [name]: "" }));
+    if (required === true) setError((prev) => ({ ...prev, [name]: "" }));
   };
 
   const handleBlur = () => {
-    if (required && !data[name]) {
+    if (required === true && !data[name]) {
       setError((prev) => ({ ...prev, [name]: "This field is required" }));
     }
   };
 
   return (
-    <FormControl fullWidth error={required && !!error[name]}>
+    <FormControl fullWidth error={required === true && !!error[name]}>
       <InputLabel id={`${name}-label`}>{label}</InputLabel>
       <Select
         labelId={`${name}-label`}
@@ -134,7 +135,7 @@ export const FormSelectInfinity = ({
       >
         {internalOptions.map((item) => (
           <MenuItem value={item.value} key={item.value}>
-            <Typography>{item.label}</Typography>
+            <TextClamp title={item.label}>{item.label}</TextClamp>
           </MenuItem>
         ))}
 
@@ -151,7 +152,7 @@ export const FormSelectInfinity = ({
           </MenuItem>
         )}
       </Select>
-      {required && error[name] && (
+      {required === true && error[name] && (
         <FormHelperText>{error[name]}</FormHelperText>
       )}
     </FormControl>

@@ -316,7 +316,7 @@ export const CuJob = () => {
                   required={true}
                 />
               </Grid>
-              <Grid item xs={12} md={3} lg={3}>
+              <Grid item xs={12} md={6} lg={3}>
                 <FormSelect
                   data={data}
                   required={true}
@@ -324,11 +324,12 @@ export const CuJob = () => {
                   name="level"
                   label="Level"
                   options={levels}
+                  style={true}
                   error={error}
                   setError={setError}
                 />
               </Grid>
-              <Grid item xs={12} md={3} lg={3}>
+              <Grid item xs={12} md={6} lg={3}>
                 <FormSelect
                   data={data}
                   required={true}
@@ -340,7 +341,7 @@ export const CuJob = () => {
                   setError={setError}
                 />
               </Grid>
-              <Grid item xs={12} md={3} lg={3}>
+              <Grid item xs={12} md={6} lg={3}>
                 <FormSelect
                   data={data}
                   required={true}
@@ -352,7 +353,7 @@ export const CuJob = () => {
                   setError={setError}
                 />
               </Grid>
-              <Grid item xs={12} md={3} lg={3}>
+              <Grid item xs={12} md={6} lg={3}>
                 <FormSelect
                   data={data}
                   setData={setData}
@@ -363,7 +364,7 @@ export const CuJob = () => {
                   setError={setError}
                 />
               </Grid>
-              <Grid item xs={12} md={3} lg={3}>
+              <Grid item xs={12} md={6} lg={3}>
                 <FormInput
                   label="Quanity"
                   placeholder="1"
@@ -380,11 +381,11 @@ export const CuJob = () => {
               <Grid
                 item
                 xs={12}
-                md={3}
+                md={6}
                 lg={3}
                 sx={{ display: "flex", alignItems: "flex-start" }}
               >
-                <FormMultipleSelect
+                {/* <FormMultipleSelect
                   data={data}
                   setData={setData}
                   name="skills"
@@ -393,8 +394,8 @@ export const CuJob = () => {
                   options={formatList(listSkill)}
                   error={error}
                   setError={setError}
-                />
-                {/* <FormMultipleSelectInfinity
+                /> */}
+                <FormMultipleSelectInfinity
                   data={data}
                   setData={setData}
                   name="skills"
@@ -404,7 +405,7 @@ export const CuJob = () => {
                   getList={getListSkill}
                   error={error}
                   setError={setError}
-                /> */}
+                />
               </Grid>
               <Grid item xs={12} md={6} lg={6}>
                 <FormInput
@@ -442,7 +443,7 @@ export const CuJob = () => {
               <strong>Experience</strong>
             </InputLabel>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={12} md={4} lg={4}>
+              <Grid item xs={12} sm={12} md={12} lg={4}>
                 <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-helper-label">
                     Type experience
@@ -467,7 +468,7 @@ export const CuJob = () => {
                 </FormControl>
               </Grid>
               {typeExperience === false && (
-                <Grid item xs={12} sm={12} md={8} lg={8}>
+                <Grid item xs={12} sm={12} md={12} lg={8}>
                   <CustomRangeSelect
                     label="experience"
                     options={experiences}
@@ -490,7 +491,7 @@ export const CuJob = () => {
               <strong>Salary</strong>
             </InputLabel>
             <Grid container spacing={2}>
-              <Grid item xs={12} md={4} lg={4}>
+              <Grid item xs={12} md={12} lg={4}>
                 <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-helper-label">
                     Type salary
@@ -515,7 +516,7 @@ export const CuJob = () => {
                 </FormControl>
               </Grid>
               {typeSalary === false && (
-                <Grid item xs={12} md={8} lg={8}>
+                <Grid item xs={12} md={12} lg={8}>
                   <FormRangeInput
                     label="salary"
                     data={data}

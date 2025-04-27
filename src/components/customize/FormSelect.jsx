@@ -16,6 +16,7 @@ export const FormSelect = ({
   name,
   setData,
   error,
+  style = false,
   required,
   setError,
 }) => {
@@ -63,15 +64,17 @@ export const FormSelect = ({
           return (
             <MenuItem value={item.value} key={index}>
               <Typography
-                sx={{
-                  display: "inline-block",
-                  padding: "4px 12px",
-                  fontSize: "16px",
-                  minWidth: "80px",
-                  textAlign: "center",
-                  borderRadius: 2,
-                  ...getLevelStyles(item.label),
-                }}
+                sx={
+                  style === true && {
+                    display: "inline-block",
+                    padding: "4px 12px",
+                    fontSize: "16px",
+                    minWidth: "80px",
+                    textAlign: "center",
+                    borderRadius: 2,
+                    ...getLevelStyles(item.label),
+                  }
+                }
               >
                 {item.label}
               </Typography>

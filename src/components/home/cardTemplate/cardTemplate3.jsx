@@ -6,24 +6,15 @@ import {
   IconButton,
   CardHeader,
   CardContent,
-  Typography,
   useMediaQuery,
 } from "@mui/material";
 import { FavoriteBorderRounded } from "@mui/icons-material";
-import styled from "@emotion/styled";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import { getLevelStyles } from "../../../utils/utils";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { Link } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
-
-const TextClamp = styled(Typography)`
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
+import { TextClamp } from "../../customize/TextClamp";
 
 export const CardTemplate3 = ({ data, height }) => {
   const theme = useTheme();
