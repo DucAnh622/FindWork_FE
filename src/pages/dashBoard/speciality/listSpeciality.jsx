@@ -73,7 +73,7 @@ export const ListSpeciality = () => {
     setDeleteType("Single");
     setSpeciality({});
     setSelected([]);
-    getList();
+    getListSpeciality();
   };
 
   const handleDelete = async () => {

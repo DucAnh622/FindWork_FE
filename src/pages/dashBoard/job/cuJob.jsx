@@ -99,7 +99,6 @@ export const CuJob = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const listSkill = useSelector((state) => state.skill?.arrSkill);
   const listCompany = useSelector((state) => state.company?.arrCompany);
   const [data, setData] = useState(dataDefault);
   const [error, setError] = useState(errorDefault);

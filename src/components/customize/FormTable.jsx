@@ -26,6 +26,7 @@ import BorderColorIcon from "@mui/icons-material/BorderColor";
 import { IOSSwitch } from "../../components/customize/switchButton";
 import { useEffect } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import {
   getStatusStyles,
   getLevelStyles,
@@ -120,8 +121,14 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  const { numSelected, title, assign, handleAssigned, handleRemoveAssigned } =
-    props;
+  const {
+    numSelected,
+    title,
+    assign,
+    handleAssigned,
+    handleRemoveAssigned,
+    addDisable,
+  } = props;
   return (
     <>
       {assign === false ? (
@@ -169,17 +176,21 @@ function EnhancedTableToolbar(props) {
               </IconButton>
             </Tooltip>
           ) : (
-            <Tooltip title="Create">
-              <Button
-                variant="outlined"
-                size="small"
-                onClick={() => props.handleModal("create")}
-                color="warning"
-                startIcon={<AddIcon />}
-              >
-                Add
-              </Button>
-            </Tooltip>
+            <>
+              {addDisable === false && (
+                <Tooltip title="Create">
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    onClick={() => props.handleModal("create")}
+                    color="warning"
+                    startIcon={<AddIcon />}
+                  >
+                    Add
+                  </Button>
+                </Tooltip>
+              )}
+            </>
           )}
         </Toolbar>
       ) : (
@@ -224,7 +235,7 @@ function EnhancedTableToolbar(props) {
                   <Button
                     variant="contained"
                     size="small"
-                    onClick={props.handleAssigned}
+                    onClick={handleAssigned}
                     color="primary"
                   >
                     <AddCircleIcon />
@@ -234,7 +245,7 @@ function EnhancedTableToolbar(props) {
                   <Button
                     variant="contained"
                     size="small"
-                    onClick={props.handleRemoveAssigned}
+                    onClick={handleRemoveAssigned}
                   >
                     <RemoveCircleIcon />
                   </Button>
@@ -274,6 +285,10 @@ export const FormTable = (props) => {
     setSelected,
     handleAssigned,
     handleRemoveAssigned,
+    addDisable = false,
+    updateDisable = false,
+    deleteDisable = false,
+    viewDisable = true,
   } = props;
 
   const dispatch = useDispatch();
@@ -336,6 +351,7 @@ export const FormTable = (props) => {
               numSelected={selected.length}
               title={title}
               assign={assign}
+              addDisable={addDisable}
               handleModal={handleModal}
               handleAssigned={handleAssigned}
               handleRemoveAssigned={handleRemoveAssigned}
@@ -467,6 +483,24 @@ export const FormTable = (props) => {
                                     </Typography>
                                   </TableCell>
                                 );
+                              case "roles":
+                                return (
+                                  <TableCell key={cell.id} align="left">
+                                    <Typography
+                                      sx={{
+                                        display: "inline-block",
+                                        padding: "4px 12px",
+                                        fontSize: "16px",
+                                        minWidth: "80px",
+                                        textAlign: "center",
+                                        borderRadius: 2,
+                                        ...getRolesStyles(value[0].name),
+                                      }}
+                                    >
+                                      {value[0].name}
+                                    </Typography>
+                                  </TableCell>
+                                );
                               case "level":
                                 return (
                                   <TableCell key={cell.id} align="left">
@@ -503,6 +537,7 @@ export const FormTable = (props) => {
                                   <TableCell
                                     key={cell.id}
                                     align={cell.numeric ? "right" : "left"}
+                                    sx={{ minWidth: 150 }}
                                   >
                                     <TextClamp title={value}>{value}</TextClamp>
                                   </TableCell>
@@ -514,25 +549,39 @@ export const FormTable = (props) => {
                               sx={{
                                 display: "flex",
                                 alignItems: "center",
-                                justifyContent: "space-between",
+                                justifyContent: "flex-start",
                               }}
                             >
-                              <IconButton
-                                onClick={() => handleModal("edit", row)}
-                                aria-label="delete"
-                                size="medium"
-                                color="primary"
-                              >
-                                <BorderColorIcon fontSize="inherit" />
-                              </IconButton>
-                              <IconButton
-                                onClick={() => handleModal("delete", row)}
-                                aria-label="delete"
-                                size="medium"
-                                color="error"
-                              >
-                                <DeleteOutlineIcon fontSize="inherit" />
-                              </IconButton>
+                              {viewDisable === false && (
+                                <IconButton
+                                  onClick={() => handleModal("view", row)}
+                                  aria-label="view"
+                                  size="medium"
+                                  color="warning"
+                                >
+                                  <VisibilityIcon fontSize="inherit" />
+                                </IconButton>
+                              )}
+                              {updateDisable === false && (
+                                <IconButton
+                                  onClick={() => handleModal("edit", row)}
+                                  aria-label="delete"
+                                  size="medium"
+                                  color="primary"
+                                >
+                                  <BorderColorIcon fontSize="inherit" />
+                                </IconButton>
+                              )}
+                              {deleteDisable === false && (
+                                <IconButton
+                                  onClick={() => handleModal("delete", row)}
+                                  aria-label="delete"
+                                  size="medium"
+                                  color="error"
+                                >
+                                  <DeleteOutlineIcon fontSize="inherit" />
+                                </IconButton>
+                              )}
                             </Box>
                           </TableCell>
                         </TableRow>
@@ -541,7 +590,7 @@ export const FormTable = (props) => {
                   ) : (
                     <TableRow>
                       <TableCell
-                        colSpan={headCells.length + 1}
+                        colSpan={headCells.length + 3}
                         sx={{ textAlign: "center" }}
                       >
                         No data

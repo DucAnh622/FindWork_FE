@@ -14,6 +14,7 @@ import {
 import { DeleteModal } from "../../../components/dashBoard/Modal/deleteModal";
 import { deleteCompany } from "../../../services/companyService";
 import { FormTable } from "../../../components/customize/FormTable";
+import { toast } from "react-toastify";
 
 export const ListCompany = () => {
   const headCells = [
@@ -108,7 +109,7 @@ export const ListCompany = () => {
     setDeleteType("Single");
     setCompany({});
     setSelected([]);
-    getList();
+    getListCompany();
   };
 
   const getListCompany = async () => {

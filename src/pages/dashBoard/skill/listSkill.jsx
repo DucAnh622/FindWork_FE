@@ -30,7 +30,7 @@ export const ListSkill = () => {
       numeric: false,
       disablePadding: false,
       label: "Description",
-    }
+    },
   ];
 
   const dispatch = useDispatch();
@@ -73,7 +73,7 @@ export const ListSkill = () => {
     setDeleteType("Single");
     setSkill({});
     setSelected([]);
-    getList();
+    getListSkill();
   };
 
   const handleDelete = async () => {

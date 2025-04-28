@@ -6,28 +6,20 @@ import {
   IconButton,
   CardHeader,
   Avatar,
-  CardContent,
 } from "@mui/material";
 import {
   FavoriteBorderRounded,
   ShareOutlined,
   MoreVert,
 } from "@mui/icons-material";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 export const CardTemplate1 = ({ data }) => {
   const user = useSelector((state) => state.user?.login?.user);
   return (
     <Card sx={{ maxWidth: 300, width: "100%" }}>
       <CardHeader
-        avatar={
-          <Avatar
-            src={
-              user?.image
-            }
-            aria-label="recipe"
-          />
-        }
+        avatar={<Avatar src={user?.image} aria-label="recipe" />}
         action={
           <IconButton aria-label="settings">
             <MoreVert />
