@@ -32,6 +32,7 @@ import {
   getLevelStyles,
   getMethodStyles,
   getRolesStyles,
+  formatDateData,
 } from "../../utils/utils";
 import { useDispatch } from "react-redux";
 import Zoom from "react-medium-image-zoom";
@@ -501,10 +502,19 @@ export const FormTable = (props) => {
                                     </Typography>
                                   </TableCell>
                                 );
+                              case "date":
+                                return (
+                                  <TableCell key={cell.id} align="left">
+                                    <Typography title={value}>
+                                      {formatDateData(value)}
+                                    </Typography>
+                                  </TableCell>
+                                );
                               case "level":
                                 return (
                                   <TableCell key={cell.id} align="left">
-                                    <Typography
+                                    <TextClamp
+                                      title={value}
                                       sx={{
                                         display: "inline-block",
                                         padding: "4px 12px",
@@ -516,7 +526,7 @@ export const FormTable = (props) => {
                                       }}
                                     >
                                       {value}
-                                    </Typography>
+                                    </TextClamp>
                                   </TableCell>
                                 );
                               case "check":

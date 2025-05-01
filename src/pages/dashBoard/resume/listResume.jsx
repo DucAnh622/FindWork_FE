@@ -36,18 +36,18 @@ export const ListResume = () => {
       label: "Name CV",
     },
     {
-      id: "url",
-      type: "text",
+      id: "createdAt",
+      type: "date",
       numeric: false,
       disablePadding: false,
-      label: "File",
+      label: "Created Day",
     },
     {
-      id: "template",
-      type: "text",
+      id: "updatedAt",
+      type: "date",
       numeric: false,
       disablePadding: false,
-      label: "Template",
+      label: "Updated Day",
     },
   ];
 
