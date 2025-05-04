@@ -32,6 +32,7 @@ export const ResumePage = () => {
   const [error, setError] = useState(errorDefault);
   const [open, setOpen] = useState(false);
   const [isLoading, setLoading] = useState(false);
+  const [file,setFile] = useState(null);
   const validate = () => {
     let _error = { ...errorDefault };
     let isValid = true;
@@ -176,6 +177,8 @@ export const ResumePage = () => {
                 error={error}
                 setError={setError}
                 required={true}
+                file={file}
+                setFile={setFile}
               />
             </Grid>
             <Grid

@@ -73,7 +73,7 @@ export const ListResume = () => {
     switch (type) {
       case "view":
         setOpen(true);
-        setResume(item);
+        setResume(item.url);
         break;
     }
   };
@@ -114,7 +114,7 @@ export const ListResume = () => {
         deleteDisable={true}
         viewDisable={false}
       />
-      <PDFModal open={open} resume={resume} handleClose={handleClose} />
+      <PDFModal open={open} file={resume} handleClose={handleClose} />
     </>
   );
 };

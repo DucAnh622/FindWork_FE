@@ -266,6 +266,7 @@ EnhancedTableToolbar.propTypes = {
 
 export const FormTable = (props) => {
   const {
+    id,
     assign = false,
     title,
     getList,
@@ -295,8 +296,12 @@ export const FormTable = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    getList();
-  }, [page, limit, order, orderBy]);
+    if (id) {
+      getList();
+    } else {
+      getList();
+    }
+  }, [id, page, limit, order, orderBy]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";

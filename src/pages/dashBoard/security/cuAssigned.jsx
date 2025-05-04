@@ -115,6 +115,7 @@ export const CuAsssigned = ({ id }) => {
         assign={true}
         title="assigned"
         list={list}
+        id={id}
         headCells={headCells}
         getList={getListAssign}
         isLoading={isLoading}

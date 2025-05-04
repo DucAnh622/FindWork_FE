@@ -1,12 +1,11 @@
 import axiosInstance from "./axiosInstance";
-import { uploadFile } from "./uploadService";
 
 export const createResume = async (data) => {
-  let res = await uploadFile(data.url);
-  if (res && res.statusCode === 201) {
-    data.url = res.data?.url;
-  }
-  return axiosInstance.post("/resumes/", data);
+  return axiosInstance.post("/resumes/", data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 };
 
 export const getListResume = (page, limit, order, sort) => {

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Button,
   Box,
@@ -26,13 +26,29 @@ export const FormImage = ({
   const [imageType, setImageType] = useState("link");
   const [selectedImage, setSelectedImage] = useState(null);
 
+  useEffect(() => {
+    if (imageType === "link" && data[name]) {
+      setSelectedImage(data[name]);
+    }
+  }, [imageType, data, name]);
+
   const handleImageTypeChange = (event) => {
     setImageType(event.target.value);
     setSelectedImage(null);
+    if (event.target.value === "link") {
+      setData({ ...data, [name]: "" });
+    } else {
+      setData({ ...data, [name]: selectedImage });
+    }
   };
 
   const handleImageUpload = (event) => {
-    setSelectedImage(URL.createObjectURL(event.target.files[0]));
+    const file = event.target.files[0];
+    if (file) {
+      const imageURL = URL.createObjectURL(file);
+      setSelectedImage(imageURL);
+      setData({ ...data, [name]: file });
+    }
   };
 
   return (
@@ -45,7 +61,7 @@ export const FormImage = ({
       </div>
       <div className="formImageItem option">
         {imageType === "link" ? (
-          <Box sx={{ width: '100%' }}>
+          <Box sx={{ width: "100%" }}>
             <FormInput
               label={label}
               placeholder={placeholder}

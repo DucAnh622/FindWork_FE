@@ -99,7 +99,7 @@ export const ListJob = () => {
   const handleModal = (type, item) => {
     switch (type) {
       case "edit":
-        navigate(`/dashboard/company/update/${item.id}`);
+        navigate(`/dashboard/job/update/${item.id}`);
         break;
       case "delete":
         setOpenDelete(true);
@@ -107,7 +107,7 @@ export const ListJob = () => {
         setDeleteType(item ? "Single" : "Multiple");
         break;
       default:
-        navigate("/dashboard/company/create");
+        navigate("/dashboard/job/create");
         break;
     }
   };

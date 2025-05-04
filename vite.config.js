@@ -6,5 +6,6 @@ export default defineConfig({
   plugins: [react()],
   optimizeDeps: {
     include: ["@react-pdf/renderer"],
+    exclude: ["js-big-decimal"],
   },
 });

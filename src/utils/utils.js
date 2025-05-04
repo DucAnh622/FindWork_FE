@@ -454,3 +454,17 @@ export const formatDay = (date) => {
   const [year, month] = date.split("-");
   return `${month}/${year}`;
 };
+
+export const convertToFormData = (data) => {
+  const formData = new FormData();
+  for (const key in data) {
+    if (data[key] instanceof Array) {
+      data[key].forEach((item) => {
+        formData.append(key, item);
+      });
+    } else {
+      formData.append(key, data[key]);
+    }
+  }
+  return formData;
+}

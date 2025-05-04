@@ -43,7 +43,6 @@ import { FormSelect } from "../../../components/customize/FormSelect";
 import { FormRangeInput } from "../../../components/customize/FormRangeInput";
 import { FormRangeTime } from "../../../components/customize/FormRangeTime";
 import { FormInput } from "../../../components/customize/FormInput";
-import { FormMultipleSelect } from "../../../components/customize/FormMultipleSelect";
 import { FormMultipleSelectInfinity } from "../../../components/customize/FormMultipleSelectInfinity";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -384,16 +383,6 @@ export const CuJob = () => {
                 lg={3}
                 sx={{ display: "flex", alignItems: "flex-start" }}
               >
-                {/* <FormMultipleSelect
-                  data={data}
-                  setData={setData}
-                  name="skills"
-                  label="Select skills"
-                  required={true}
-                  options={formatList(listSkill)}
-                  error={error}
-                  setError={setError}
-                /> */}
                 <FormMultipleSelectInfinity
                   data={data}
                   setData={setData}

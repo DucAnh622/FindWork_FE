@@ -1,7 +1,11 @@
 import axiosInstance from "./axiosInstance";
 
 export const createCompany = (data) => {
-  return axiosInstance.post("/companies", data);
+  return axiosInstance.post("/companies", data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 };
 
 export const getListCompany = (page, limit, order, sort) => {
@@ -53,6 +57,10 @@ export const getCompanyById = (id) => {
   return axiosInstance.get(`/companies/${id}`);
 };
 
-export const updateCompany = (data) => {
-  return axiosInstance.put(`/companies/${data.id}`, data);
+export const updateCompany = (data, id) => {
+  return axiosInstance.put(`/companies/${id}`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 };
