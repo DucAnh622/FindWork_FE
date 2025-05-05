@@ -45,18 +45,24 @@ export const FormSelectInfinity = ({
         const list = result?.payload?.list || [];
         const formattedList = formatList(list);
 
-        const selectedId = data[name];
-        const exists = formattedList.some((item) => item.value === selectedId);
-
         const filteredList = filterOutSelected(formattedList, selected);
 
-        setInternalOptions([
-          ...(selected?.value ? [selected] : []),
-          ...filteredList,
-        ]);
+        setInternalOptions((prev) => {
+          const newOptions = mergeUnique(prev, filteredList);
+          return selected?.value
+            ? [
+                selected,
+                ...newOptions.filter((item) => item.value !== selected.value),
+              ]
+            : newOptions;
+        });
 
-        if (filteredList.length < limit) setHasMore(false);
+        if (formattedList.length < limit) {
+          setHasMore(false);
+        }
 
+        const selectedId = data[name];
+        const exists = formattedList.some((item) => item.value === selectedId);
         if (selectedId && !exists && selected?.value !== selectedId) {
           const extraResult = await getList(null, null, selectedId);
           const extraList = extraResult?.payload?.list || [];
@@ -73,8 +79,10 @@ export const FormSelectInfinity = ({
       }
     };
 
-    fetchData();
-  }, [getList, data[name]]);
+    if (internalOptions.length === (selected?.value ? 1 : 0) || !hasMore) {
+      fetchData();
+    }
+  }, [getList, data[name], selected]);
 
   const handleScroll = async (e) => {
     const { scrollTop, scrollHeight, clientHeight } = e.target;
@@ -83,15 +91,19 @@ export const FormSelectInfinity = ({
     if (isBottom && !loading && hasMore) {
       setLoading(true);
       try {
-        const result = await getList(currentPage.current + 1, limit);
+        const nextPage = currentPage.current + 1;
+        const result = await getList(nextPage, limit);
         const moreList = result?.payload?.list || [];
         const formatted = formatList(moreList);
 
         const filtered = filterOutSelected(formatted, selected);
 
         setInternalOptions((prev) => mergeUnique(prev, filtered));
-        currentPage.current += 1;
-        if (filtered.length < limit) setHasMore(false);
+        currentPage.current = nextPage;
+
+        if (filtered.length < limit) {
+          setHasMore(false);
+        }
       } catch (err) {
         console.error("Error loading more data:", err);
       } finally {

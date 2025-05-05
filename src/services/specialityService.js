@@ -8,9 +8,9 @@ export const updateSpeciality = (data) => {
   return axiosInstance.put(`/specialities/${data.id}`, data);
 };
 
-export const getListSpeciality = (page, limit, order, sort) => {
+export const getListSpeciality = (page, limit, order, sort, keyword) => {
   return axiosInstance.get(
-    `/specialities?page=${page}&limit=${limit}&order=${order}&sort=${sort}`
+    `/specialities?page=${page}&limit=${limit}&keyword=${keyword}&order=${order}&sort=${sort}`
   );
 };
 

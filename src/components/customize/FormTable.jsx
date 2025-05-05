@@ -430,6 +430,7 @@ export const FormTable = (props) => {
                                             borderRadius: "8px",
                                             objectFit: "cover",
                                           }}
+                                          loading="lazy"
                                         />
                                       </Zoom>
                                     </Box>

@@ -7,9 +7,9 @@ import { toast } from "react-toastify";
 
 export const getListSpecialityRedux = createAsyncThunk(
   "speciality/list",
-  async ({ page, limit, order, sort }, { rejectWithValue }) => {
+  async ({ page, limit, order, sort, keyword = "" }, { rejectWithValue }) => {
     try {
-      const res = await getListSpeciality(page, limit, order, sort);
+      const res = await getListSpeciality(page, limit, order, sort, keyword);
       if (res && res.statusCode === 200) {
         return res.data;
       } else {
@@ -45,7 +45,7 @@ const initialState = {
   isLoading: false,
   listSpeciality: [],
   arrSpeciality: [],
-  key: "",
+  keyword: "",
   page: 0,
   total: 0,
   limit: 10,

@@ -44,7 +44,6 @@ export const PDFModal = ({ open, file, handleClose }) => {
             width="100%"
             height="100%"
             style={{
-              border: "none",
               overflowX: "hidden",
               overflowY: "auto",
               border: "1px solid #ccc",
