@@ -15,7 +15,6 @@ import { FormInput } from "../../../components/customize/FormInput";
 import { hasValue, convertToFormData } from "../../../utils/utils";
 import { FormEditor } from "../../../components/customize/FormEditor";
 import { FormSelectInfinity } from "../../../components/customize/FormSelectInfinity";
-// import { FormSFI } from "../../../components/customize/FormSFI";
 import { FormFile } from "../../../components/customize/FormFile";
 import { CircularWithValueLabel } from "../../../components/customize/loading";
 import { useDispatch } from "react-redux";

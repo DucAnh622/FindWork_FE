@@ -143,7 +143,10 @@ export const FormFile = ({
 
             <Box
               sx={{
-                border: "1px solid #ccc",
+                border:
+                  required === true && error[name]
+                    ? "1px solid #d32f2f"
+                    : "1px solid #ccc",
                 borderRadius: "4px",
                 p: 1,
                 fontSize: "0.9rem",

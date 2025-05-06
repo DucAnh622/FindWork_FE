@@ -1,5 +1,6 @@
 import MDEditor from "@uiw/react-md-editor";
 import { FormControl, FormHelperText } from "@mui/material";
+import "../../assets/styles/FormEditor.scss";
 
 export const FormEditor = ({ label, data, name, setData, error, setError }) => {
   const handleChange = (value) => {
@@ -25,18 +26,43 @@ export const FormEditor = ({ label, data, name, setData, error, setError }) => {
 
   return (
     <FormControl fullWidth error={Boolean(error[name])}>
-      {label && <label>{label}</label>}
+      <div style={{ position: "relative" }}>
+        {label && (
+          <label
+            style={{
+              position: "absolute",
+              top: "-0.75rem",
+              left: "0.75rem",
+              backgroundColor: "#fff",
+              padding: "0 4px",
+              fontSize: "0.875rem",
+              color: error[name] ? "#d32f2f" : "rgba(0, 0, 0, 0.6)",
+            }}
+          >
+            {label}
+          </label>
+        )}
 
-      <div className="boxEdit">
-        <MDEditor
-          data-color-mode={"light"} 
-          value={data[name]}
-          name={name}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          height={300}
-        />
+        <div
+          style={{
+            border: `1px solid ${
+              error[name] ? "#d32f2f" : "rgba(0, 0, 0, 0.23)"
+            }`,
+            borderRadius: "4px",
+            padding: "0.5rem",
+          }}
+        >
+          <MDEditor
+            data-color-mode={"light"}
+            value={data[name]}
+            name={name}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            height={300}
+          />
+        </div>
       </div>
+
       {error[name] && <FormHelperText>{error[name]}</FormHelperText>}
     </FormControl>
   );

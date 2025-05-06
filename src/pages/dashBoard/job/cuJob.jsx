@@ -359,6 +359,7 @@ export const CuJob = () => {
                   label="Step"
                   options={method}
                   error={error}
+                  required={true}
                   setError={setError}
                 />
               </Grid>
@@ -557,7 +558,7 @@ export const CuJob = () => {
         <Grid item xs={12} md={12} lg={12}>
           <Box sx={{ p: 2, borderRadius: 2, border: "1px solid #333" }}>
             <InputLabel id="demo-simple-select-helper-label" sx={{ mb: 2 }}>
-              <strong>Description</strong>
+              <strong>About</strong>
             </InputLabel>
             <Grid container>
               <FormEditor

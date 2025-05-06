@@ -5,11 +5,30 @@ import {
   CircularProgress,
   FormControl,
   FormHelperText,
-  Popper,
 } from "@mui/material";
 import { formatList, filterOutSelected } from "../../utils/utils";
 import { TextClamp } from "../customize/TextClamp";
 import { debounce } from "lodash";
+
+const CustomListboxComponent = React.forwardRef(function CustomListboxComponent(
+  props,
+  ref
+) {
+  const { children, onScroll, ...other } = props;
+
+  return (
+    <ul
+      {...other}
+      ref={ref}
+      onScroll={(event) => {
+        if (onScroll) onScroll(event);
+      }}
+      style={{ maxHeight: 300, overflowY: "auto" }}
+    >
+      {children}
+    </ul>
+  );
+});
 
 export const FormSFI = ({
   label,
@@ -23,14 +42,11 @@ export const FormSFI = ({
   getList,
 }) => {
   const limit = 10;
-  const [internalOptions, setInternalOptions] = useState(
-    selected && selected.value ? [selected] : []
-  );
+  const [internalOptions, setInternalOptions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [keyword, setKeyword] = useState("");
   const currentPage = useRef(1);
-  const totalRecords = useRef(0);
 
   const mergeUnique = (prev, next) => {
     const existingIds = new Set(prev.map((item) => item.value));
@@ -54,31 +70,25 @@ export const FormSFI = ({
         const list = result?.payload?.list || [];
         const formattedList = formatList(list);
 
+        let updatedOptions = formattedList;
         const selectedId = data[name];
-        const exists = formattedList.some((item) => item.value === selectedId);
 
-        const filteredList = filterOutSelected(formattedList, selected);
-
-        setInternalOptions([
-          ...(selected?.value ? [selected] : []),
-          ...filteredList,
-        ]);
-
-        if (filteredList.length < limit) {
-          setHasMore(false);
-        } else {
-          setHasMore(true);
-        }
-
-        if (selectedId && !exists && selected?.value !== selectedId) {
+        // Fetch the selected item if it exists and isn't in the current list
+        if (
+          selectedId &&
+          !formattedList.some((item) => item.value === selectedId)
+        ) {
           const extraResult = await getList(null, null, selectedId);
           const extraList = extraResult?.payload?.list || [];
           const formattedExtra = formatList(extraList);
-
           if (formattedExtra.length > 0) {
-            setInternalOptions((prev) => mergeUnique(prev, formattedExtra));
+            updatedOptions = mergeUnique(formattedList, formattedExtra);
           }
         }
+
+        // Set options, ensuring no duplicates
+        setInternalOptions(updatedOptions);
+        setHasMore(list.length >= limit);
       } catch (err) {
         console.error("Error fetching data:", err);
       } finally {
@@ -87,7 +97,7 @@ export const FormSFI = ({
     };
 
     fetchData();
-  }, [keyword, getList, data[name], selected]);
+  }, [keyword, getList]);
 
   const handleScroll = async (event) => {
     const { scrollTop, scrollHeight, clientHeight } = event.target;
@@ -103,12 +113,8 @@ export const FormSFI = ({
         const formatted = formatList(moreList);
 
         if (formatted.length > 0) {
-          const filtered = filterOutSelected(formatted, selected);
-          setInternalOptions((prev) => mergeUnique(prev, filtered));
-
-          if (formatted.length < limit) {
-            setHasMore(false);
-          }
+          setInternalOptions((prev) => mergeUnique(prev, formatted));
+          setHasMore(formatted.length >= limit);
         } else {
           setHasMore(false);
         }
@@ -123,11 +129,11 @@ export const FormSFI = ({
   const handleChange = (event, value) => {
     const selectedValue = value ? value.value : "";
     setData((prev) => ({ ...prev, [name]: selectedValue }));
-    if (required === true) setError((prev) => ({ ...prev, [name]: "" }));
+    if (required) setError((prev) => ({ ...prev, [name]: "" }));
   };
 
   const handleBlur = () => {
-    if (required === true && !data[name]) {
+    if (required && !data[name]) {
       setError((prev) => ({ ...prev, [name]: "This field is required" }));
     }
   };
@@ -136,23 +142,8 @@ export const FormSFI = ({
     debouncedSearch.current(newInputValue);
   };
 
-  // Custom Popper to attach scroll event
-  const CustomPopper = (props) => {
-    const { children, ...other } = props;
-    return (
-      <Popper {...other}>
-        <div
-          onScroll={handleScroll}
-          style={{ maxHeight: "300px", overflowY: "auto" }}
-        >
-          {children}
-        </div>
-      </Popper>
-    );
-  };
-
   return (
-    <FormControl fullWidth error={required === true && !!error[name]}>
+    <FormControl fullWidth error={required && !!error[name]}>
       <Autocomplete
         value={
           internalOptions.find((option) => option.value === data[name]) || null
@@ -161,12 +152,15 @@ export const FormSFI = ({
         onBlur={handleBlur}
         options={internalOptions}
         getOptionLabel={(option) => option.label || ""}
-        isOptionEqualToValue={(option, value) => option.value === value.value}
+        isOptionEqualToValue={(option, value) => option.value === value?.value}
         loading={loading}
         onInputChange={handleInputChange}
         disableClearable
+        openOnFocus
         getOptionDisabled={(option) => !option.value}
-        PopperComponent={CustomPopper}
+        ListboxComponent={(listboxProps) => (
+          <CustomListboxComponent {...listboxProps} onScroll={handleScroll} />
+        )}
         renderInput={(params) => (
           <TextField
             {...params}
@@ -189,10 +183,109 @@ export const FormSFI = ({
           </li>
         )}
       />
-      {required === true && error[name] && (
+      {required && error[name] && (
         <FormHelperText>{error[name]}</FormHelperText>
       )}
     </FormControl>
   );
 };
 
+// import React, { useState, useEffect } from "react";
+// import {
+//   Autocomplete,
+//   TextField,
+//   CircularProgress,
+//   FormControl,
+//   FormHelperText,
+// } from "@mui/material";
+// import { formatList } from "../../utils/utils";
+// import { TextClamp } from "../customize/TextClamp";
+
+// export const FormSFI = ({
+//   label,
+//   data,
+//   name,
+//   setData,
+//   error,
+//   required,
+//   setError,
+//   selected,
+//   getList,
+// }) => {
+//   const [loading, setLoading] = useState(true);
+//   const [list, setList] = useState([]);
+
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       setLoading(true);
+//       const result = await getList(1, 9999, "");
+//       if (result?.payload?.list) {
+//         setList(result.payload.list);
+//       }
+//       setLoading(false);
+//     };
+
+//     fetchData();
+//   }, [getList]);
+
+//   const handleAutocompleteChange = (event, newValue) => {
+//     setData((prevData) => ({
+//       ...prevData,
+//       [name]: newValue,
+//     }));
+
+//     if (required === true && !newValue) {
+//       setError((prevError) => ({
+//         ...prevError,
+//         [name]: `${label} is required.`,
+//       }));
+//     } else {
+//       setError((prevError) => {
+//         const { [name]: removedError, ...rest } = prevError;
+//         return rest;
+//       });
+//     }
+//   };
+
+//   return (
+//     <FormControl fullWidth error={required === true && !!error[name]}>
+//       <Autocomplete
+//         options={formatList(list || [])}
+//         loading={loading}
+//         value={data[name] || selected}
+//         onChange={handleAutocompleteChange}
+//         renderInput={(params) => (
+//           <>
+//             <TextField
+//               {...params}
+//               label={`${label} *`}
+//               sx={{
+//                 "& .MuiOutlinedInput-root": {
+//                   "& .MuiOutlinedInput-notchedOutline": {
+//                     borderColor: required === true && error[name] ? "red" : "",
+//                   },
+//                   "&:hover .MuiOutlinedInput-notchedOutline": {
+//                     borderColor: required === true && error[name] ? "red" : "",
+//                   },
+//                   "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+//                     borderColor: required === true && error[name] ? "red" : "",
+//                   },
+//                 },
+//                 "& .MuiInputLabel-root": {
+//                   color: required === true && error[name] ? "red" : "",
+//                 },
+//                 "& .MuiInputLabel-root.Mui-focused": {
+//                   color: required === true && error[name] ? "red" : "",
+//                 },
+//               }}
+//             />
+//             {loading && <CircularProgress size={24} />}
+//           </>
+//         )}
+//       />
+//       {required === true && error[name] && (
+//         <FormHelperText>{error[name]}</FormHelperText>
+//       )}
+//     </FormControl>
+//   );
+// };
