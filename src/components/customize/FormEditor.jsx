@@ -1,6 +1,5 @@
 import MDEditor from "@uiw/react-md-editor";
 import { FormControl, FormHelperText } from "@mui/material";
-import "../../assets/styles/FormEditor.scss";
 
 export const FormEditor = ({ label, data, name, setData, error, setError }) => {
   const handleChange = (value) => {
