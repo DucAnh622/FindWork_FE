@@ -1,0 +1,119 @@
+.ContentPage {
+  background-color: #f3f5f7;
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    /* search */
+    .search-bar {
+      padding: 16px 16px 0;
+      .search-form {
+        display: flex;
+        overflow: hidden;
+        align-items: center;
+      }
+    }
+    /* banner */
+    .banner {
+      padding: 16px 16px 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      .banner-left {
+        flex: 1;
+        height: 300px;
+        border-radius: 9px 8px;
+        overflow: hidden;
+      }
+      .banner-right {
+        flex: 3;
+        margin-left: 16px;
+        .banner-right-item {
+          background-image: url("https://blog.snappa.com/wp-content/uploads/2024/01/Twitch-Banner-Blog-Post.jpg");
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;
+          height: 142px;
+          border-radius: 8px;
+          &:last-child {
+            margin-top: 16px;
+            background-image: url("https://famesters.com/wp-content/uploads/2023/11/Different-types-of-twitch-streamers-1.png");
+          }
+        }
+      }
+    }
+    /* List-medium */
+    .list-medium {
+      padding: 16px 16px 0;
+      .header-list {
+        display: grid;
+        grid-template-columns: auto auto;
+        align-items: center;
+        justify-content: space-between;
+        .header-list-item {
+          h2 {
+            color: #9d42ff;
+            margin-bottom: 8px;
+          }
+          & > a {
+            color: #1f2937;
+            transition: all 0.3s;
+            margin-bottom: 8px;
+            &:hover {
+              color: #9d42ff;
+            }
+          }
+        }
+      }
+      .body-list {
+        margin-top: 8px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        .body-list-item {
+          cursor: pointer;
+          &:hover {
+            border-color: #9d42ff;
+          }
+          transition: all 0.3s ease;
+          border: 1px solid #1f2937;
+          background-color: #fff;
+          border-radius: 8px;
+          height: 108px;
+          width: 100%;
+          max-width: 380px;
+          box-sizing: border-box;
+          padding: 8px;
+          .body-list-item-info {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            img {
+              object-fit: fill;
+              width: 50px;
+              height: 50px;
+              margin: auto;
+            }
+            .body-list-item-info-text {
+              color: #1f2937;
+              flex: 1;
+              margin-left: 8px;
+              p {
+                &:last-child {
+                  color: #9d42ff;
+                }
+              }
+            }
+          }
+
+          .body-list-item-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+          }
+        }
+      }
+    }
+  }
+}
