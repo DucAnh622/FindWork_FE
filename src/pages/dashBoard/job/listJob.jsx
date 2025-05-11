@@ -1,5 +1,4 @@
 import "../../../assets/styles/dashBoard.scss";
-import * as React from "react";
 import { useState } from "react";
 import { formatSort } from "../../../utils/utils";
 import { useSelector, useDispatch } from "react-redux";

@@ -14,29 +14,36 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { CircularWithValueLabel } from "../../../components/customize/loading";
 import { TextClamp } from "../../../components/customize/TextClamp";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import { getListSpecialityRedux } from "../../../redux/slices/specialitySlice";
 
-export const MiniList = ({
-  isloading,
-  list = [],
-  page,
-  getListRedux,
-  changePage,
-  changeRowPerPage,
-  totalPage,
-}) => {
+export const MiniList = () => {
+  const [page, setPage] = useState(0);
+  const [list, setList] = useState([]);
+  const [totalPage, setTotalPage] = useState(0);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const getList = async () => {
-    await dispatch(changeRowPerPage(5));
-    await dispatch(
-      getListRedux({
-        page: page + 1,
-        limit: 5,
-        order: "createdAt",
-        sort: "desc",
-      })
-    );
+    try {
+      setLoading(true);
+      let { payload } = await dispatch(
+        getListSpecialityRedux({
+          page: page + 1,
+          limit: 5,
+          order: "createdAt",
+          sort: "DESC",
+        })
+      );
+      setList(payload.list);
+      setTotalPage(payload.totalPages);
+    } catch (error) {
+      toast.error(error || "Server error");
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -44,11 +51,11 @@ export const MiniList = ({
   }, [page]);
 
   const handlePrevPage = () => {
-    if (page > 0) dispatch(changePage(page - 1));
+    if (page > 0) setPage(page - 1);
   };
 
   const handleNextPage = () => {
-    if (page < totalPage - 1) dispatch(changePage(page + 1));
+    if (page < totalPage - 1) setPage(page + 1);
   };
 
   const handleNavigate = (id) => {
@@ -68,7 +75,7 @@ export const MiniList = ({
         flexDirection: "column",
       }}
     >
-      {isloading ? (
+      {loading === true ? (
         <CircularWithValueLabel />
       ) : (
         <>
@@ -78,6 +85,7 @@ export const MiniList = ({
               m: "0 auto",
               width: "100%",
               flex: 1,
+              minHeight: 240,
             }}
           >
             {list.map((item, index) => (
@@ -169,3 +177,4 @@ export const MiniList = ({
     </Paper>
   );
 };
+

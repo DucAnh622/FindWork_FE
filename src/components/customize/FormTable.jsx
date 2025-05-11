@@ -423,9 +423,8 @@ export const FormTable = (props) => {
                                           src={value}
                                           alt={row.name}
                                           style={{
-                                            height: "50px",
-                                            maxWidth: "70px",
-                                            width: "100%",
+                                            height: "65px",
+                                            width: "65px",
                                             margin: "auto",
                                             borderRadius: "8px",
                                             objectFit: "cover",
