@@ -1,6 +1,6 @@
 .footer {
   background-color: #fff;
-  padding: 40px 0;
+  padding: 40px 0 0;
   border-top: 1px solid #e0e0e0;
 
   .container {
@@ -37,7 +37,7 @@
           font-size: 14px;
 
           &:hover {
-            color: #00c4b4;
+            color: #9d42ff;
           }
         }
       }
@@ -49,6 +49,7 @@
       img {
         display: block;
         width: 100%;
+        max-width: 274px;
         border: none !important;
       }
     }
@@ -72,10 +73,8 @@
 
   .footer-bottom {
     text-align: center;
-    margin-top: 20px;
-    padding-top: 20px;
+    padding: 9px 0 8px;
     border-top: 1px solid #e0e0e0;
-
     p {
       font-size: 12px;
       color: #999;

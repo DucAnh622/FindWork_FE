@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
@@ -12,9 +12,7 @@ import {
 } from "@mui/material";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import { CircularWithValueLabel } from "../../../components/customize/loading";
 import { TextClamp } from "../../../components/customize/TextClamp";
-import { useState } from "react";
 import { toast } from "react-toastify";
 import { getListSpecialityRedux } from "../../../redux/slices/specialitySlice";
 
@@ -22,14 +20,12 @@ export const MiniList = () => {
   const [page, setPage] = useState(0);
   const [list, setList] = useState([]);
   const [totalPage, setTotalPage] = useState(0);
-  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const getList = async () => {
     try {
-      setLoading(true);
-      let { payload } = await dispatch(
+      const { payload } = await dispatch(
         getListSpecialityRedux({
           page: page + 1,
           limit: 5,
@@ -41,8 +37,6 @@ export const MiniList = () => {
       setTotalPage(payload.totalPages);
     } catch (error) {
       toast.error(error || "Server error");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -62,6 +56,8 @@ export const MiniList = () => {
     navigate(`/speciality/${id}`);
   };
 
+  if (!list || list.length === 0) return null;
+
   return (
     <Paper
       elevation={3}
@@ -75,106 +71,103 @@ export const MiniList = () => {
         flexDirection: "column",
       }}
     >
-      {loading === true ? (
-        <CircularWithValueLabel />
-      ) : (
-        <>
-          <List
-            disablePadding
-            sx={{
-              m: "0 auto",
-              width: "100%",
-              flex: 1,
-              minHeight: 240,
-            }}
-          >
-            {list.map((item, index) => (
-              <Box key={index}>
-                <ListItem
-                  button="true"
-                  onClick={() => handleNavigate(item.id)}
-                  sx={{
-                    fontWeight: 500,
-                    fontSize: 8,
-                    pr: 1,
-                    cursor: "pointer",
-                    "&:hover": { backgroundColor: "#f5f5f5", color: "#9d42ff" },
-                    "&:hover svg": { color: "#9d42ff" },
-                  }}
-                >
-                  <ListItemText
-                    primary={<TextClamp lines={1}>{item.name}</TextClamp>}
-                    primaryTypographyProps={{ fontWeight: 500, fontSize: 8 }}
-                  />
-                  <ChevronRightIcon fontSize="small" color="action" />
-                </ListItem>
-              </Box>
-            ))}
-          </List>
-
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              px: 2,
-              py: 1,
-              fontSize: 12,
-              color: "gray",
-              marginTop: "auto",
-            }}
-          >
-            <Typography fontSize={12}>{`${page + 1}/${totalPage}`}</Typography>
-            <Box display="flex" gap={1}>
-              <IconButton
-                size="small"
-                onClick={handlePrevPage}
-                disabled={page === 0}
-                sx={{
-                  border: "1px solid #9d42ff",
-                  backgroundColor: "white",
+      <List
+        disablePadding
+        sx={{
+          m: "0 auto",
+          width: "100%",
+          flex: 1,
+          minHeight: 240,
+        }}
+      >
+        {list.map((item, index) => (
+          <Box key={index}>
+            <ListItem
+              button
+              onClick={() => handleNavigate(item.id)}
+              sx={{
+                fontWeight: 500,
+                fontSize: 8,
+                pr: 1,
+                cursor: "pointer",
+                "&:hover": {
+                  backgroundColor: "#f5f5f5",
                   color: "#9d42ff",
-                  "&:hover": {
-                    backgroundColor: "#9d42ff",
-                    color: "white",
-                  },
-                  "&:disabled": {
-                    borderColor: "gray",
-                    color: "gray",
-                    cursor: "not-allowed",
-                  },
-                  transition: "background-color 0.3s, color 0.3s",
+                },
+                "&:hover svg": { color: "#9d42ff" },
+              }}
+            >
+              <ListItemText
+                primary={<TextClamp lines={1}>{item.name}</TextClamp>}
+                primaryTypographyProps={{
+                  fontWeight: 500,
+                  fontSize: 8,
                 }}
-              >
-                <ChevronLeftIcon fontSize="small" />
-              </IconButton>
-              <IconButton
-                size="small"
-                onClick={handleNextPage}
-                disabled={page === totalPage - 1}
-                sx={{
-                  border: "1px solid #9d42ff",
-                  backgroundColor: "white",
-                  color: "#9d42ff",
-                  "&:hover": {
-                    backgroundColor: "#9d42ff",
-                    color: "white",
-                  },
-                  "&:disabled": {
-                    borderColor: "gray",
-                    color: "gray",
-                    cursor: "not-allowed",
-                  },
-                  transition: "background-color 0.3s, color 0.3s",
-                }}
-              >
-                <ChevronRightIcon fontSize="small" />
-              </IconButton>
-            </Box>
+              />
+              <ChevronRightIcon fontSize="small" color="action" />
+            </ListItem>
           </Box>
-        </>
-      )}
+        ))}
+      </List>
+
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          px: 2,
+          py: 1,
+          fontSize: 12,
+          color: "gray",
+          marginTop: "auto",
+        }}
+      >
+        <Typography fontSize={12}>{`${page + 1}/${totalPage}`}</Typography>
+        <Box display="flex" gap={1}>
+          <IconButton
+            size="small"
+            onClick={handlePrevPage}
+            disabled={page === 0}
+            sx={{
+              border: "1px solid #9d42ff",
+              backgroundColor: "white",
+              color: "#9d42ff",
+              "&:hover": {
+                backgroundColor: "#9d42ff",
+                color: "white",
+              },
+              "&:disabled": {
+                borderColor: "gray",
+                color: "gray",
+                cursor: "not-allowed",
+              },
+            }}
+          >
+            <ChevronLeftIcon fontSize="small" />
+          </IconButton>
+          <IconButton
+            size="small"
+            onClick={handleNextPage}
+            disabled={page === totalPage - 1}
+            sx={{
+              border: "1px solid #9d42ff",
+              backgroundColor: "white",
+              color: "#9d42ff",
+              "&:hover": {
+                backgroundColor: "#9d42ff",
+                color: "white",
+              },
+              "&:disabled": {
+                borderColor: "gray",
+                color: "gray",
+                cursor: "not-allowed",
+              },
+            }}
+          >
+            <ChevronRightIcon fontSize="small" />
+          </IconButton>
+        </Box>
+      </Box>
     </Paper>
   );
 };
-

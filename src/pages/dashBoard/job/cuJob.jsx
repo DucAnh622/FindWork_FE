@@ -135,15 +135,7 @@ export const CuJob = () => {
   const getDetailJob = async (id) => {
     let res = await getJobByID(id);
     if (res && res.statusCode === 200) {
-      const {
-        startDate,
-        endDate,
-        workDay,
-        workTime,
-        salary,
-        experience,
-        ...result
-      } = res.data;
+      const { ...result } = res.data;
       const { minExperience, maxExperience } = divideExperience(
         res.data.experience
       );
@@ -204,29 +196,16 @@ export const CuJob = () => {
   };
 
   const handleClose = async () => {
-    type === true && getDetailJob(id);
+    navigate("/dashboard/job");
     setError(errorDefault);
     setData(dataDefault);
-    navigate("/dashboard/job");
     setTypeExperience(false);
     setTypeSalary(false);
   };
 
   const handleSubmit = async () => {
     if (validate()) {
-      const {
-        minExperience,
-        maxExperience,
-        minSalary,
-        maxSalary,
-        dayWorkStart,
-        dayWorkEnd,
-        timeWorkStart,
-        timeWorkEnd,
-        quantity,
-        skills,
-        ...newData
-      } = data;
+      const { ...newData } = data;
       let res =
         type === true
           ? await updateJob({

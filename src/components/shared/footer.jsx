@@ -18,17 +18,15 @@ export const Footer = () => {
                 <img src={logo} alt="TopCV Logo" />
               </div>
               <div className="footer-info-text">
-                <Typography variant="h6">
-                  Công ty Cổ phần ItWork Việt Nam
-                </Typography>
+                <Typography variant="h6">Itwork Company</Typography>
                 <Typography variant="body2">
-                  Mã số ĐKDN: 0107307178
+                  Business registration code: 0107307178
                   <br />
-                  Đăng ký kinh doanh số: 47 Nguyễn Tuân, P. Thanh Xuân Trung, Q.
-                  Thanh Xuân, Hà Nội
+                  Adddress: @Homes Tower, 69 Tam Trinh, Hoang Mai District, Ha
+                  Noi
                   <br />
-                  Chi nhánh HCM: Tòa nhà Dali, 24C Phan Đăng Lưu, P.7, Q. Bình
-                  Thạnh, TP. HCM
+                  Agency : Dali Tower, 24C Phan Dang Luu, Binh Thanh District,
+                  Ho Chi Minh
                 </Typography>
               </div>
             </div>
@@ -37,52 +35,52 @@ export const Footer = () => {
           {/* About TopCV Section */}
           <Grid item xs={12} md={3} className="footer-item">
             <Typography variant="h6" className="footer-title">
-              Về ItWork
+              About us
             </Typography>
             <ul>
               <li>
                 <MuiLink component={Link} to="#">
-                  Giới thiệu
+                  Introduce
                 </MuiLink>
               </li>
               <li>
                 <MuiLink component={Link} to="#">
-                  Góc báo chí
+                  News corner
                 </MuiLink>
               </li>
               <li>
                 <MuiLink component={Link} to="#">
-                  Tuyển dụng
+                  Hiring
                 </MuiLink>
               </li>
               <li>
                 <MuiLink component={Link} to="#">
-                  Liên hệ
+                  Contact
                 </MuiLink>
               </li>
               <li>
                 <MuiLink component={Link} to="#">
-                  Hỏi đáp
+                  Q&A
                 </MuiLink>
               </li>
               <li>
                 <MuiLink component={Link} to="#">
-                  Chính sách bảo mật
+                  Privacy policy
                 </MuiLink>
               </li>
               <li>
                 <MuiLink component={Link} to="#">
-                  Điều khoản dịch vụ
+                  Terms of service
                 </MuiLink>
               </li>
               <li>
                 <MuiLink component={Link} to="#">
-                  Quy chế hoạt động
+                  Operational regulations
                 </MuiLink>
               </li>
             </ul>
             <Typography variant="h6" className="footer-title">
-              Đối tác
+              Partner
             </Typography>
             <ul>
               <li>
@@ -97,7 +95,7 @@ export const Footer = () => {
               </li>
               <li>
                 <MuiLink component={Link} to="#">
-                  ViecNgay
+                  Jobday
                 </MuiLink>
               </li>
               <li>
@@ -111,27 +109,27 @@ export const Footer = () => {
           {/* CV Guide Section */}
           <Grid item xs={12} md={3} className="footer-item">
             <Typography variant="h6" className="footer-title">
-              Hỗ trợ và CV
+              Support and CV
             </Typography>
             <ul>
               <li>
                 <MuiLink component={Link} to="#">
-                  Quản lý CV cá nhân
+                  Personal CV Management
                 </MuiLink>
               </li>
               <li>
                 <MuiLink component={Link} to="#">
-                  TopCV Profile
+                  Itwork CV Profile
                 </MuiLink>
               </li>
               <li>
                 <MuiLink component={Link} to="#">
-                  Hướng dẫn viết CV
+                  Instructions for writing a CV
                 </MuiLink>
               </li>
               <li>
                 <MuiLink component={Link} to="#">
-                  Thư viện CV theo ngành nghề
+                  CV Template
                 </MuiLink>
               </li>
               <li>
@@ -141,37 +139,37 @@ export const Footer = () => {
               </li>
             </ul>
             <Typography variant="h6" className="footer-title">
-              Khám phá
+              Discover
             </Typography>
             <ul>
               <li>
                 <MuiLink component={Link} to="#">
-                  Ứng dụng di động TopCV
+                  Itwork App Mobile
                 </MuiLink>
               </li>
               <li>
                 <MuiLink component={Link} to="#">
-                  Tình lương Gross - Net
+                  Gross - Net Salary
                 </MuiLink>
               </li>
               <li>
                 <MuiLink component={Link} to="#">
-                  Tính lãi suất kép
+                  Calculate compound interest
                 </MuiLink>
               </li>
               <li>
                 <MuiLink component={Link} to="#">
-                  Lập kế hoạch tiết kiệm
+                  Savings planning
                 </MuiLink>
               </li>
               <li>
                 <MuiLink component={Link} to="#">
-                  Tình bảo hiểm xã hội một lần
+                  One-time social insurance
                 </MuiLink>
               </li>
               <li>
                 <MuiLink component={Link} to="#">
-                  Trắc nghiệm MBTI
+                  MBTI Test
                 </MuiLink>
               </li>
             </ul>
@@ -180,45 +178,58 @@ export const Footer = () => {
           {/* Career Building Section */}
           <Grid item xs={12} md={3} className="footer-item">
             <Typography variant="h6" className="footer-title">
-              Xây dựng sự nghiệp
+              Build a career
             </Typography>
             <ul>
               <li>
                 <MuiLink component={Link} to="#">
-                  Việc làm tốt nhất
+                  Best job
                 </MuiLink>
               </li>
               <li>
                 <MuiLink component={Link} to="#">
-                  Việc làm lương cao
+                  High paying job
                 </MuiLink>
               </li>
               <li>
                 <MuiLink component={Link} to="#">
-                  Việc làm IT
+                  IT job
                 </MuiLink>
               </li>
               <li>
                 <MuiLink component={Link} to="#">
-                  Việc làm Senior
+                  Senior job
                 </MuiLink>
               </li>
               <li>
                 <MuiLink component={Link} to="#">
-                  Việc làm bán thời gian
+                  Partime job
+                </MuiLink>
+              </li>
+            </ul>
+            <Typography variant="h6" className="footer-title" mt={1}>
+              Download App
+            </Typography>
+            <ul>
+              <li>
+                <MuiLink component={Link} to="#">
+                  <img src="https://cdn-new.topcv.vn/unsafe/https://static.topcv.vn/v4/image/welcome/download/app_store.png" />
+                </MuiLink>
+              </li>
+              <li>
+                <MuiLink component={Link} to="#">
+                  <img src="https://cdn-new.topcv.vn/unsafe/https://static.topcv.vn/v4/image/welcome/download/chplay.png" />
                 </MuiLink>
               </li>
             </ul>
           </Grid>
         </Grid>
-
-        {/* Footer Bottom */}
-        <Box className="footer-bottom">
-          <Typography variant="body2">
-            © 2020-2025 ItWork Vietnam JSC. All rights reserved.
-          </Typography>
-        </Box>
       </div>
+      <Box className="footer-bottom">
+        <Typography variant="body2">
+          © 2020-2025 ItWork Vietnam JSC. All rights reserved.
+        </Typography>
+      </Box>
     </div>
   );
 };

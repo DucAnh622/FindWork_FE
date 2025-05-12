@@ -4,7 +4,7 @@ const initialState = {
   login: {
     isLoading: false,
     user: null,
-    access_token: null, 
+    access_token: null,
     error: null,
   },
 };
@@ -19,22 +19,22 @@ const userSlice = createSlice({
     },
     loginSuccess: (state, action) => {
       state.login.isLoading = false;
-      state.login.user = {...action.payload.user}; 
-      state.login.access_token = action.payload.access_token; 
+      state.login.user = { ...action.payload.user };
+      state.login.access_token = action.payload.access_token;
       state.login.error = null;
     },
     loginFail: (state, action) => {
       state.login.isLoading = false;
       state.login.user = null;
-      state.login.access_token = null; 
+      state.login.access_token = null;
       state.login.error = action.payload;
     },
-    logoutRedux: (state,action)  => {
+    logoutRedux: (state) => {
       state.login.isLoading = false;
       state.login.user = null;
-      state.login.access_token = null; 
+      state.login.access_token = null;
       state.login.error = null;
-    }
+    },
   },
 });
 

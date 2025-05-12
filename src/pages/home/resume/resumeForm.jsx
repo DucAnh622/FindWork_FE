@@ -41,7 +41,7 @@ export const ResumeForm = () => {
   });
   const [open, setOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
-  const [isSaved, setIsSaved] = useState(false);
+  const [, setIsSaved] = useState(false);
   const contentRef = useRef();
   const handlePrint = useReactToPrint({ contentRef });
   const navigate = useNavigate();
@@ -146,8 +146,7 @@ export const ResumeForm = () => {
         toast.error(res.message);
         setLoading(false);
       }
-    }
-    else {
+    } else {
       setLoading(false);
     }
   };

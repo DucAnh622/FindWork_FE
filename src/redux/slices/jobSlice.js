@@ -69,7 +69,6 @@ export const getListJobByCompanyRedux = createAsyncThunk(
         return rejectWithValue(res.message);
       }
     } catch (err) {
-      toast.error(error);
       return rejectWithValue(err);
     }
   }

@@ -1,6 +1,6 @@
 import { Grid, Box, Button, Modal, Typography } from "@mui/material";
 import { toast } from "react-toastify";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FormInput } from "../../../components/customize/FormInput";
 import { createResume } from "../../../services/resumeService";
 import { hasValue } from "../../../utils/utils";
@@ -32,7 +32,7 @@ export const ResumePage = () => {
   const [error, setError] = useState(errorDefault);
   const [open, setOpen] = useState(false);
   const [isLoading, setLoading] = useState(false);
-  const [file,setFile] = useState(null);
+  const [file, setFile] = useState(null);
   const validate = () => {
     let _error = { ...errorDefault };
     let isValid = true;
@@ -89,10 +89,15 @@ export const ResumePage = () => {
       id: 0,
       image: null,
     },
+    {
+      id: 1,
+      image:
+        "https://graduateships.com/wp-content/uploads/2020/04/Screenshot-2020-04-25-at-10.43.14.png",
+    },
   ];
 
   return (
-    <div className="ContentPage">
+    <div className="ContentPage" style={{ paddingBottom: 16 }}>
       <Grid container justifyContent="center">
         <Grid item xs={12}>
           <Typography

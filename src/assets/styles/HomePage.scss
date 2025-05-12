@@ -233,6 +233,10 @@
           color: #fff;
           font-size: 25px;
           margin: 8px 0;
+          transition: all 0.3s;
+          &:hover {
+            color:#9d42ff;
+          }
         }
 
         .job-count {
