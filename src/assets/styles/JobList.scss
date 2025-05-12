@@ -1,27 +1,108 @@
 .ContentPage {
-  .custom-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 16px;
-    width: 100%;
-    overflow-x: hidden;
-  }
-
-  @media (min-width: 1200px) {
-    .custom-grid {
-      grid-template-columns: repeat(4, 1fr);
+  padding: 16px;
+  .container {
+    max-width: 1200px;
+    margin: auto;
+    .header-list {
+      .header-text-top {
+        display: block;
+        text-align: justify;
+        color: #fff;
+        padding: 8px 16px;
+        margin: auto;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        height: 170px;
+        background-image: url("https://wallpapers.com/images/hd/twitch-icon-patterns-eoonzixoxk66dnbx.jpg");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        width: 100%;
+        h2 {
+          margin: 26px 0 8px;
+        }
+        p {
+          margin: 0 0 18px;
+        }
+      }
+      .header-text-bottom {
+        background-color: #fff;
+        padding: 0 0 16px;
+        width: 100%;
+      }
     }
-  }
-
-  @media (min-width: 1300px) {
-    .custom-grid {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-
-  @media (min-width: 1500px) {
-    .custom-grid {
-      grid-template-columns: repeat(5, 1fr);
+    .body-list {
+      display: flex;
+      padding: 16px 0 0;
+      .body-list-left {
+        padding-right: 16px;
+        .body-list-left-item {
+          height: 150px;
+          background-color: #fff;
+          overflow: hidden;
+          border-radius: 8px;
+          border: 1px solid transparent;
+          transition: all 0.3s;
+          width: 100%;
+          display: grid;
+          gap: 8px;
+          grid-template-columns: 1fr 5fr;
+          align-items: stretch;
+          padding: 10px;
+          &:hover {
+            border-color: #9d42ff;
+          }
+          cursor: pointer;
+          .body-list-left-item-img {
+            width: 128px;
+            height: 128px;
+            object-fit: cover;
+            img {
+              border: none;
+              width: 100%;
+              height: 100%;
+            }
+          }
+          .body-list-left-item-text {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            .body-list-left-item-text-top-item {
+              display: flex;
+              align-items: stretch;
+              justify-content: space-between;
+              .body-list-left-item-text-top-item-info {
+                .btn-apply {
+                  padding: 8px 24px;
+                  border-radius: 4px;
+                  background-color: #9d42ff;
+                  border: 1px solid transparent;
+                  color: #fff;
+                  margin-right: 8px;
+                  transition: all 0.3s;
+                  cursor: pointer;
+                  &:hover {
+                    border-color: #9d42ff;
+                    color: #9d42ff;
+                    background-color: #fff;
+                  }
+                }
+              }
+            }
+          }
+          margin-bottom: 8px;
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+      .body-list-right {
+        overflow: hidden;
+        img {
+          display: block;
+          width: 100%;
+        }
+      }
     }
   }
 }

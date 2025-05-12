@@ -18,6 +18,8 @@ export const FormFilterMultiple = ({
   name,
   placeholder,
   list,
+  ml = "",
+  width = 250,
 }) => {
   const handleChange = (event, newValue) => {
     setData((prevData) => ({
@@ -48,6 +50,8 @@ export const FormFilterMultiple = ({
         width: "100%",
         backgroundColor: "#fff",
         borderRadius: "8px",
+        ml: ml,
+        minWidth: width,
         "& .MuiOutlinedInput-root": {
           "& .MuiOutlinedInput-notchedOutline": {
             borderColor: "#1f2937",
@@ -79,30 +83,49 @@ export const FormFilterMultiple = ({
         );
       }}
       renderTags={(value, getTagProps) => {
-        if (value.length <= 2) {
+        const maxVisibleTags = 1; // Show only the first tag
+        const hiddenTagCount = value.length - maxVisibleTags;
+
+        if (value.length > 1) {
+          return [
+            <Chip
+              key="first-label"
+              label={value[0].label}
+              size="small"
+              {...getTagProps({ index: 0 })}
+              sx={{
+                maxWidth: "100%",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            />,
+            <Chip
+              key="more-tags"
+              label={`(+${hiddenTagCount})`}
+              size="small"
+              sx={{
+                display: "flex",
+                alignItems: "center", // Center vertically
+                maxWidth: "100%",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            />,
+          ];
+        } else {
           return value.map((option, index) => (
             <Chip
               key={index}
               label={option.label}
               {...getTagProps({ index })}
               size="small"
+              sx={{
+                maxWidth: "100%",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
             />
           ));
-        } else {
-          return [
-            <Chip
-              key={0}
-              label={value[0].label}
-              {...getTagProps({ index: 0 })}
-              size="small"
-            />,
-            <Chip
-              key={1}
-              label={`(+${value.length - 1})`}
-              size="small"
-              {...getTagProps({ index: 1 })}
-            />,
-          ];
         }
       }}
       renderInput={(params) => (
