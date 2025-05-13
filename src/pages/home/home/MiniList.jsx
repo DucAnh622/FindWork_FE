@@ -83,7 +83,7 @@ export const MiniList = () => {
         {list.map((item, index) => (
           <Box key={index}>
             <ListItem
-              button
+              button={true}
               onClick={() => handleNavigate(item.id)}
               sx={{
                 fontWeight: 500,

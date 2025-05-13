@@ -9,7 +9,7 @@ import {
   Chip,
   Avatar,
 } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -17,17 +17,22 @@ import { TextClamp2, TextClamp } from "../../../components/customize/TextClamp";
 import { locations } from "../../../utils/constant";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { useState } from "react";
-import { getListJobRedux } from "../../../redux/slices/jobSlice";
-import { getListSpecialityRedux } from "../../../redux/slices/specialitySlice";
+import { getListJobRedux, changePage } from "../../../redux/slices/jobSlice";
+import {
+  getListSpecialityRedux,
+  changePage as changeSpecialityPage,
+} from "../../../redux/slices/specialitySlice";
 import { useEffect } from "react";
-import { toast } from "react-toastify";
+import { formatSort } from "../../../utils/utils";
 
 export const MediumList = () => {
   const navigate = useNavigate();
+  const list = useSelector((state) => state.job?.listJob);
+  const page = useSelector((state) => state.job?.page);
+  const totalPage = useSelector((state) => state.job?.totalPage);
+  const order = useSelector((state) => state.job?.order);
+  const orderBy = useSelector((state) => state.job?.orderBy);
   const [address, setAddress] = useState("");
-  const [page, setPage] = useState(0);
-  const [list, setList] = useState([]);
-  const [totalPage, setTotalPage] = useState(0);
   const dispatch = useDispatch();
 
   const handleNavigate = (id) => {
@@ -35,28 +40,22 @@ export const MediumList = () => {
   };
 
   const getList = async () => {
-    try {
-      let payload = await dispatch(
-        getListJobRedux({
-          page: page + 1,
-          limit: 12,
-          order: "createdAt",
-          sort: "DESC",
-        })
-      ).unwrap();
-      setList(payload.list);
-      setTotalPage(payload.totalPages);
-    } catch (error) {
-      toast.error(error || "Server error");
-    }
+    await dispatch(
+      getListJobRedux({
+        page: page + 1,
+        limit: 12,
+        order: orderBy,
+        sort: formatSort(order),
+      })
+    );
   };
 
   const handlePrevPage = () => {
-    if (page > 0) setPage(page - 1);
+    if (page > 0) dispatch(changePage(page - 1));
   };
 
   const handleNextPage = () => {
-    if (page < totalPage - 1) setPage(page + 1);
+    if (page < totalPage - 1) dispatch(changePage(page + 1));
   };
 
   useEffect(() => {
@@ -310,34 +309,35 @@ export const MediumList = () => {
 };
 
 export const MediumList2 = () => {
-  const [page, setPage] = useState(0);
-  const [list, setList] = useState([]);
-  const [totalPage, setTotalPage] = useState(0);
+  const list = useSelector((state) => state.speciality?.listSpeciality);
+  const page = useSelector((state) => state.speciality?.page);
+  const totalPage = useSelector((state) => state.speciality?.totalPage);
+  const order = useSelector((state) => state.speciality?.order);
+  const orderBy = useSelector((state) => state.speciality?.orderBy);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleNavigate = (id) => {
+    navigate(`/job/${id}`);
+  };
 
   const getList = async () => {
-    try {
-      let payload = await dispatch(
-        getListSpecialityRedux({
-          page: page + 1,
-          limit: 8,
-          order: "createdAt",
-          sort: "DESC",
-        })
-      ).unwrap();
-      setList(payload.list);
-      setTotalPage(payload.totalPages);
-    } catch (error) {
-      toast.error(error || "Server error");
-    }
+    await dispatch(
+      getListSpecialityRedux({
+        page: page + 1,
+        limit: 8,
+        order: orderBy,
+        sort: formatSort(order),
+      })
+    );
   };
 
   const handlePrevPage = () => {
-    if (page > 0) setPage(page - 1);
+    if (page > 0) dispatch(changeSpecialityPage(page - 1));
   };
 
   const handleNextPage = () => {
-    if (page < totalPage - 1) setPage(page + 1);
+    if (page < totalPage - 1) dispatch(changeSpecialityPage(page + 1));
   };
 
   useEffect(() => {
@@ -404,7 +404,13 @@ export const MediumList2 = () => {
           <Grid container className="body-list-card">
             {list.map((item, index) => {
               return (
-                <Grid item xs={12} className="body-list-item-card" key={index}>
+                <Grid
+                  item
+                  xs={12}
+                  className="body-list-item-card"
+                  key={index}
+                  onClick={() => handleNavigate(item.id)}
+                >
                   <img
                     src="https://images.icon-icons.com/3041/PNG/512/twitch_logo_icon_189242.png"
                     alt=""

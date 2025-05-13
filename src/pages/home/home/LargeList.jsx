@@ -1,21 +1,25 @@
 import { Box, IconButton, Button, Chip, Avatar } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { useNavigate } from "react-router-dom";
 import { TextClamp2, TextClamp } from "../../../components/customize/TextClamp";
-import { useState } from "react";
-import { getListCompanyRedux } from "../../../redux/slices/companySlice";
+import {
+  getListCompanyRedux,
+  changePage,
+} from "../../../redux/slices/companySlice";
 import { useEffect } from "react";
-import { toast } from "react-toastify";
 import AddIcon from "@mui/icons-material/Add";
 import WorkIcon from "@mui/icons-material/Work";
+import { formatSort } from "../../../utils/utils";
 
 export const LargeList = () => {
   const navigate = useNavigate();
-  const [page, setPage] = useState(0);
-  const [list, setList] = useState([]);
-  const [totalPage, setTotalPage] = useState(0);
+  const list = useSelector((state) => state.company?.listCompany);
+  const page = useSelector((state) => state.company?.page);
+  const totalPage = useSelector((state) => state.company?.totalPage);
+  const order = useSelector((state) => state.company?.order);
+  const orderBy = useSelector((state) => state.company?.orderBy);
   const dispatch = useDispatch();
 
   const handleNavigate = (id) => {
@@ -23,28 +27,22 @@ export const LargeList = () => {
   };
 
   const getList = async () => {
-    try {
-      let payload = await dispatch(
-        getListCompanyRedux({
-          page: page + 1,
-          limit: 9,
-          order: "createdAt",
-          sort: "DESC",
-        })
-      ).unwrap();
-      setList(payload.list);
-      setTotalPage(payload.totalPages);
-    } catch (error) {
-      toast.error(error || "Server error");
-    }
+    await dispatch(
+      getListCompanyRedux({
+        page: page + 1,
+        limit: 9,
+        order: orderBy,
+        sort: formatSort(order),
+      })
+    );
   };
 
   const handlePrevPage = () => {
-    if (page > 0) setPage(page - 1);
+    if (page > 0) dispatch(changePage(page - 1));
   };
 
   const handleNextPage = () => {
-    if (page < totalPage - 1) setPage(page + 1);
+    if (page < totalPage - 1) dispatch(changePage(page + 1));
   };
 
   useEffect(() => {

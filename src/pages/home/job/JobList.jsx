@@ -2,21 +2,41 @@ import { useState, useEffect } from "react";
 import "../../../assets/styles/dashBoard.scss";
 import SearchIcon from "@mui/icons-material/Search";
 import { CircularWithValueLabel } from "../../../components/customize/loading";
-import { Box, Chip, Grid, IconButton, TextField, Button } from "@mui/material";
+import {
+  Box,
+  Chip,
+  Grid,
+  IconButton,
+  TextField,
+  Button,
+  Radio,
+  FormControlLabel,
+} from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
-import { getListJobRedux, changePage } from "../../../redux/slices/jobSlice";
+import {
+  getListJobRedux,
+  changePage,
+  changeOrder,
+} from "../../../redux/slices/jobSlice";
+import {
+  getListCompanyRedux,
+  changePage as changeCompanyPage,
+} from "../../../redux/slices/companySlice.js";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import "../../../assets/styles/JobList.scss";
-import { CardTemplate3 } from "../../../components/home/cardTemplate/cardTemplate3";
-import { SearchBar1 } from "../../../components/home/searchBar/searchBar1.jsx";
 import { formatSort } from "../../../utils/utils.js";
 import { EmptyData } from "../../../components/shared/emptyData.jsx";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { TextClamp } from "../../../components/customize/TextClamp.jsx";
+import {
+  TextClamp,
+  TextClamp2,
+} from "../../../components/customize/TextClamp.jsx";
 import { FormFilterMultiple } from "../../../components/customize/FormFilterMultiple";
 import { locations, levels, method } from "../../../utils/constant";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 
 export const JobList = () => {
   const dataDefault = {
@@ -27,12 +47,17 @@ export const JobList = () => {
   };
   const [data, setData] = useState(dataDefault);
   const dispatch = useDispatch();
-  const list = useSelector((state) => state.job?.listJob);
+  const listJob = useSelector((state) => state.job?.listJob);
   const page = useSelector((state) => state.job?.page);
   const totalPage = useSelector((state) => state.job?.totalPage);
   const order = useSelector((state) => state.job?.order);
   const orderBy = useSelector((state) => state.job?.orderBy);
-  const isLoading = useSelector((state) => state.job?.isLoading);
+  const [selectedSort, setSelectedSort] = useState("createdAt");
+  const listC = useSelector((state) => state.company?.listCompany);
+  const pageC = useSelector((state) => state.company?.page);
+  const totalPageC = useSelector((state) => state.company?.totalPage);
+  const orderC = useSelector((state) => state.company?.order);
+  const orderByC = useSelector((state) => state.company?.orderBy);
 
   const getList = async () => {
     dispatch(
@@ -43,6 +68,20 @@ export const JobList = () => {
         sort: formatSort(order),
       })
     );
+    dispatch(
+      await getListCompanyRedux({
+        page: pageC + 1,
+        limit: 5,
+        order: orderByC,
+        sort: formatSort(orderC),
+      })
+    );
+  };
+
+  const handleChangeRadio = (event) => {
+    const value = event.target.value;
+    setSelectedSort(value); // Cập nhật giá trị được chọn
+    dispatch(changeOrder(value)); // Gửi giá trị đã chọn vào Redux
   };
 
   const handleSearch = async () => {
@@ -59,7 +98,19 @@ export const JobList = () => {
 
   useEffect(() => {
     getList();
-  }, [page, order, orderBy]);
+  }, [page, pageC, order, orderBy]);
+
+  const handlePrevPage = () => {
+    if (pageC > 0) dispatch(changeCompanyPage(pageC - 1));
+  };
+
+  const handleNextPage = () => {
+    if (pageC < totalPageC - 1) dispatch(changeCompanyPage(pageC + 1));
+  };
+
+  const handleNavigate = (id) => {
+    navigate(`/company/${id}`);
+  };
 
   return (
     <div className="ContentPage">
@@ -81,7 +132,7 @@ export const JobList = () => {
                     alignItems: "center",
                   }}
                 >
-                  <CheckCircleIcon />
+                  <CheckCircleIcon sx={{ mr: 1 }} />
                   Good salary
                 </div>
               }
@@ -99,7 +150,7 @@ export const JobList = () => {
                     alignItems: "center",
                   }}
                 >
-                  <CheckCircleIcon />
+                  <CheckCircleIcon sx={{ mr: 1 }} />
                   Professional environment
                 </div>
               }
@@ -117,7 +168,7 @@ export const JobList = () => {
                     alignItems: "center",
                   }}
                 >
-                  <CheckCircleIcon />
+                  <CheckCircleIcon sx={{ mr: 1 }} />
                   Attractive benefits
                 </div>
               }
@@ -203,12 +254,75 @@ export const JobList = () => {
                 </Button>
               </div>
             </Box>
+            <Box className="sort-bar">
+              <h4>Sort by:</h4>
+              <FormControlLabel
+                value="createdAt"
+                control={
+                  <Radio
+                    checked={selectedSort === "createdAt"}
+                    onChange={handleChangeRadio}
+                  />
+                }
+                label="All"
+                sx={{
+                  "& .MuiRadio-root.Mui-checked": {
+                    color: "#9d42ff",
+                  },
+                }}
+              />
+              <FormControlLabel
+                value="name"
+                control={
+                  <Radio
+                    checked={selectedSort === "name"}
+                    onChange={handleChangeRadio}
+                  />
+                }
+                label="Name"
+                sx={{
+                  "& .MuiRadio-root.Mui-checked": {
+                    color: "#9d42ff",
+                  },
+                }}
+              />
+              <FormControlLabel
+                value="level"
+                control={
+                  <Radio
+                    checked={selectedSort === "level"}
+                    onChange={handleChangeRadio}
+                  />
+                }
+                label="Level"
+                sx={{
+                  "& .MuiRadio-root.Mui-checked": {
+                    color: "#9d42ff",
+                  },
+                }}
+              />
+              <FormControlLabel
+                value="endDate"
+                control={
+                  <Radio
+                    checked={selectedSort === "endDate"}
+                    onChange={handleChangeRadio}
+                  />
+                }
+                label="Date"
+                sx={{
+                  "& .MuiRadio-root.Mui-checked": {
+                    color: "#9d42ff",
+                  },
+                }}
+              />
+            </Box>
           </div>
         </div>
         <div className="body-list">
           <Grid container>
             <Grid item xs={12} md={8} className="body-list-left">
-              {list.map((item, index) => {
+              {listJob.map((item, index) => {
                 return (
                   <Grid
                     item
@@ -327,12 +441,115 @@ export const JobList = () => {
                     onChange={(event, value) => dispatch(changePage(value - 1))}
                     variant="outlined"
                     shape="rounded"
-                    color="#9d42ff"
+                    sx={{
+                      "& .MuiPaginationItem-root": {
+                        color: "#000",
+                        backgroundColor: "#fff",
+                        border: "none",
+                        "&:hover": {
+                          backgroundColor: "#7e2bc8",
+                          color: "#fff",
+                        },
+                        "&.Mui-selected": {
+                          backgroundColor: "#9d42ff",
+                          color: "#fff",
+                        },
+                        "&.Mui-disabled": {
+                          color: "#b0b0b0",
+                          backgroundColor: "#e0e0e0",
+                          pointerEvents: "none",
+                        },
+                      },
+                    }}
                   />
                 </Stack>
               )}
             </Grid>
             <Grid item xs={12} md={4} className="body-list-right">
+              <div className="body-list-right-header">
+                <h4>Top best company</h4>
+                <Box display="flex" gap={1}>
+                  <IconButton
+                    size="small"
+                    disabled={pageC === 0}
+                    onClick={handlePrevPage}
+                    sx={{
+                      border: "1px solid #9d42ff",
+                      backgroundColor: "white",
+                      color: "#9d42ff",
+                      "&:hover": {
+                        backgroundColor: "#9d42ff",
+                        color: "white",
+                      },
+                      "&:disabled": {
+                        borderColor: "gray",
+                        color: "gray",
+                        cursor: "not-allowed",
+                      },
+                      transition: "background-color 0.3s, color 0.3s",
+                    }}
+                  >
+                    <ChevronLeftIcon fontSize="small" />
+                  </IconButton>
+                  <IconButton
+                    size="small"
+                    onClick={handleNextPage}
+                    disabled={pageC === totalPageC - 1}
+                    sx={{
+                      border: "1px solid #9d42ff",
+                      backgroundColor: "white",
+                      color: "#9d42ff",
+                      "&:hover": {
+                        backgroundColor: "#9d42ff",
+                        color: "white",
+                      },
+                      "&:disabled": {
+                        borderColor: "gray",
+                        color: "gray",
+                        cursor: "not-allowed",
+                      },
+                      transition: "background-color 0.3s, color 0.3s",
+                    }}
+                  >
+                    <ChevronRightIcon fontSize="small" />
+                  </IconButton>
+                </Box>
+              </div>
+              <div className="body-list-right-body">
+                {listC &&
+                  listC.map((item, index) => {
+                    return (
+                      <div
+                        className="body-list-right-body-item"
+                        key={index}
+                        onClick={() => handleNavigate(item.id)}
+                      >
+                        <div className="body-list-item-info">
+                          {item?.image ? (
+                            <img src={item?.image} alt="logo" />
+                          ) : (
+                            <Avatar></Avatar>
+                          )}
+                          <div className="body-list-item-info-text">
+                            <TextClamp2
+                              title={item.name}
+                              sx={{ color: "#9d42ff", fontWeight: 600 }}
+                            >
+                              {item.name}
+                            </TextClamp2>
+                            <TextClamp>{item.speciality}</TextClamp>
+                            <TextClamp
+                              sx={{ fontSize: 12 }}
+                              title={item.address}
+                            >
+                              {item.address}
+                            </TextClamp>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+              </div>
             </Grid>
           </Grid>
         </div>

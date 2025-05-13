@@ -10,6 +10,9 @@
         display: flex;
         overflow: hidden;
         align-items: center;
+        @media (max-width: 768px) {
+          flex-direction: column;
+        }
       }
     }
     /* banner */
@@ -235,7 +238,7 @@
           margin: 8px 0;
           transition: all 0.3s;
           &:hover {
-            color:#9d42ff;
+            color: #9d42ff;
           }
         }
 
