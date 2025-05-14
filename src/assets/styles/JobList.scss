@@ -1,5 +1,6 @@
-.ContentPage {
+.ListPage {
   padding: 16px;
+  background-color: #f3f5f7;
   .container {
     max-width: 1200px;
     margin: auto;
@@ -13,7 +14,7 @@
         border-top-left-radius: 8px;
         border-top-right-radius: 8px;
         height: 170px;
-        background-image: url("https://wallpapers.com/images/hd/twitch-icon-patterns-eoonzixoxk66dnbx.jpg");
+        background-image: url("../images/Banner3.jpg");
         background-repeat: no-repeat;
         background-position: center;
         background-size: cover;
@@ -28,6 +29,17 @@
       .header-text-bottom {
         background-color: #fff;
         width: 100%;
+        .search-bar {
+          padding: 16px 16px 0;
+          .search-form {
+            display: flex;
+            overflow: hidden;
+            align-items: center;
+            @media (max-width: 768px) {
+              flex-direction: column;
+            }
+          }
+        }
         .sort-bar {
           margin-top: 16px;
           padding: 8px 16px;

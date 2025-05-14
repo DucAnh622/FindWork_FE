@@ -1,0 +1,99 @@
+.ListPage.Company {
+  padding: 16px;
+  background-color: #f3f5f7;
+  .container {
+    max-width: 1200px;
+    margin: auto;
+    .header-list {
+      .header-text-top {
+        display: block;
+        text-align: justify;
+        color: #fff;
+        padding: 8px 16px;
+        margin: auto;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        height: 170px;
+        background-image: url("../images/Banner4.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        width: 100%;
+        h2 {
+          margin: 26px 0 8px;
+        }
+        p {
+          margin: 0 0 18px;
+        }
+      }
+      .header-text-bottom {
+        background-color: #fff;
+        width: 100%;
+        .sort-bar {
+          margin-top: 16px;
+          padding: 8px 16px;
+          border-bottom: 1px solid grey;
+          border-top: 1px solid grey;
+          display: flex;
+          align-items: center;
+          h4 {
+            margin-right: 16px;
+          }
+        }
+      }
+    }
+    .body-content {
+      .body-list {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        @media (max-width: 1024px) {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        /* Mobile */
+        @media (max-width: 768px) {
+          grid-template-columns: 1fr;
+        }
+        gap: 8px;
+        .body-list-item {
+          width: 100%;
+          height: auto;
+          max-height: 345px;
+          overflow: hidden;
+          border-radius: 8px;
+          background-color: #fff;
+          .body-list-item-info {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: flex-start;
+            img {
+              vertical-align: middle;
+              object-fit: cover;
+              width: 50px;
+              display: block;
+              height: 50px;
+              margin: auto;
+              border: none;
+            }
+            .body-list-item-info-text {
+              color: #1f2937;
+              flex: 1;
+              margin-left: 8px;
+              p {
+                &:first-child {
+                  color: #9d42ff;
+                }
+              }
+            }
+          }
+          .body-list-item-description {
+            .body-list-item-option {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+            }
+          }
+        }
+      }
+    }
+  }
+}

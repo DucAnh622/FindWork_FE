@@ -467,4 +467,12 @@ export const convertToFormData = (data) => {
     }
   }
   return formData;
-}
+};
+
+export const countDay = (date) => {
+  const today = new Date();
+  const targetDate = new Date(date);
+  const timeDifference = targetDate - today;
+  const dayDifference = timeDifference / (1000 * 3600 * 24);
+  return Math.round(dayDifference);
+};

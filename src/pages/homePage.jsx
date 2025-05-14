@@ -15,7 +15,7 @@ export const HomePage = () => {
     address: [],
   });
   return (
-    <div className="ContentPage">
+    <div className="HomePage">
       <div className="container">
         <Box className="search-bar">
           <div className="search-form">

@@ -22,6 +22,7 @@ import {
   getListSpecialityRedux,
   changePage as changeSpecialityPage,
 } from "../../../redux/slices/specialitySlice";
+import { toast } from "react-toastify";
 import { useEffect } from "react";
 import { formatSort } from "../../../utils/utils";
 
@@ -34,10 +35,6 @@ export const MediumList = () => {
   const orderBy = useSelector((state) => state.job?.orderBy);
   const [address, setAddress] = useState("");
   const dispatch = useDispatch();
-
-  const handleNavigate = (id) => {
-    navigate(`/job/${id}`);
-  };
 
   const getList = async () => {
     await dispatch(
@@ -157,8 +154,8 @@ export const MediumList = () => {
                       color: "white",
                     },
                     "&:disabled": {
-                      borderColor: "gray",
-                      color: "gray",
+                      border: "1px solid #dee0e2",
+                      color: "#dee0e2",
                       cursor: "not-allowed",
                     },
                     transition: "background-color 0.3s, color 0.3s",
@@ -179,8 +176,8 @@ export const MediumList = () => {
                       color: "white",
                     },
                     "&:disabled": {
-                      borderColor: "gray",
-                      color: "gray",
+                      border: "1px solid #dee0e2",
+                      color: "#dee0e2",
                       cursor: "not-allowed",
                     },
                     transition: "background-color 0.3s, color 0.3s",
@@ -201,7 +198,7 @@ export const MediumList = () => {
                   md={4}
                   className="body-list-item"
                   key={index}
-                  onClick={() => handleNavigate(item.id)}
+                  onClick={() => navigate(`/job/${item.id}`)}
                 >
                   <div className="body-list-item-info">
                     {item?.image ? (
@@ -232,8 +229,8 @@ export const MediumList = () => {
                           color: "white",
                         },
                         "&:disabled": {
-                          borderColor: "gray",
-                          color: "gray",
+                          border: "1px solid #dee0e2",
+                          color: "#dee0e2",
                           cursor: "not-allowed",
                         },
                         transition: "background-color 0.3s, color 0.3s",
@@ -265,8 +262,8 @@ export const MediumList = () => {
                       color: "white",
                     },
                     "&:disabled": {
-                      borderColor: "gray",
-                      color: "gray",
+                      border: "1px solid #dee0e2",
+                      color: "#dee0e2",
                       cursor: "not-allowed",
                     },
                     transition: "background-color 0.3s, color 0.3s",
@@ -275,7 +272,8 @@ export const MediumList = () => {
                   <ChevronLeftIcon fontSize="small" />
                 </IconButton>
                 <p>
-                  {page + 1 || 0}/{totalPage || 0}
+                  <span style={{ color: "#9d42ff" }}>{page + 1}</span> /{" "}
+                  {totalPage}
                 </p>
                 <IconButton
                   size="small"
@@ -290,8 +288,8 @@ export const MediumList = () => {
                       color: "white",
                     },
                     "&:disabled": {
-                      borderColor: "gray",
-                      color: "gray",
+                      border: "1px solid #dee0e2",
+                      color: "#dee0e2",
                       cursor: "not-allowed",
                     },
                     transition: "background-color 0.3s, color 0.3s",
@@ -309,35 +307,35 @@ export const MediumList = () => {
 };
 
 export const MediumList2 = () => {
-  const list = useSelector((state) => state.speciality?.listSpeciality);
-  const page = useSelector((state) => state.speciality?.page);
-  const totalPage = useSelector((state) => state.speciality?.totalPage);
-  const order = useSelector((state) => state.speciality?.order);
-  const orderBy = useSelector((state) => state.speciality?.orderBy);
+  const [page, setPage] = useState(0);
+  const [list, setList] = useState([]);
+  const [totalPage, setTotalPage] = useState(0);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleNavigate = (id) => {
-    navigate(`/job/${id}`);
-  };
-
   const getList = async () => {
-    await dispatch(
-      getListSpecialityRedux({
-        page: page + 1,
-        limit: 8,
-        order: orderBy,
-        sort: formatSort(order),
-      })
-    );
+    try {
+      const { payload } = await dispatch(
+        getListSpecialityRedux({
+          page: page + 1,
+          limit: 8,
+          order: "createdAt",
+          sort: "DESC",
+        })
+      );
+      setList(payload.list);
+      setTotalPage(payload.totalPages);
+    } catch (error) {
+      toast.error(error || "Server error");
+    }
   };
 
   const handlePrevPage = () => {
-    if (page > 0) dispatch(changeSpecialityPage(page - 1));
+    if (page > 0) setPage(page - 1);
   };
 
   const handleNextPage = () => {
-    if (page < totalPage - 1) dispatch(changeSpecialityPage(page + 1));
+    if (page < totalPage - 1) setPage(page + 1);
   };
 
   useEffect(() => {
@@ -367,8 +365,8 @@ export const MediumList2 = () => {
                       color: "white",
                     },
                     "&:disabled": {
-                      borderColor: "gray",
-                      color: "gray",
+                      border: "1px solid #dee0e2",
+                      color: "#dee0e2",
                       cursor: "not-allowed",
                     },
                     transition: "background-color 0.3s, color 0.3s",
@@ -389,8 +387,8 @@ export const MediumList2 = () => {
                       color: "white",
                     },
                     "&:disabled": {
-                      borderColor: "gray",
-                      color: "gray",
+                      border: "1px solid #dee0e2",
+                      color: "#dee0e2",
                       cursor: "not-allowed",
                     },
                     transition: "background-color 0.3s, color 0.3s",
@@ -409,7 +407,7 @@ export const MediumList2 = () => {
                   xs={12}
                   className="body-list-item-card"
                   key={index}
-                  onClick={() => handleNavigate(item.id)}
+                  onClick={() => navigate(`/job/${item.id}`)}
                 >
                   <img
                     src="https://images.icon-icons.com/3041/PNG/512/twitch_logo_icon_189242.png"

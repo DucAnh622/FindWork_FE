@@ -16,6 +16,7 @@ import Markdown from "react-markdown";
 import WorkIcon from "@mui/icons-material/Work";
 import { Link } from "react-router-dom";
 import { TextClamp, TextClamp2 } from "../../customize/TextClamp";
+import AddIcon from "@mui/icons-material/Add";
 
 export const CardTemplate2 = ({ data }) => {
   return (
@@ -25,14 +26,45 @@ export const CardTemplate2 = ({ data }) => {
         maxHeight: 345,
         width: "100%",
         height: "auto",
-        m: "16px auto",
+        m: "0 auto",
       }}
     >
       <CardHeader
-        avatar={<Avatar src={data.image} aria-label="recipe" />}
+        avatar={
+          <Avatar
+            src={data.image}
+            aria-label="recipe"
+            sx={{
+              width: 40,
+              height: 40,
+              borderRadius: 0,
+              "& img": {
+                objectFit: "cover",
+              },
+            }}
+          />
+        }
         action={
-          <IconButton aria-label="save">
-            <BookmarkBorderIcon />
+          <IconButton
+            size="small"
+            aria-label="save"
+            sx={{
+              m: "8px 8px 8px 0",
+              border: "1px solid #9d42ff",
+              backgroundColor: "white",
+              color: "#9d42ff",
+              "&:hover": {
+                backgroundColor: "#9d42ff",
+                color: "white",
+              },
+              "&:disabled": {
+                border: "1px solid #dee0e2",
+                color: "#dee0e2",
+                cursor: "not-allowed",
+              },
+            }}
+          >
+            <BookmarkBorderIcon fontSize="small" />
           </IconButton>
         }
         title={
@@ -77,13 +109,46 @@ export const CardTemplate2 = ({ data }) => {
       >
         <Box>
           <IconButton disabled aria-label="add to favorites">
-            {data.jobCount > 10 ? +10 : data.jobCount} <WorkIcon />
+            {data.jobCount > 10 ? +10 : data.jobCount}{" "}
+            <WorkIcon sx={{ ml: "2px" }} />
           </IconButton>
-          <IconButton aria-label="add to favorites">
-            <FavoriteBorderRounded />
+          <IconButton
+            size="small"
+            aria-label="add to favorites"
+            sx={{
+              m: "8px",
+              border: "1px solid #9d42ff",
+              backgroundColor: "white",
+              color: "#9d42ff",
+              "&:hover": {
+                backgroundColor: "#9d42ff",
+                color: "white",
+              },
+              "&:disabled": {
+                border: "1px solid #dee0e2",
+                color: "#dee0e2",
+                cursor: "not-allowed",
+              },
+            }}
+          >
+            <FavoriteBorderRounded fontSize="small" />
           </IconButton>
         </Box>
-        <Button component={Link} to={`/company/${data.id}`} size="small">
+        <Button
+          component={Link}
+          to={`/company/${data.id}`}
+          size="small"
+          sx={{
+            mr: 1,
+            border: "1px solid #9d42ff",
+            backgroundColor: "white",
+            color: "#9d42ff",
+            "&:hover": {
+              backgroundColor: "#9d42ff",
+              color: "white",
+            },
+          }}
+        >
           View
         </Button>
       </CardActions>

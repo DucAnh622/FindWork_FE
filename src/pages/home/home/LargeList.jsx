@@ -22,10 +22,6 @@ export const LargeList = () => {
   const orderBy = useSelector((state) => state.company?.orderBy);
   const dispatch = useDispatch();
 
-  const handleNavigate = (id) => {
-    navigate(`/company/${id}`);
-  };
-
   const getList = async () => {
     await dispatch(
       getListCompanyRedux({
@@ -71,7 +67,7 @@ export const LargeList = () => {
                 )}
               </div>
               <div className="body-list-item-text">
-                <h2 onClick={() => handleNavigate(list[0]?.id)}>
+                <h2 onClick={() => navigate(`${list[0]?.id}`)}>
                   <TextClamp sx={{ fontSize: 20 }}>{list[0]?.name}</TextClamp>
                 </h2>
                 <TextClamp sx={{ color: "#fff", fontSize: 16 }}>
@@ -109,7 +105,7 @@ export const LargeList = () => {
                 <div
                   className="body-list-item"
                   key={index}
-                  onClick={() => handleNavigate(item.id)}
+                  onClick={() => navigate(`/company/${item.id}`)}
                 >
                   <div className="body-list-item-info">
                     {item?.image ? (
@@ -198,8 +194,8 @@ export const LargeList = () => {
                   color: "white",
                 },
                 "&:disabled": {
-                  borderColor: "gray",
-                  color: "gray",
+                  border: "1px solid #dee0e2",
+                  color: "#dee0e2",
                   cursor: "not-allowed",
                 },
                 transition: "background-color 0.3s, color 0.3s",
@@ -208,7 +204,7 @@ export const LargeList = () => {
               <ChevronLeftIcon fontSize="small" />
             </IconButton>
             <p>
-              {page + 1}/{totalPage}
+              <span style={{ color: "#9d42ff" }}>{page + 1}</span> / {totalPage}
             </p>
             <IconButton
               size="small"
@@ -223,8 +219,8 @@ export const LargeList = () => {
                   color: "white",
                 },
                 "&:disabled": {
-                  borderColor: "gray",
-                  color: "gray",
+                  border: "1px solid #dee0e2",
+                  color: "#dee0e2",
                   cursor: "not-allowed",
                 },
                 transition: "background-color 0.3s, color 0.3s",

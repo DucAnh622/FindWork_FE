@@ -1,4 +1,4 @@
-.ContentPage {
+.HomePage {
   background-color: #f3f5f7;
   .container {
     max-width: 1200px;
@@ -32,7 +32,7 @@
         flex: 3;
         margin-left: 16px;
         .banner-right-item {
-          background-image: url("https://blog.snappa.com/wp-content/uploads/2024/01/Twitch-Banner-Blog-Post.jpg");
+          background-image: url("../images/Banner1.jpg");
           background-position: center;
           background-repeat: no-repeat;
           background-size: cover;
@@ -40,7 +40,7 @@
           border-radius: 8px;
           &:last-child {
             margin-top: 16px;
-            background-image: url("https://famesters.com/wp-content/uploads/2023/11/Different-types-of-twitch-streamers-1.png");
+            background-image: url("../images/Banner2.png");
           }
         }
       }
@@ -166,7 +166,7 @@
       .header-list {
         .header-list-banner {
           height: 130px;
-          background-image: url("https://wallpapers.com/images/hd/twitch-icon-patterns-eoonzixoxk66dnbx.jpg");
+          background-image: url("../images/Banner3.jpg");
           background-repeat: no-repeat;
           background-position: center;
           background-size: cover;

@@ -52,10 +52,6 @@ export const MiniList = () => {
     if (page < totalPage - 1) setPage(page + 1);
   };
 
-  const handleNavigate = (id) => {
-    navigate(`/speciality/${id}`);
-  };
-
   if (!list || list.length === 0) return null;
 
   return (
@@ -84,7 +80,7 @@ export const MiniList = () => {
           <Box key={index}>
             <ListItem
               button={true}
-              onClick={() => handleNavigate(item.id)}
+              onClick={() => navigate(`/speciality/${item.id}`)}
               sx={{
                 fontWeight: 500,
                 fontSize: 8,
@@ -122,7 +118,9 @@ export const MiniList = () => {
           marginTop: "auto",
         }}
       >
-        <Typography fontSize={12}>{`${page + 1}/${totalPage}`}</Typography>
+        <Typography fontSize={12}>
+          <span style={{ color: "#9d42ff" }}>{page + 1}</span> / {totalPage}
+        </Typography>
         <Box display="flex" gap={1}>
           <IconButton
             size="small"
@@ -137,8 +135,8 @@ export const MiniList = () => {
                 color: "white",
               },
               "&:disabled": {
-                borderColor: "gray",
-                color: "gray",
+                border: "1px solid #dee0e2",
+                color: "#dee0e2",
                 cursor: "not-allowed",
               },
             }}
@@ -158,8 +156,8 @@ export const MiniList = () => {
                 color: "white",
               },
               "&:disabled": {
-                borderColor: "gray",
-                color: "gray",
+                border: "1px solid #dee0e2",
+                color: "#dee0e2",
                 cursor: "not-allowed",
               },
             }}

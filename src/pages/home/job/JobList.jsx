@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import "../../../assets/styles/dashBoard.scss";
 import SearchIcon from "@mui/icons-material/Search";
-import { CircularWithValueLabel } from "../../../components/customize/loading";
 import {
   Box,
   Chip,
@@ -25,7 +24,7 @@ import {
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import "../../../assets/styles/JobList.scss";
-import { formatSort } from "../../../utils/utils.js";
+import { formatSort, countDay } from "../../../utils/utils";
 import { EmptyData } from "../../../components/shared/emptyData.jsx";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -34,9 +33,11 @@ import {
   TextClamp2,
 } from "../../../components/customize/TextClamp.jsx";
 import { FormFilterMultiple } from "../../../components/customize/FormFilterMultiple";
+import { CircularWithValueLabel } from "../../../components/customize/loading.jsx";
 import { locations, levels, method } from "../../../utils/constant";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import { useNavigate } from "react-router-dom";
 
 export const JobList = () => {
   const dataDefault = {
@@ -45,6 +46,7 @@ export const JobList = () => {
     address: [],
     step: [],
   };
+  const navigate = useNavigate();
   const [data, setData] = useState(dataDefault);
   const dispatch = useDispatch();
   const listJob = useSelector((state) => state.job?.listJob);
@@ -95,7 +97,6 @@ export const JobList = () => {
       })
     );
   };
-
   useEffect(() => {
     getList();
   }, [page, pageC, order, orderBy]);
@@ -108,12 +109,8 @@ export const JobList = () => {
     if (pageC < totalPageC - 1) dispatch(changeCompanyPage(pageC + 1));
   };
 
-  const handleNavigate = (id) => {
-    navigate(`/company/${id}`);
-  };
-
   return (
-    <div className="ContentPage">
+    <div className="ListPage">
       <div className="container">
         <div className="header-list">
           <div className="header-text-top">
@@ -319,240 +316,265 @@ export const JobList = () => {
             </Box>
           </div>
         </div>
-        <div className="body-list">
-          <Grid container>
-            <Grid item xs={12} md={8} className="body-list-left">
-              {listJob.map((item, index) => {
-                return (
-                  <Grid
-                    item
-                    xs={12}
-                    className="body-list-left-item"
-                    key={index}
-                  >
-                    <div className="body-list-left-item-img">
-                      <img src={item.image} alt="" />
-                    </div>
-                    <div className="body-list-left-item-text">
-                      <div className="body-list-left-item-text-top">
-                        <div className="body-list-left-item-text-top-item">
-                          <div className="body-list-left-item-text-top-item-info">
-                            <TextClamp
-                              title={item.name}
-                              sx={{
-                                color: "#9d42ff",
-                                fontWeight: 600,
-                                fontSize: 20,
-                              }}
-                            >
-                              {item.name}
-                            </TextClamp>
-                            <TextClamp title={item.address}>
-                              {item.address}
-                            </TextClamp>
+        {typeof listJob === "object" ? (
+          <div className="body-list">
+            <Grid container>
+              <Grid item xs={12} md={8} className="body-list-left">
+                {typeof listJob === "object" && listJob.length > 0 ? (
+                  <>
+                    {listJob.map((item, index) => {
+                      return (
+                        <Grid
+                          item
+                          xs={12}
+                          className="body-list-left-item"
+                          key={index}
+                          onClick={() => navigate(`/job/${item.id}`)}
+                        >
+                          <div className="body-list-left-item-img">
+                            <img src={item.image} alt="" />
                           </div>
-                          <div className="body-list-left-item-text-top-item-info">
-                            <p style={{ fontSize: 18 }}>
-                              {item.salary === "Agreement"
-                                ? "Agreement"
-                                : `${item.salary} $`}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="body-list-left-item-text-bottom">
-                        <div className="body-list-left-item-text-top-item">
-                          <div className="body-list-left-item-text-top-item-info">
-                            <Chip
-                              sx={{
-                                borderRadius: 1,
-                                mr: 1,
-                                backgroundColor: "#9d42ff",
-                                color: "white",
-                              }}
-                              label={
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                  }}
-                                >
-                                  {item.company}
-                                </div>
-                              }
-                            />
-                            <Chip
-                              sx={{ borderRadius: 1, mr: 1 }}
-                              label={
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                  }}
-                                >
-                                  <span
-                                    style={{
-                                      fontWeight: 700,
+                          <div className="body-list-left-item-text">
+                            <div className="body-list-left-item-text-top">
+                              <div className="body-list-left-item-text-top-item">
+                                <div className="body-list-left-item-text-top-item-info">
+                                  <TextClamp
+                                    title={item.name}
+                                    sx={{
                                       color: "#9d42ff",
-                                      marginRight: 4,
+                                      fontWeight: 600,
+                                      fontSize: 20,
                                     }}
                                   >
-                                    25
-                                  </span>{" "}
-                                  days to apply
+                                    {item.name}
+                                  </TextClamp>
+                                  <TextClamp title={item.address}>
+                                    {item.address}
+                                  </TextClamp>
                                 </div>
-                              }
-                            />
+                                <div className="body-list-left-item-text-top-item-info">
+                                  <p style={{ fontSize: 18 }}>
+                                    {item.salary === "Agreement"
+                                      ? "Agreement"
+                                      : `${item.salary} $`}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="body-list-left-item-text-bottom">
+                              <div className="body-list-left-item-text-top-item">
+                                <div className="body-list-left-item-text-top-item-info">
+                                  <Chip
+                                    sx={{
+                                      borderRadius: 1,
+                                      mr: 1,
+                                      backgroundColor: "#9d42ff",
+                                      color: "white",
+                                    }}
+                                    label={
+                                      <div
+                                        style={{
+                                          display: "flex",
+                                          alignItems: "center",
+                                        }}
+                                      >
+                                        {item.company}
+                                      </div>
+                                    }
+                                  />
+                                  <Chip
+                                    sx={{ borderRadius: 1, mr: 1 }}
+                                    label={
+                                      <div
+                                        style={{
+                                          display: "flex",
+                                          alignItems: "center",
+                                        }}
+                                      >
+                                        {countDay(item.endDate) > 0 ? (
+                                          <>
+                                            <span
+                                              style={{
+                                                fontWeight: 700,
+                                                color: "#9d42ff",
+                                                marginRight: 4,
+                                              }}
+                                            >
+                                              {countDay(item.endDate)}
+                                            </span>{" "}
+                                            days to apply
+                                          </>
+                                        ) : (
+                                          <>Expired</>
+                                        )}
+                                      </div>
+                                    }
+                                  />
+                                </div>
+                                <div className="body-list-left-item-text-top-item-info">
+                                  <button className="btn-apply">Apply</button>
+                                  <IconButton
+                                    size="small"
+                                    sx={{
+                                      border: "1px solid #9d42ff",
+                                      backgroundColor: "white",
+                                      color: "#9d42ff",
+                                      "&:hover": {
+                                        backgroundColor: "#9d42ff",
+                                        color: "white",
+                                      },
+                                      "&:disabled": {
+                                        border: "1px solid #dee0e2",
+                                        color: "#dee0e2",
+                                        cursor: "not-allowed",
+                                      },
+                                      transition:
+                                        "background-color 0.3s, color 0.3s",
+                                    }}
+                                  >
+                                    <FavoriteBorderIcon fontSize="small" />
+                                  </IconButton>
+                                </div>
+                              </div>
+                            </div>
                           </div>
-                          <div className="body-list-left-item-text-top-item-info">
-                            <button className="btn-apply">Apply</button>
-                            <IconButton
-                              size="small"
-                              sx={{
-                                border: "1px solid #9d42ff",
-                                backgroundColor: "white",
+                        </Grid>
+                      );
+                    })}
+                    {totalPage > 1 && (
+                      <Stack spacing={2} alignItems="center">
+                        <Pagination
+                          count={totalPage}
+                          page={page + 1}
+                          onChange={(event, value) =>
+                            dispatch(changePage(value - 1))
+                          }
+                          variant="outlined"
+                          shape="rounded"
+                          sx={{
+                            "& .MuiPaginationItem-root": {
+                              color: "#1f2937",
+                              backgroundColor: "#fff",
+                              border: "1px solid #dee0e2",
+                              "&:hover": {
+                                backgroundColor: "#9d42ff",
+                                color: "#fff",
+                              },
+                              "&.Mui-selected": {
+                                borderColor: "#9d42ff",
+                                backgroundColor: "#fff",
                                 color: "#9d42ff",
-                                "&:hover": {
-                                  backgroundColor: "#9d42ff",
-                                  color: "white",
-                                },
-                                "&:disabled": {
-                                  borderColor: "gray",
-                                  color: "gray",
-                                  cursor: "not-allowed",
-                                },
-                                transition: "background-color 0.3s, color 0.3s",
-                              }}
-                            >
-                              <FavoriteBorderIcon fontSize="small" />
-                            </IconButton>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </Grid>
-                );
-              })}
-              {totalPage > 1 && (
-                <Stack spacing={2} alignItems="center">
-                  <Pagination
-                    count={totalPage}
-                    page={page + 1}
-                    onChange={(event, value) => dispatch(changePage(value - 1))}
-                    variant="outlined"
-                    shape="rounded"
-                    sx={{
-                      "& .MuiPaginationItem-root": {
-                        color: "#000",
-                        backgroundColor: "#fff",
-                        border: "none",
+                              },
+                              "&.Mui-selected:hover": {
+                                backgroundColor: "#9d42ff",
+                                color: "#fff",
+                              },
+                              "&.Mui-disabled": {
+                                border: "1px solid #dee0e2",
+                                color: "#dee0e2",
+                                pointerEvents: "none",
+                              },
+                            },
+                          }}
+                        />
+                      </Stack>
+                    )}
+                  </>
+                ) : (
+                  <EmptyData />
+                )}
+              </Grid>
+              <Grid item xs={12} md={4} className="body-list-right">
+                <div className="body-list-right-header">
+                  <h4>Top best company</h4>
+                  <Box display="flex" gap={1}>
+                    <IconButton
+                      size="small"
+                      disabled={pageC === 0}
+                      onClick={handlePrevPage}
+                      sx={{
+                        border: "1px solid #9d42ff",
+                        backgroundColor: "white",
+                        color: "#9d42ff",
                         "&:hover": {
-                          backgroundColor: "#7e2bc8",
-                          color: "#fff",
-                        },
-                        "&.Mui-selected": {
                           backgroundColor: "#9d42ff",
-                          color: "#fff",
+                          color: "white",
                         },
-                        "&.Mui-disabled": {
-                          color: "#b0b0b0",
-                          backgroundColor: "#e0e0e0",
-                          pointerEvents: "none",
+                        "&:disabled": {
+                          border: "1px solid #dee0e2",
+                          color: "#dee0e2",
+                          cursor: "not-allowed",
                         },
-                      },
-                    }}
-                  />
-                </Stack>
-              )}
-            </Grid>
-            <Grid item xs={12} md={4} className="body-list-right">
-              <div className="body-list-right-header">
-                <h4>Top best company</h4>
-                <Box display="flex" gap={1}>
-                  <IconButton
-                    size="small"
-                    disabled={pageC === 0}
-                    onClick={handlePrevPage}
-                    sx={{
-                      border: "1px solid #9d42ff",
-                      backgroundColor: "white",
-                      color: "#9d42ff",
-                      "&:hover": {
-                        backgroundColor: "#9d42ff",
-                        color: "white",
-                      },
-                      "&:disabled": {
-                        borderColor: "gray",
-                        color: "gray",
-                        cursor: "not-allowed",
-                      },
-                      transition: "background-color 0.3s, color 0.3s",
-                    }}
-                  >
-                    <ChevronLeftIcon fontSize="small" />
-                  </IconButton>
-                  <IconButton
-                    size="small"
-                    onClick={handleNextPage}
-                    disabled={pageC === totalPageC - 1}
-                    sx={{
-                      border: "1px solid #9d42ff",
-                      backgroundColor: "white",
-                      color: "#9d42ff",
-                      "&:hover": {
-                        backgroundColor: "#9d42ff",
-                        color: "white",
-                      },
-                      "&:disabled": {
-                        borderColor: "gray",
-                        color: "gray",
-                        cursor: "not-allowed",
-                      },
-                      transition: "background-color 0.3s, color 0.3s",
-                    }}
-                  >
-                    <ChevronRightIcon fontSize="small" />
-                  </IconButton>
-                </Box>
-              </div>
-              <div className="body-list-right-body">
-                {listC &&
-                  listC.map((item, index) => {
-                    return (
-                      <div
-                        className="body-list-right-body-item"
-                        key={index}
-                        onClick={() => handleNavigate(item.id)}
-                      >
-                        <div className="body-list-item-info">
-                          {item?.image ? (
-                            <img src={item?.image} alt="logo" />
-                          ) : (
-                            <Avatar></Avatar>
-                          )}
-                          <div className="body-list-item-info-text">
-                            <TextClamp2
-                              title={item.name}
-                              sx={{ color: "#9d42ff", fontWeight: 600 }}
-                            >
-                              {item.name}
-                            </TextClamp2>
-                            <TextClamp>{item.speciality}</TextClamp>
-                            <TextClamp
-                              sx={{ fontSize: 12 }}
-                              title={item.address}
-                            >
-                              {item.address}
-                            </TextClamp>
+                        transition: "background-color 0.3s, color 0.3s",
+                      }}
+                    >
+                      <ChevronLeftIcon fontSize="small" />
+                    </IconButton>
+                    <IconButton
+                      size="small"
+                      onClick={handleNextPage}
+                      disabled={pageC === totalPageC - 1}
+                      sx={{
+                        border: "1px solid #9d42ff",
+                        backgroundColor: "white",
+                        color: "#9d42ff",
+                        "&:hover": {
+                          backgroundColor: "#9d42ff",
+                          color: "white",
+                        },
+                        "&:disabled": {
+                          border: "1px solid #dee0e2",
+                          color: "#dee0e2",
+                          cursor: "not-allowed",
+                        },
+                        transition: "background-color 0.3s, color 0.3s",
+                      }}
+                    >
+                      <ChevronRightIcon fontSize="small" />
+                    </IconButton>
+                  </Box>
+                </div>
+                <div className="body-list-right-body">
+                  {listC &&
+                    listC.map((item, index) => {
+                      return (
+                        <div
+                          className="body-list-right-body-item"
+                          key={index}
+                          onClick={() => navigate(`/company/${item.id}`)}
+                        >
+                          <div className="body-list-item-info">
+                            {item?.image ? (
+                              <img src={item?.image} alt="logo" />
+                            ) : (
+                              <Avatar></Avatar>
+                            )}
+                            <div className="body-list-item-info-text">
+                              <TextClamp2
+                                title={item.name}
+                                sx={{ color: "#9d42ff", fontWeight: 600 }}
+                              >
+                                {item.name}
+                              </TextClamp2>
+                              <TextClamp>{item.speciality}</TextClamp>
+                              <TextClamp
+                                sx={{ fontSize: 12 }}
+                                title={item.address}
+                              >
+                                {item.address}
+                              </TextClamp>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    );
-                  })}
-              </div>
+                      );
+                    })}
+                </div>
+              </Grid>
             </Grid>
-          </Grid>
-        </div>
+          </div>
+        ) : (
+          <CircularWithValueLabel />
+        )}
       </div>
     </div>
   );
