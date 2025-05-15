@@ -45,6 +45,7 @@
     .body-content {
       .body-list {
         display: grid;
+        gap: 8px;
         grid-template-columns: repeat(4, 1fr);
         @media (max-width: 1024px) {
           grid-template-columns: repeat(2, 1fr);
@@ -53,7 +54,6 @@
         @media (max-width: 768px) {
           grid-template-columns: 1fr;
         }
-        gap: 8px;
         .body-list-item {
           width: 100%;
           height: auto;
