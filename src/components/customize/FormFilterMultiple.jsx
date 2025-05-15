@@ -69,7 +69,9 @@ export const FormFilterMultiple = ({
       value={list.filter((item) => data[name]?.includes(item.value))}
       onChange={handleChange}
       renderOption={(props, option, { selected }) => {
+        // Destructure key separately
         const { key, ...optionProps } = props;
+
         return (
           <li key={key} {...optionProps}>
             <Checkbox
@@ -87,12 +89,15 @@ export const FormFilterMultiple = ({
         const hiddenTagCount = value.length - maxVisibleTags;
 
         if (value.length > 1) {
+          // Destructure to exclude key from getTagProps
+          const { key, ...tagProps } = getTagProps({ index: 0 });
+
           return [
             <Chip
-              key="first-label"
+              key="first-label" // Explicitly pass key
               label={value[0].label}
               size="small"
-              {...getTagProps({ index: 0 })}
+              {...tagProps} // Spread props without key
               sx={{
                 maxWidth: "100%",
                 overflow: "hidden",
@@ -100,12 +105,12 @@ export const FormFilterMultiple = ({
               }}
             />,
             <Chip
-              key="more-tags"
+              key="more-tags" // Explicitly pass key
               label={`(+${hiddenTagCount})`}
               size="small"
               sx={{
                 display: "flex",
-                alignItems: "center", // Center vertically
+                alignItems: "center",
                 maxWidth: "100%",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
@@ -113,19 +118,24 @@ export const FormFilterMultiple = ({
             />,
           ];
         } else {
-          return value.map((option, index) => (
-            <Chip
-              key={index}
-              label={option.label}
-              {...getTagProps({ index })}
-              size="small"
-              sx={{
-                maxWidth: "100%",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-              }}
-            />
-          ));
+          return value.map((option, index) => {
+            // Destructure to exclude key from getTagProps
+            const { key, ...tagProps } = getTagProps({ index });
+
+            return (
+              <Chip
+                key={`chip-${index}`} // Explicitly pass key
+                label={option.label}
+                {...tagProps} // Spread props without key
+                size="small"
+                sx={{
+                  maxWidth: "100%",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                }}
+              />
+            );
+          });
         }
       }}
       renderInput={(params) => (

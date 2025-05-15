@@ -24,7 +24,7 @@ import { formatSort } from "../../../utils/utils.js";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { EmptyData } from "../../../components/shared/emptyData.jsx";
 import { FormFilterMultiple } from "../../../components/customize/FormFilterMultiple";
-import { locations, levels, method } from "../../../utils/constant";
+import { locations } from "../../../utils/constant";
 
 export const CompanyList = () => {
   const dataDefault = {
@@ -41,7 +41,6 @@ export const CompanyList = () => {
   const totalPage = useSelector((state) => state.company?.totalPage);
   const order = useSelector((state) => state.company?.order);
   const orderBy = useSelector((state) => state.company?.orderBy);
-  const isLoading = useSelector((state) => state.company?.isLoading);
 
   const getList = async () => {
     dispatch(
@@ -74,7 +73,7 @@ export const CompanyList = () => {
 
   useEffect(() => {
     getList();
-  }, [page, order, orderBy]);
+  }, [page, order, orderBy, data]);
 
   return (
     <div className="ListPage Company">
@@ -145,7 +144,12 @@ export const CompanyList = () => {
               <div className="search-form">
                 <TextField
                   size="small"
+                  type="search"
                   placeholder="Search job"
+                  value={data.keyword}
+                  onChange={(e) =>
+                    setData({ ...data, keyword: e.target.value })
+                  }
                   sx={{
                     width: "100%",
                     mr: 1,
@@ -174,21 +178,6 @@ export const CompanyList = () => {
                   }}
                 >
                   <FormFilterMultiple
-                    name="level"
-                    placeholder="Level"
-                    list={levels}
-                    data={data}
-                    setData={setData}
-                  />
-                  <FormFilterMultiple
-                    name="step"
-                    placeholder="Step"
-                    list={method}
-                    data={data}
-                    setData={setData}
-                    ml={1}
-                  />
-                  <FormFilterMultiple
                     name="address"
                     placeholder="Location"
                     list={locations}
@@ -200,6 +189,7 @@ export const CompanyList = () => {
                 <Button
                   variant="contained"
                   size="small"
+                  onClick={handleSearch}
                   sx={{
                     height: "40px",
                     border: "1px solid #9d42ff",
@@ -246,6 +236,21 @@ export const CompanyList = () => {
                   />
                 }
                 label="Name"
+                sx={{
+                  "& .MuiRadio-root.Mui-checked": {
+                    color: "#9d42ff",
+                  },
+                }}
+              />
+              <FormControlLabel
+                value="address"
+                control={
+                  <Radio
+                    checked={selectedSort === "address"}
+                    onChange={handleChangeRadio}
+                  />
+                }
+                label="Location"
                 sx={{
                   "& .MuiRadio-root.Mui-checked": {
                     color: "#9d42ff",

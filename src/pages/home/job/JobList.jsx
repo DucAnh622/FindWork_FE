@@ -99,7 +99,7 @@ export const JobList = () => {
   };
   useEffect(() => {
     getList();
-  }, [page, pageC, order, orderBy]);
+  }, [page, pageC, order, orderBy, data]);
 
   const handlePrevPage = () => {
     if (pageC > 0) dispatch(changeCompanyPage(pageC - 1));
@@ -177,6 +177,11 @@ export const JobList = () => {
                 <TextField
                   size="small"
                   placeholder="Search job"
+                  type="search"
+                  value={data.keyword}
+                  onChange={(e) =>
+                    setData({ ...data, keyword: e.target.value })
+                  }
                   sx={{
                     width: "100%",
                     mr: 1,
@@ -231,6 +236,7 @@ export const JobList = () => {
                 <Button
                   variant="contained"
                   size="small"
+                  onClick={handleSearch}
                   sx={{
                     height: "40px",
                     border: "1px solid #9d42ff",

@@ -39,7 +39,6 @@ export const searchListCompany = (
     params.address = address.join(",");
   }
 
-  console.log("Search params:", params);
   return axiosInstance.get("/companies/search", { params });
 };
 
