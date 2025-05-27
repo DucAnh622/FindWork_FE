@@ -152,7 +152,6 @@ export const CompanyList = () => {
                   }
                   sx={{
                     width: "100%",
-                    mr: 1,
                     flex: 2,
                     backgroundColor: "#fff",
                     borderRadius: "8px",
